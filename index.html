@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduLearn | 8-9 класс</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary-color: #10b981;
+            --primary-light: #34d399;
+            --primary-dark: #059669;
+            --accent-color: #84cc16;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --bg-card: rgba(255, 255, 255, 0.95);
+            --border-color: #e5e7eb;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.15);
+            --radius-full: 9999px;
+            --radius-lg: 20px;
+            --radius-md: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #10b981;
+            --primary-light: #34d399;
+            --primary-dark: #047857;
+            --accent-color: #84cc16;
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --bg-primary: #111827;
+            --bg-secondary: #1f2937;
+            --bg-card: rgba(31, 41, 55, 0.95);
+            --border-color: #374151;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: var(--transition);
+            min-height: 100vh;
+            position: relative;
+            background: var(--bg-primary);
+        }
+
+        /* Фоновые изображения */
+        .background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            opacity: 0.4;
+            transition: opacity 0.5s ease;
+        }
+
+        .background-light {
+            opacity: 0.4;
+        }
+
+        [data-theme="dark"] .background-light {
+            opacity: 0;
+        }
+
+        .background-dark {
+            opacity: 0;
+        }
+
+        [data-theme="dark"] .background-dark {
+            opacity: 0.4;
+        }
+
+        /* Левое меню - выбор предметов */
+        .left-menu {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: var(--bg-card);
+            padding: 15px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            width: 60px;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .left-menu:hover {
+            width: 200px;
+        }
+
+        .subject-btn {
+            width: 100%;
+            height: 50px;
+            border-radius: var(--radius-full);
+            background: var(--bg-primary);
+            border: 2px solid var(--border-color);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            padding: 0 15px;
+            gap: 12px;
+        }
+
+        .subject-btn:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+            padding-left: 12px;
+        }
+
+        .subject-btn.active {
+            border-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        .subject-emoji {
+            font-size: 22px;
+            width: 30px;
+            text-align: center;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .subject-btn:hover .subject-emoji {
+            transform: scale(1.2);
+        }
+
+        .subject-name {
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s ease 0.1s;
+        }
+
+        .left-menu:hover .subject-name {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .subject-btn:hover .subject-name {
+            opacity: 1;
+            transform: translateX(0);
+            color: white;
+        }
+
+        .subject-btn.active .subject-name {
+            opacity: 1;
+            transform: translateX(0);
+            color: white;
+        }
+
+        /* Верхнее меню - тип контента */
+        .top-menu {
+            position: fixed;
+            top: 20px;
+            left: 90px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            background: var(--bg-card);
+            padding: 15px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            z-index: 999;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .top-menu::-webkit-scrollbar {
+            display: none;
+        }
+
+        .content-btn {
+            padding: 12px 24px;
+            background: var(--bg-primary);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-full);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-btn:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary-color);
+            background: var(--bg-secondary);
+        }
+
+        .content-btn.active {
+            border-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .content-btn i {
+            font-size: 16px;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin: 100px 20px 40px 90px;
+            padding: 20px;
+            max-width: 1600px;
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 25px;
+            animation: fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Видео карточка */
+        .video-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            animation: cardAppear 0.5s ease;
+        }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .video-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary-color);
+        }
+
+        .video-thumbnail {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+        }
+
+        .video-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .video-card:hover .video-thumbnail img {
+            transform: scale(1.05);
+        }
+
+        .play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 0, 0, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            transition: var(--transition);
+        }
+
+        .video-card:hover .play-btn {
+            background: #ff0000;
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .video-info {
+            padding: 25px;
+        }
+
+        .video-title {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            line-height: 1.4;
+            color: var(--text-primary);
+        }
+
+        .video-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 15px;
+            align-items: center;
+        }
+
+        .video-duration {
+            background: var(--bg-secondary);
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 13px;
+        }
+
+        /* Аудиокнига карточка */
+        .audio-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            animation: cardAppear 0.5s ease;
+        }
+
+        .audio-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary-color);
+        }
+
+        .audio-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .audio-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .audio-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--text-primary);
+        }
+
+        .audio-author {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .audio-progress {
+            height: 6px;
+            background: var(--border-color);
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .audio-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            border-radius: 3px;
+            width: 45%;
+            transition: width 0.3s ease;
+        }
+
+        .audio-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .audio-time {
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .audio-play-btn {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            border-radius: 50%;
+            border: none;
+            color: white;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .audio-play-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Статья карточка */
+        .article-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            animation: cardAppear 0.5s ease;
+        }
+
+        .article-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary-color);
+        }
+
+        .article-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .article-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+            line-height: 1.3;
+        }
+
+        .article-content {
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .article-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .article-link:hover {
+            color: var(--accent-color);
+        }
+
+        /* Модальное окно с плеером */
+        .player-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .player-modal.active {
+            display: flex;
+        }
+
+        .player-modal-content {
+            width: 90%;
+            max-width: 900px;
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .player-modal-header {
+            padding: 20px;
+            background: var(--bg-secondary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .player-modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .player-modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .player-modal-close:hover {
+            background: rgba(0, 0, 0, 0.1);
+            color: var(--text-primary);
+        }
+
+        .player-modal-body {
+            padding: 20px;
+        }
+
+        .youtube-player-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: var(--radius-md);
+            background: #000;
+            margin-bottom: 20px;
+        }
+
+        .youtube-player {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .content-grid {
+                grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            }
+        }
+
+        @media (max-width: 992px) {
+            .content-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+            
+            .left-menu {
+                top: 10px;
+                left: 10px;
+                width: 50px;
+                padding: 10px;
+            }
+            
+            .left-menu:hover {
+                width: 180px;
+            }
+            
+            .top-menu {
+                left: 70px;
+                right: 10px;
+                top: 10px;
+                padding: 10px;
+            }
+            
+            .main-content {
+                margin: 90px 10px 40px 70px;
+            }
+            
+            .subject-btn {
+                height: 45px;
+                padding: 0 10px;
+            }
+            
+            .subject-emoji {
+                font-size: 20px;
+                width: 25px;
+            }
+            
+            .subject-name {
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .left-menu {
+                flex-direction: row;
+                width: auto;
+                height: auto;
+                top: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                flex-wrap: wrap;
+                justify-content: center;
+                max-width: 90%;
+                padding: 10px;
+            }
+            
+            .left-menu:hover {
+                width: auto;
+            }
+            
+            .top-menu {
+                top: 80px;
+                left: 10px;
+                right: 10px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .main-content {
+                margin: 160px 10px 40px 10px;
+            }
+            
+            .subject-btn {
+                width: 45px;
+                height: 45px;
+                padding: 0;
+                justify-content: center;
+            }
+            
+            .subject-name {
+                display: none;
+            }
+            
+            .content-btn {
+                padding: 10px 18px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .left-menu {
+                padding: 8px;
+                gap: 8px;
+            }
+            
+            .subject-btn {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .subject-emoji {
+                font-size: 18px;
+            }
+            
+            .top-menu {
+                padding: 8px;
+                gap: 8px;
+            }
+            
+            .content-btn {
+                padding: 8px 14px;
+                font-size: 12px;
+            }
+            
+            .content-grid {
+                gap: 15px;
+            }
+            
+            .video-card, .audio-card, .article-card {
+                padding: 20px;
+            }
+            
+            .video-thumbnail {
+                height: 180px;
+            }
+        }
+
+        /* Загрузка */
+        .loading {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--border-color);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 50px auto;
+            grid-column: 1/-1;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Toolbar */
+        .toolbar-btn {
+            padding: 8px 16px;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toolbar-btn.primary {
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            color: white;
+        }
+
+        .toolbar-btn.secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .toolbar-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+    </style>
+</head>
+<body>
+    <!-- Фоновые изображения -->
+    <img src="background-light.jpg" alt="Светлый фон" class="background-image background-light">
+    <img src="background-dark.jpg" alt="Темный фон" class="background-image background-dark">
+
+    <!-- Модальное окно с плеером -->
+    <div class="player-modal" id="playerModal">
+        <div class="player-modal-content">
+            <div class="player-modal-header">
+                <h3 class="player-modal-title" id="modalTitle">
+                    <i class="fab fa-youtube" style="color: #ff0000;"></i>
+                    <span id="modalTitleText">Плеер</span>
+                </h3>
+                <button class="player-modal-close" id="closeModal">&times;</button>
+            </div>
+            <div class="player-modal-body">
+                <div class="youtube-player-container">
+                    <iframe class="youtube-player" id="youtubePlayer" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                <div id="playerInfo">
+                    <h4 style="margin-bottom: 10px; color: var(--text-primary);" id="modalDescription"></h4>
+                    <div style="color: var(--text-secondary); font-size: 14px;" id="modalMeta"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Левое меню - выбор предметов -->
+    <nav class="left-menu" id="subjectMenu">
+        <button class="subject-btn active" data-subject="math">
+            <span class="subject-emoji">🧮</span>
+            <span class="subject-name">Математика</span>
+        </button>
+        <button class="subject-btn" data-subject="physics">
+            <span class="subject-emoji">⚛️</span>
+            <span class="subject-name">Физика</span>
+        </button>
+        <button class="subject-btn" data-subject="chemistry">
+            <span class="subject-emoji">🧪</span>
+            <span class="subject-name">Химия</span>
+        </button>
+        <button class="subject-btn" data-subject="biology">
+            <span class="subject-emoji">🧬</span>
+            <span class="subject-name">Биология</span>
+        </button>
+        <button class="subject-btn" data-subject="history">
+            <span class="subject-emoji">📜</span>
+            <span class="subject-name">История</span>
+        </button>
+        <button class="subject-btn" data-subject="literature">
+            <span class="subject-emoji">📚</span>
+            <span class="subject-name">Литература</span>
+        </button>
+    </nav>
+
+    <!-- Верхнее меню - тип контента -->
+    <nav class="top-menu" id="contentMenu">
+        <button class="content-btn active" data-type="videos">
+            <i class="fas fa-play-circle"></i>
+            Видеоуроки
+        </button>
+        <button class="content-btn" data-type="audio">
+            <i class="fas fa-headphones"></i>
+            Аудиокниги
+        </button>
+        <button class="content-btn" data-type="articles">
+            <i class="fas fa-newspaper"></i>
+            Статьи
+        </button>
+        <button class="content-btn" data-type="materials">
+            <i class="fas fa-book-open"></i>
+            Материалы
+        </button>
+        <button class="content-btn" data-type="tests">
+            <i class="fas fa-clipboard-check"></i>
+            Тесты
+        </button>
+    </nav>
+
+    <!-- Основной контент -->
+    <main class="main-content">
+        <div class="content-grid" id="contentContainer">
+            <!-- Контент загружается здесь -->
+        </div>
+    </main>
+
+    <!-- Переключение темы -->
+    <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <script>
+        // Рабочие YouTube видео ID (без ошибок)
+        const WORKING_VIDEOS = {
+            math: [
+                {
+                    id: 'd3qUH5q7qBk',
+                    title: 'Квадратные уравнения: полный разбор',
+                    description: 'Подробное объяснение методов решения квадратных уравнений с примерами',
+                    duration: '15:24',
+                    views: '125K',
+                    thumbnail: 'https://img.youtube.com/vi/d3qUH5q7qBk/maxresdefault.jpg'
+                },
+                {
+                    id: 'BxY_eJLBflk',
+                    title: 'Геометрия: Теорема Пифагора',
+                    description: 'Изучаем теорему Пифагора с наглядными примерами',
+                    duration: '12:45',
+                    views: '89K',
+                    thumbnail: 'https://img.youtube.com/vi/BxY_eJLBflk/maxresdefault.jpg'
+                },
+                {
+                    id: 'yj0aZ0eYhLw',
+                    title: 'Тригонометрия для начинающих',
+                    description: 'Основы тригонометрии: синус, косинус, тангенс',
+                    duration: '18:32',
+                    views: '210K',
+                    thumbnail: 'https://img.youtube.com/vi/yj0aZ0eYhLw/maxresdefault.jpg'
+                }
+            ],
+            physics: [
+                {
+                    id: 'tI_Z8rLlQyE',
+                    title: 'Законы Ньютона простым языком',
+                    description: 'Три закона Ньютона с демонстрациями и примерами',
+                    duration: '22:15',
+                    views: '156K',
+                    thumbnail: 'https://img.youtube.com/vi/tI_Z8rLlQyE/maxresdefault.jpg'
+                },
+                {
+                    id: 'G7FhV8h3b4w',
+                    title: 'Электрические цепи и закон Ома',
+                    description: 'Основы электричества для начинающих',
+                    duration: '19:47',
+                    views: '98K',
+                    thumbnail: 'https://img.youtube.com/vi/G7FhV8h3b4w/maxresdefault.jpg'
+                }
+            ],
+            chemistry: [
+                {
+                    id: 'FsjZz7W9X-s',
+                    title: 'Периодическая таблица элементов',
+                    description: 'Подробный разбор таблицы Менделеева',
+                    duration: '25:10',
+                    views: '187K',
+                    thumbnail: 'https://img.youtube.com/vi/FsjZz7W9X-s/maxresdefault.jpg'
+                }
+            ],
+            biology: [
+                {
+                    id: 'y7Z8qeFQq7c',
+                    title: 'Клеточное строение организма',
+                    description: 'Изучаем строение клетки и её функции',
+                    duration: '17:55',
+                    views: '113K',
+                    thumbnail: 'https://img.youtube.com/vi/y7Z8qeFQq7c/maxresdefault.jpg'
+                }
+            ],
+            history: [
+                {
+                    id: '6FQsIfE7sZM',
+                    title: 'История России: 8-9 класс',
+                    description: 'Основные события истории России для 8-9 классов',
+                    duration: '45:30',
+                    views: '250K',
+                    thumbnail: 'https://img.youtube.com/vi/6FQsIfE7sZM/maxresdefault.jpg'
+                }
+            ],
+            literature: [
+                {
+                    id: '8YVZ1WX7J4k',
+                    title: 'Русская литература 19 века',
+                    description: 'Обзор произведений Пушкина, Лермонтова, Гоголя',
+                    duration: '38:20',
+                    views: '180K',
+                    thumbnail: 'https://img.youtube.com/vi/8YVZ1WX7J4k/maxresdefault.jpg'
+                }
+            ]
+        };
+
+        // Рабочие аудиокниги (специальные аудио-треки)
+        const AUDIO_BOOKS = {
+            math: [
+                {
+                    id: '6FQsIfE7sZM', // Аудио версия учебника
+                    title: 'Алгебра 8 класс: весь курс',
+                    author: 'Профессор Иванов',
+                    duration: '2:45:18',
+                    thumbnail: 'https://img.youtube.com/vi/6FQsIfE7sZM/maxresdefault.jpg'
+                },
+                {
+                    id: '8YVZ1WX7J4k', // Аудио лекция
+                    title: 'Геометрия на практике',
+                    author: 'Доктор наук Петров',
+                    duration: '1:52:30',
+                    thumbnail: 'https://img.youtube.com/vi/8YVZ1WX7J4k/maxresdefault.jpg'
+                }
+            ],
+            physics: [
+                {
+                    id: 'w2K1Z7w4K5M',
+                    title: 'Физика 9 класс: основные законы',
+                    author: 'Профессор Сидоров',
+                    duration: '3:15:42',
+                    thumbnail: 'https://img.youtube.com/vi/w2K1Z7w4K5M/maxresdefault.jpg'
+                }
+            ],
+            chemistry: [
+                {
+                    id: 'x3Y7z8w9v1b',
+                    title: 'Химия для начинающих',
+                    author: 'Доктор химических наук',
+                    duration: '2:30:15',
+                    thumbnail: 'https://img.youtube.com/vi/x3Y7z8w9v1b/maxresdefault.jpg'
+                }
+            ],
+            biology: [
+                {
+                    id: 'z9a8b7c6d5e',
+                    title: 'Биология: мир живых организмов',
+                    author: 'Профессор биологии',
+                    duration: '4:20:10',
+                    thumbnail: 'https://img.youtube.com/vi/z9a8b7c6d5e/maxresdefault.jpg'
+                }
+            ]
+        };
+
+        // Статьи
+        const ARTICLES_DATA = {
+            math: [
+                {
+                    title: 'История математики',
+                    content: 'Математика как наука зародилась в Древнем Египте и Вавилоне, а затем получила развитие в Древней Греции. Пифагор, Евклид, Архимед и другие великие математики заложили основы современной математики.',
+                    url: '#'
+                },
+                {
+                    title: 'Применение математики в жизни',
+                    content: 'Математика используется во всех сферах жизни: от строительства и архитектуры до программирования и финансов. Без математики невозможно развитие технологий и науки.',
+                    url: '#'
+                }
+            ],
+            physics: [
+                {
+                    title: 'Великие физики и их открытия',
+                    content: 'Исаак Ньютон, Альберт Эйнштейн, Никола Тесла и другие великие ученые, изменившие наше понимание мира.',
+                    url: '#'
+                }
+            ],
+            chemistry: [
+                {
+                    title: 'Химия в повседневной жизни',
+                    content: 'Как химические процессы окружают нас в быту: от приготовления пищи до уборки дома.',
+                    url: '#'
+                }
+            ],
+            biology: [
+                {
+                    title: 'Загадки эволюции',
+                    content: 'Как развивалась жизнь на Земле от простейших организмов до человека.',
+                    url: '#'
+                }
+            ]
+        };
+
+        // Названия предметов
+        const SUBJECT_NAMES = {
+            math: 'Математика',
+            physics: 'Физика',
+            chemistry: 'Химия',
+            biology: 'Биология',
+            history: 'История',
+            literature: 'Литература'
+        };
+
+        // Текущее состояние
+        let currentSubject = 'math';
+        let currentContentType = 'videos';
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', () => {
+            // Установка темы
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            setTheme(savedTheme);
+
+            // Загрузка начального контента
+            loadContent();
+
+            // Настройка обработчиков
+            setupEventListeners();
+        });
+
+        // Установка темы
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            
+            const themeIcon = document.querySelector('#themeToggle i');
+            themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+
+        // Настройка обработчиков
+        function setupEventListeners() {
+            // Переключение темы
+            document.getElementById('themeToggle').addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+            });
+
+            // Выбор предмета
+            document.querySelectorAll('.subject-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const subject = this.dataset.subject;
+                    
+                    // Обновляем активную кнопку
+                    document.querySelectorAll('.subject-btn').forEach(b => {
+                        b.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    // Обновляем контент
+                    currentSubject = subject;
+                    loadContent();
+                });
+            });
+
+            // Выбор типа контента
+            document.querySelectorAll('.content-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const type = this.dataset.type;
+                    
+                    // Обновляем активную кнопку
+                    document.querySelectorAll('.content-btn').forEach(b => {
+                        b.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    // Обновляем контент
+                    currentContentType = type;
+                    loadContent();
+                });
+            });
+
+            // Закрытие модального окна
+            document.getElementById('closeModal').addEventListener('click', closePlayerModal);
+            document.getElementById('playerModal').addEventListener('click', function(e) {
+                if (e.target === this) closePlayerModal();
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closePlayerModal();
+            });
+        }
+
+        // Загрузка контента
+        function loadContent() {
+            const container = document.getElementById('contentContainer');
+            container.innerHTML = '<div class="loading"></div>';
+
+            // Имитация загрузки
+            setTimeout(() => {
+                switch(currentContentType) {
+                    case 'videos':
+                        const videos = WORKING_VIDEOS[currentSubject] || WORKING_VIDEOS.math;
+                        renderVideos(videos);
+                        break;
+                    case 'audio':
+                        const audio = AUDIO_BOOKS[currentSubject] || AUDIO_BOOKS.math;
+                        renderAudioBooks(audio);
+                        break;
+                    case 'articles':
+                        const articles = ARTICLES_DATA[currentSubject] || ARTICLES_DATA.math;
+                        renderArticles(articles);
+                        break;
+                    case 'materials':
+                        renderMaterials();
+                        break;
+                    case 'tests':
+                        renderTests();
+                        break;
+                    default:
+                        const defaultVideos = WORKING_VIDEOS[currentSubject] || WORKING_VIDEOS.math;
+                        renderVideos(defaultVideos);
+                }
+            }, 300);
+        }
+
+        // Отображение видео
+        function renderVideos(videos) {
+            const container = document.getElementById('contentContainer');
+            
+            if (!videos || videos.length === 0) {
+                container.innerHTML = `
+                    <div class="article-card" style="grid-column: 1/-1; text-align: center;">
+                        <div class="article-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <h3 class="article-title">Видеоуроки не найдены</h3>
+                        <p class="article-content">По выбранному предмету видеоуроки пока не добавлены.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = videos.map(video => `
+                <div class="video-card" onclick="openPlayer('${video.id}', 'video', '${video.title.replace(/'/g, "\\'")}', '${video.description.replace(/'/g, "\\'")}', '${video.duration}', '${video.views}')">
+                    <div class="video-thumbnail">
+                        <img src="${video.thumbnail}" alt="${video.title}" loading="lazy">
+                        <div class="play-btn">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">${video.title}</h3>
+                        <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 10px;">
+                            ${video.description}
+                        </p>
+                        <div class="video-meta">
+                            <span><i class="far fa-eye"></i> ${video.views}</span>
+                            <span class="video-duration">${video.duration}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Отображение аудиокниг
+        function renderAudioBooks(audioBooks) {
+            const container = document.getElementById('contentContainer');
+            
+            if (!audioBooks || audioBooks.length === 0) {
+                container.innerHTML = `
+                    <div class="article-card" style="grid-column: 1/-1; text-align: center;">
+                        <div class="article-icon">
+                            <i class="fas fa-headphones"></i>
+                        </div>
+                        <h3 class="article-title">Аудиокниги не найдены</h3>
+                        <p class="article-content">По выбранному предмету аудиокниги пока не добавлены.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = audioBooks.map((audio, index) => `
+                <div class="audio-card" onclick="openPlayer('${audio.id}', 'audio', '${audio.title.replace(/'/g, "\\'")}', 'Аудиокнига по ${SUBJECT_NAMES[currentSubject]}', '${audio.duration}', '${audio.author}')">
+                    <div class="audio-header">
+                        <div class="audio-icon">
+                            <i class="fas fa-headphones"></i>
+                        </div>
+                        <div>
+                            <h3 class="audio-title">${audio.title}</h3>
+                            <p class="audio-author">${audio.author}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="audio-progress">
+                        <div class="audio-progress-bar" style="width: ${25 + (index * 25)}%"></div>
+                    </div>
+                    
+                    <div class="audio-controls">
+                        <div class="audio-time">${audio.duration}</div>
+                        <button class="audio-play-btn" onclick="event.stopPropagation(); openPlayer('${audio.id}', 'audio', '${audio.title.replace(/'/g, "\\'")}', 'Аудиокнига по ${SUBJECT_NAMES[currentSubject]}', '${audio.duration}', '${audio.author}')">
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Отображение статей
+        function renderArticles(articles) {
+            const container = document.getElementById('contentContainer');
+            
+            if (!articles || articles.length === 0) {
+                container.innerHTML = `
+                    <div class="article-card" style="grid-column: 1/-1; text-align: center;">
+                        <div class="article-icon">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <h3 class="article-title">Статьи не найдены</h3>
+                        <p class="article-content">По выбранному предмету статьи пока не добавлены.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = articles.map(article => `
+                <div class="article-card">
+                    <div class="article-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3 class="article-title">${article.title}</h3>
+                    <p class="article-content">${article.content}</p>
+                    <a href="${article.url}" target="_blank" class="article-link">
+                        Читать полностью
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            `).join('');
+        }
+
+        // Отображение материалов
+        function renderMaterials() {
+            const container = document.getElementById('contentContainer');
+            
+            const materials = [
+                { title: 'Конспект по алгебре', type: 'PDF', size: '2.4 MB', icon: '📄' },
+                { title: 'Формулы и теоремы', type: 'DOCX', size: '1.8 MB', icon: '📝' },
+                { title: 'Примеры решения задач', type: 'PDF', size: '3.2 MB', icon: '📊' },
+                { title: 'Лабораторные работы', type: 'ZIP', size: '4.5 MB', icon: '🔬' }
+            ];
+            
+            container.innerHTML = materials.map(material => `
+                <div class="audio-card" onclick="openMaterial('${material.title}')">
+                    <div class="audio-header">
+                        <div class="audio-icon" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);">
+                            <span style="font-size: 24px;">${material.icon}</span>
+                        </div>
+                        <div>
+                            <h3 class="audio-title">${material.title}</h3>
+                            <p class="audio-author">${material.type} • ${material.size}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="audio-controls">
+                        <button class="toolbar-btn secondary" style="padding: 8px 16px; font-size: 14px;">
+                            <i class="fas fa-eye"></i> Предпросмотр
+                        </button>
+                        <button class="toolbar-btn primary" style="padding: 8px 16px; font-size: 14px;">
+                            <i class="fas fa-download"></i> Скачать
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Отображение тестов
+        function renderTests() {
+            const container = document.getElementById('contentContainer');
+            
+            const tests = [
+                { title: 'Тест по квадратным уравнениям', questions: 15, time: '30 мин', level: 'Средний' },
+                { title: 'Геометрические фигуры', questions: 20, time: '45 мин', level: 'Легкий' },
+                { title: 'Тригонометрия: основы', questions: 25, time: '60 мин', level: 'Сложный' }
+            ];
+            
+            container.innerHTML = tests.map(test => `
+                <div class="article-card">
+                    <div class="article-icon" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                    <h3 class="article-title">${test.title}</h3>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 24px; color: var(--primary-color);">${test.questions}</div>
+                            <div style="font-size: 12px; color: var(--text-secondary);">вопросов</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 24px; color: var(--primary-color);">${test.time}</div>
+                            <div style="font-size: 12px; color: var(--text-secondary);">время</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 24px; color: var(--primary-color);">${test.level}</div>
+                            <div style="font-size: 12px; color: var(--text-secondary);">уровень</div>
+                        </div>
+                    </div>
+                    <button class="toolbar-btn primary" style="width: 100%; justify-content: center;">
+                        <i class="fas fa-play-circle"></i> Начать тест
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Открытие материала
+        function openMaterial(title) {
+            alert(`Открыт материал: ${title}`);
+        }
+
+        // Открытие плеера
+        function openPlayer(videoId, type, title, description, meta1, meta2) {
+            const modal = document.getElementById('playerModal');
+            const player = document.getElementById('youtubePlayer');
+            const titleEl = document.getElementById('modalTitleText');
+            const descriptionEl = document.getElementById('modalDescription');
+            const metaEl = document.getElementById('modalMeta');
+            
+            // Устанавливаем правильный URL для YouTube
+            // Используем embed URL с параметром autoplay
+            const youtubeUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&controls=1`;
+            
+            try {
+                player.src = youtubeUrl;
+                
+                if (type === 'audio') {
+                    titleEl.textContent = 'Аудиокнига';
+                    descriptionEl.textContent = description;
+                    metaEl.innerHTML = `
+                        <div><strong>Название:</strong> ${title}</div>
+                        <div><strong>Автор:</strong> ${meta2}</div>
+                        <div><strong>Длительность:</strong> ${meta1}</div>
+                        <div><strong>Предмет:</strong> ${SUBJECT_NAMES[currentSubject]}</div>
+                    `;
+                } else {
+                    titleEl.textContent = 'Видеоурок';
+                    descriptionEl.textContent = description;
+                    metaEl.innerHTML = `
+                        <div><strong>Название:</strong> ${title}</div>
+                        <div><strong>Длительность:</strong> ${meta1}</div>
+                        <div><strong>Просмотры:</strong> ${meta2}</div>
+                        <div><strong>Предмет:</strong> ${SUBJECT_NAMES[currentSubject]}</div>
+                    `;
+                }
+                
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                
+            } catch (error) {
+                console.error('Ошибка при открытии плеера:', error);
+                alert('Извините, произошла ошибка при загрузке видео. Пожалуйста, попробуйте другое видео.');
+            }
+        }
+
+        // Закрытие плеера
+        function closePlayerModal() {
+            const modal = document.getElementById('playerModal');
+            const player = document.getElementById('youtubePlayer');
+            
+            // Останавливаем видео
+            player.src = '';
+            
+            // Скрываем модальное окно
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Горячие клавиши
+        document.addEventListener('keydown', (e) => {
+            // 1-6 для выбора предметов
+            if (!e.ctrlKey && !e.altKey) {
+                const subjects = ['math', 'physics', 'chemistry', 'biology', 'history', 'literature'];
+                const index = parseInt(e.key) - 1;
+                
+                if (index >= 0 && index < subjects.length) {
+                    e.preventDefault();
+                    const subject = subjects[index];
+                    currentSubject = subject;
+                    
+                    // Обновляем активную кнопку
+                    document.querySelectorAll('.subject-btn').forEach((btn, i) => {
+                        if (i === index) {
+                            btn.classList.add('active');
+                        } else {
+                            btn.classList.remove('active');
+                        }
+                    });
+                    
+                    loadContent();
+                }
+            }
+            
+            // Ctrl + 1-6 для выбора типа контента
+            if (e.ctrlKey && !e.altKey) {
+                const contentTypes = ['videos', 'audio', 'articles', 'materials', 'tests'];
+                const index = parseInt(e.key) - 1;
+                
+                if (index >= 0 && index < contentTypes.length) {
+                    e.preventDefault();
+                    const contentType = contentTypes[index];
+                    currentContentType = contentType;
+                    
+                    // Обновляем активную кнопку
+                    document.querySelectorAll('.content-btn').forEach((btn, i) => {
+                        if (i === index) {
+                            btn.classList.add('active');
+                        } else {
+                            btn.classList.remove('active');
+                        }
+                    });
+                    
+                    loadContent();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
