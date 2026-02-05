@@ -31,6 +31,7 @@
             --history: #f59e0b;
             --geography: #06b6d4;
             --literature: #ec4899;
+            --game-2048: #8b5cf6;
         }
 
         [data-theme="dark"] {
@@ -56,6 +57,7 @@
             --history: #fbbf24;
             --geography: #22d3ee;
             --literature: #f472b6;
+            --game-2048: #a78bfa;
         }
 
         * {
@@ -266,6 +268,46 @@
             margin-top: 10px;
         }
 
+        /* YouTube плеер */
+        .youtube-player {
+            margin: 30px 0;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .youtube-placeholder {
+            background: var(--bg-light);
+            padding: 40px;
+            text-align: center;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .youtube-placeholder:hover {
+            background: var(--primary-light);
+            color: white;
+        }
+
+        .youtube-placeholder i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: #ff0000;
+        }
+
+        .video-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .video-desc {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
         /* Код блоки */
         .code-block {
             background: var(--bg-dark);
@@ -318,7 +360,7 @@
             position: fixed;
             bottom: 100px;
             right: 20px;
-            width: 350px;
+            width: 400px;
             background: var(--bg);
             border: 2px solid var(--calculator);
             border-radius: var(--radius);
@@ -328,8 +370,8 @@
             display: none;
             resize: both;
             overflow: auto;
-            min-width: 300px;
-            min-height: 450px;
+            min-width: 350px;
+            min-height: 500px;
             max-width: 90vw;
             max-height: 90vh;
             cursor: move;
@@ -395,7 +437,7 @@
         .calc-buttons {
             padding: 15px;
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: 10px;
             background: var(--bg);
         }
@@ -436,6 +478,134 @@
         .calc-btn.clear {
             background: linear-gradient(135deg, #ef4444, #dc2626);
             color: white;
+        }
+
+        .calc-btn.scientific {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: white;
+            font-size: 14px;
+        }
+
+        /* Игра 2048 */
+        .game-2048 {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 600px;
+            background: var(--bg);
+            border: 3px solid var(--game-2048);
+            border-radius: var(--radius);
+            z-index: 3001;
+            display: none;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(139, 92, 246, 0.3);
+        }
+
+        .game-2048.active {
+            display: block;
+            animation: gameAppear 0.5s ease;
+        }
+
+        @keyframes gameAppear {
+            from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .game-header {
+            padding: 15px;
+            background: linear-gradient(135deg, var(--game-2048), #7c3aed);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .game-title {
+            font-weight: 600;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .game-score {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .game-container {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 10px;
+            width: 400px;
+            height: 400px;
+            background: var(--bg-light);
+            border-radius: 8px;
+            padding: 10px;
+            border: 2px solid var(--border);
+        }
+
+        .game-cell {
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 700;
+            transition: all 0.15s ease;
+        }
+
+        .tile-2 { background: #eee4da; color: #776e65; }
+        .tile-4 { background: #ede0c8; color: #776e65; }
+        .tile-8 { background: #f2b179; color: white; }
+        .tile-16 { background: #f59563; color: white; }
+        .tile-32 { background: #f67c5f; color: white; }
+        .tile-64 { background: #f65e3b; color: white; }
+        .tile-128 { background: #edcf72; color: white; font-size: 28px; }
+        .tile-256 { background: #edcc61; color: white; font-size: 28px; }
+        .tile-512 { background: #edc850; color: white; font-size: 28px; }
+        .tile-1024 { background: #edc53f; color: white; font-size: 24px; }
+        .tile-2048 { background: #edc22e; color: white; font-size: 24px; }
+
+        .game-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .game-btn {
+            padding: 10px 20px;
+            background: var(--game-2048);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .game-btn:hover {
+            background: #7c3aed;
+            transform: translateY(-2px);
+        }
+
+        .game-instructions {
+            font-size: 14px;
+            color: var(--text-light);
+            text-align: center;
+            max-width: 400px;
         }
 
         /* Кнопки управления */
@@ -642,7 +812,8 @@
             }
             
             .calculator-widget,
-            .hacker-console {
+            .hacker-console,
+            .game-2048 {
                 width: 95vw;
                 height: 80vh;
             }
@@ -657,6 +828,15 @@
             
             .subject-title {
                 font-size: 2rem;
+            }
+            
+            .game-grid {
+                width: 300px;
+                height: 300px;
+            }
+            
+            .game-cell {
+                font-size: 24px;
             }
         }
 
@@ -725,12 +905,12 @@
     </style>
 </head>
 <body>
-    <!-- Старый калькулятор -->
+    <!-- Калькулятор -->
     <div class="calculator-widget" id="calculator">
         <div class="calc-header" id="calcHeader">
             <div class="calc-title">
                 <i class="fas fa-calculator"></i>
-                <span>Калькулятор</span>
+                <span>Научный калькулятор</span>
             </div>
             <div class="player-controls">
                 <button class="player-btn" onclick="toggleCalculator()">
@@ -747,26 +927,59 @@
             <button class="calc-btn clear" onclick="deleteLast()">⌫</button>
             <button class="calc-btn operator" onclick="appendToCalc('/')">/</button>
             <button class="calc-btn operator" onclick="appendToCalc('*')">×</button>
+            <button class="calc-btn scientific" onclick="appendToCalc('Math.PI')">π</button>
             
             <button class="calc-btn" onclick="appendToCalc('7')">7</button>
             <button class="calc-btn" onclick="appendToCalc('8')">8</button>
             <button class="calc-btn" onclick="appendToCalc('9')">9</button>
             <button class="calc-btn operator" onclick="appendToCalc('-')">-</button>
+            <button class="calc-btn scientific" onclick="appendToCalc('Math.sqrt(')">√</button>
             
             <button class="calc-btn" onclick="appendToCalc('4')">4</button>
             <button class="calc-btn" onclick="appendToCalc('5')">5</button>
             <button class="calc-btn" onclick="appendToCalc('6')">6</button>
             <button class="calc-btn operator" onclick="appendToCalc('+')">+</button>
+            <button class="calc-btn scientific" onclick="appendToCalc('Math.pow(')">xʸ</button>
             
             <button class="calc-btn" onclick="appendToCalc('1')">1</button>
             <button class="calc-btn" onclick="appendToCalc('2')">2</button>
             <button class="calc-btn" onclick="appendToCalc('3')">3</button>
             <button class="calc-btn equals" onclick="calculateResult()">=</button>
+            <button class="calc-btn scientific" onclick="appendToCalc('Math.sin(')">sin</button>
             
             <button class="calc-btn" onclick="appendToCalc('0')">0</button>
             <button class="calc-btn" onclick="appendToCalc('.')">.</button>
             <button class="calc-btn" onclick="appendToCalc('(')">(</button>
             <button class="calc-btn" onclick="appendToCalc(')')">)</button>
+            <button class="calc-btn scientific" onclick="appendToCalc('Math.cos(')">cos</button>
+        </div>
+    </div>
+
+    <!-- Игра 2048 -->
+    <div class="game-2048" id="game2048">
+        <div class="game-header">
+            <div class="game-title">
+                <i class="fas fa-gamepad"></i>
+                <span>2048</span>
+            </div>
+            <div class="game-score">
+                Счет: <span id="gameScore">0</span>
+            </div>
+            <button class="player-btn" onclick="closeGame2048()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="game-container">
+            <div class="game-grid" id="gameGrid">
+                <!-- Ячейки игры генерируются динамически -->
+            </div>
+            <div class="game-controls">
+                <button class="game-btn" onclick="newGame2048()">Новая игра</button>
+                <button class="game-btn" onclick="closeGame2048()">Закрыть</button>
+            </div>
+            <div class="game-instructions">
+                Используйте стрелки на клавиатуре для перемещения плиток. Соединяйте одинаковые числа для получения 2048!
+            </div>
         </div>
     </div>
 
@@ -841,8 +1054,17 @@
                 </p>
             </div>
 
+            <!-- YouTube плеер -->
+            <div class="youtube-player">
+                <div class="youtube-placeholder" onclick="openYouTubeVideo('dQw4w9WgXcQ', 'Математика для начинающих')">
+                    <i class="fab fa-youtube"></i>
+                    <div class="video-title">Основы математики - видеоурок</div>
+                    <div class="video-desc">Нажмите для просмотра видео по основам математики</div>
+                </div>
+            </div>
+
             <div class="articles-container">
-                <h2 class="section-title">Алгебра - 45 статей</h2>
+                <h2 class="section-title">Алгебра</h2>
                 <div class="articles-grid">
                     <div class="article-card" onclick="toggleArticle(this)">
                         <h3 class="article-title"><i class="fas fa-superscript"></i> Квадратные уравнения</h3>
@@ -945,9 +1167,41 @@ print(solve_quadratic(1, 2, 5))   # x² + 2x + 5 = 0</pre>
                         </div>
                         <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
                     </div>
+
+                    <!-- НОВАЯ СТАТЬЯ -->
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-infinity"></i> Пределы функций</h3>
+                        <div class="article-content">
+                            <p><strong>Предел функции:</strong> основное понятие математического анализа, описывающее поведение функции при стремлении аргумента к некоторому значению.</p>
+                            
+                            <div class="formula-box">
+                                <span class="formula">lim f(x) = L</span><br>
+                                x→a
+                            </div>
+                            
+                            <p><strong>Основные свойства пределов:</strong></p>
+                            <ul>
+                                <li>Предел суммы равен сумме пределов</li>
+                                <li>Предел произведения равен произведению пределов</li>
+                                <li>Предел частного равен частному пределов</li>
+                                <li>Предел постоянной равен самой постоянной</li>
+                            </ul>
+                            
+                            <p><strong>Замечательные пределы:</strong></p>
+                            <div class="formula-box">
+                                <span class="formula">lim (sin x)/x = 1</span><br>
+                                x→0
+                            </div>
+                            <div class="formula-box">
+                                <span class="formula">lim (1 + 1/x)ˣ = e</span><br>
+                                x→∞
+                            </div>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
                 </div>
 
-                <h2 class="section-title">Геометрия - 38 статей</h2>
+                <h2 class="section-title">Геометрия</h2>
                 <div class="articles-grid">
                     <div class="article-card" onclick="toggleArticle(this)">
                         <h3 class="article-title"><i class="fas fa-shapes"></i> Теорема Пифагора</h3>
@@ -1024,9 +1278,37 @@ print(f"Треугольник со сторонами 5,6,7 прямоугол�
                         </div>
                         <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
                     </div>
+
+                    <!-- НОВАЯ СТАТЬЯ -->
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-draw-polygon"></i> Площади фигур</h3>
+                        <div class="article-content">
+                            <p><strong>Площадь треугольника:</strong></p>
+                            <div class="formula-box">
+                                <span class="formula">S = ½ × a × h</span><br>
+                                где a - основание, h - высота
+                            </div>
+                            
+                            <div class="formula-box">
+                                <span class="formula">S = √[p(p-a)(p-b)(p-c)]</span><br>
+                                формула Герона, где p - полупериметр
+                            </div>
+                            
+                            <p><strong>Площадь круга:</strong></p>
+                            <div class="formula-box">
+                                <span class="formula">S = π × r²</span>
+                            </div>
+                            
+                            <p><strong>Площадь прямоугольника:</strong></p>
+                            <div class="formula-box">
+                                <span class="formula">S = a × b</span>
+                            </div>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
                 </div>
 
-                <h2 class="section-title">Тригонометрия - 32 статьи</h2>
+                <h2 class="section-title">Тригонометрия</h2>
                 <div class="articles-grid">
                     <div class="article-card" onclick="toggleArticle(this)">
                         <h3 class="article-title"><i class="fas fa-sin"></i> Основные тригонометрические функции</h3>
@@ -1056,6 +1338,62 @@ print(f"Треугольник со сторонами 5,6,7 прямоугол�
                         </div>
                         <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
                     </div>
+
+                    <!-- НОВАЯ СТАТЬЯ -->
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-wave-square"></i> Тригонометрические уравнения</h3>
+                        <div class="article-content">
+                            <p><strong>Простейшие тригонометрические уравнения:</strong></p>
+                            
+                            <div class="formula-box">
+                                <span class="formula">sin x = a</span><br>
+                                Решение: x = (-1)ⁿ arcsin a + πn, n∈Z
+                            </div>
+                            
+                            <div class="formula-box">
+                                <span class="formula">cos x = a</span><br>
+                                Решение: x = ± arccos a + 2πn, n∈Z
+                            </div>
+                            
+                            <div class="formula-box">
+                                <span class="formula">tan x = a</span><br>
+                                Решение: x = arctan a + πn, n∈Z
+                            </div>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
+                </div>
+
+                <!-- НОВЫЙ РАЗДЕЛ -->
+                <h2 class="section-title">Математический анализ</h2>
+                <div class="articles-grid">
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-chart-bar"></i> Производные</h3>
+                        <div class="article-content">
+                            <p><strong>Производная:</strong> основное понятие дифференциального исчисления, характеризующее скорость изменения функции.</p>
+                            
+                            <div class="formula-box">
+                                <span class="formula">f'(x) = lim [f(x+h) - f(x)] / h</span><br>
+                                h→0
+                            </div>
+                            
+                            <p><strong>Основные правила дифференцирования:</strong></p>
+                            <ul>
+                                <li>(c)' = 0, где c - константа</li>
+                                <li>(xⁿ)' = n × xⁿ⁻¹</li>
+                                <li>(sin x)' = cos x</li>
+                                <li>(cos x)' = -sin x</li>
+                                <li>(eˣ)' = eˣ</li>
+                                <li>(ln x)' = 1/x</li>
+                            </ul>
+                            
+                            <p><strong>Производная сложной функции:</strong></p>
+                            <div class="formula-box">
+                                <span class="formula">[f(g(x))]' = f'(g(x)) × g'(x)</span>
+                            </div>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1070,8 +1408,17 @@ print(f"Треугольник со сторонами 5,6,7 прямоугол�
                 </p>
             </div>
 
+            <!-- YouTube плеер -->
+            <div class="youtube-player">
+                <div class="youtube-placeholder" onclick="openYouTubeVideo('9Uh5mTsI5QE', 'Основы физики')">
+                    <i class="fab fa-youtube"></i>
+                    <div class="video-title">Физика для начинающих</div>
+                    <div class="video-desc">Нажмите для просмотра видео по основам физики</div>
+                </div>
+            </div>
+
             <div class="articles-container">
-                <h2 class="section-title">Механика - 52 статьи</h2>
+                <h2 class="section-title">Механика</h2>
                 <div class="articles-grid">
                     <div class="article-card" onclick="toggleArticle(this)">
                         <h3 class="article-title"><i class="fas fa-bolt"></i> Законы Ньютона</h3>
@@ -1152,9 +1499,33 @@ print(f"Скорость в момент удара: {velocity:.2f} м/с ({velo
                         </div>
                         <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
                     </div>
+
+                    <!-- НОВАЯ СТАТЬЯ -->
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-tachometer-alt"></i> Кинематика</h3>
+                        <div class="article-content">
+                            <p><strong>Основные формулы кинематики:</strong></p>
+                            
+                            <div class="formula-box">
+                                <span class="formula">v = v₀ + at</span><br>
+                                Скорость при равноускоренном движении
+                            </div>
+                            
+                            <div class="formula-box">
+                                <span class="formula">s = v₀t + (at²)/2</span><br>
+                                Путь при равноускоренном движении
+                            </div>
+                            
+                            <div class="formula-box">
+                                <span class="formula">v² = v₀² + 2as</span><br>
+                                Связь скорости и пути
+                            </div>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
                 </div>
 
-                <h2 class="section-title">Термодинамика - 28 статей</h2>
+                <h2 class="section-title">Термодинамика</h2>
                 <div class="articles-grid">
                     <div class="article-card" onclick="toggleArticle(this)">
                         <h3 class="article-title"><i class="fas fa-temperature-high"></i> Законы термодинамики</h3>
@@ -1170,7 +1541,29 @@ print(f"Скорость в момент удара: {velocity:.2f} м/с ({velo
                             
                             <p><strong>Второй закон:</strong> Невозможен процесс, единственным результатом которого является передача тепла от менее нагретого тела к более нагретому.</p>
                             
-                            <p><strong>Третий закон (теорема Нернста):</strong> При приближении температуры к абсолютному нулю энтропия любой системы стремится к постоянному значению.</p>
+                            <p><strong>Третий закон (теорема Нернста):</strong> При приближении температуры к абсолютному нулю энтропия любой системы стремится к постоянному значение.</p>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
+                </div>
+
+                <!-- НОВЫЙ РАЗДЕЛ -->
+                <h2 class="section-title">Электродинамика</h2>
+                <div class="articles-grid">
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-bolt"></i> Закон Ома</h3>
+                        <div class="article-content">
+                            <p><strong>Закон Ома для участка цепи:</strong> Сила тока в проводнике прямо пропорциональна напряжению и обратно пропорциональна сопротивлению.</p>
+                            
+                            <div class="formula-box">
+                                <span class="formula">I = U / R</span><br>
+                                где I - сила тока (А), U - напряжение (В), R - сопротивление (Ом)
+                            </div>
+                            
+                            <p><strong>Мощность электрического тока:</strong></p>
+                            <div class="formula-box">
+                                <span class="formula">P = U × I = I² × R = U² / R</span>
+                            </div>
                         </div>
                         <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
                     </div>
@@ -1186,6 +1579,15 @@ print(f"Скорость в момент удара: {velocity:.2f} м/с ({velo
                     Наука о веществах, их составе, строении, свойствах, превращениях и законах, которым эти превращения подчиняются.
                     Изучает элементы, соединения, химические реакции и связи.
                 </p>
+            </div>
+
+            <!-- YouTube плеер -->
+            <div class="youtube-player">
+                <div class="youtube-placeholder" onclick="openYouTubeVideo('Qii_vrwwT4k', 'Основы химии')">
+                    <i class="fab fa-youtube"></i>
+                    <div class="video-title">Химия для начинающих</div>
+                    <div class="video-desc">Нажмите для просмотра видео по основам химии</div>
+                </div>
             </div>
 
             <div class="articles-container">
@@ -1280,257 +1682,27 @@ print(f"Молярная масса CO2: {pt.calculate_molar_mass('CO2')} г/м�
                         <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- Контент Биологии -->
-        <div id="biologyContent" class="main-content subject-biology hidden">
-            <div class="subject-header">
-                <h1 class="subject-title">Биология</h1>
-                <p class="subject-subtitle">
-                    Наука о живых существах и их взаимодействии со средой обитания. Изучает происхождение, эволюцию,
-                    структуру, функционирование, рост, распределение и систематику живых организмов.
-                </p>
-            </div>
-
-            <div class="articles-container">
-                <h2 class="section-title">Генетика - 36 статей</h2>
+                <!-- НОВЫЙ РАЗДЕЛ -->
+                <h2 class="section-title">Органическая химия</h2>
                 <div class="articles-grid">
                     <div class="article-card" onclick="toggleArticle(this)">
-                        <h3 class="article-title"><i class="fas fa-dna"></i> Законы Менделя</h3>
+                        <h3 class="article-title"><i class="fas fa-atom"></i> Углеводороды</h3>
                         <div class="article-content">
-                            <p>Основные законы наследственности, открытые Грегором Менделем в 1865 году.</p>
+                            <p><strong>Алканы (парафины):</strong> насыщенные углеводороды с общей формулой CₙH₂ₙ₊₂</p>
                             
-                            <p><strong>Первый закон (закон единообразия гибридов первого поколения):</strong> При скрещивании двух гомозиготных организмов, отличающихся по одной паре альтернативных признаков, всё первое поколение гибридов окажется единообразным и будет нести признак одного из родителей.</p>
-                            
-                            <p><strong>Второй закон (закон расщепления):</strong> При скрещивании гибридов первого поколения между собой во втором поколении наблюдается расщепление в определённом числовом отношении: 3:1 по фенотипу, 1:2:1 по генотипу.</p>
-                            
-                            <p><strong>Третий закон (закон независимого наследования):</strong> При дигибридном скрещивании у гибридов каждая пара признаков наследуется независимо от других и даёт расщепление 3:1, образуя при этом 4 фенотипические группы в соотношении 9:3:3:1.</p>
-                            
-                            <div class="code-block">
-                                <div class="code-header">
-                                    <div class="code-lang">
-                                        <i class="fab fa-python"></i> Python
-                                    </div>
-                                    <button class="copy-btn" onclick="copyCode(this)">Копировать</button>
-                                </div>
-<pre>import itertools
-
-class Genetics:
-    @staticmethod
-    def monohybrid_cross(parent1, parent2):
-        """
-        Моногибридное скрещивание
-        parent1, parent2: генотипы родителей (например, 'AA', 'Aa', 'aa')
-        """
-        # Генерация гамет
-        def get_gametes(genotype):
-            return list(set(genotype[i] for i in range(len(genotype))))
-        
-        gametes1 = get_gametes(parent1)
-        gametes2 = get_gametes(parent2)
-        
-        # Все возможные комбинации
-        offspring = []
-        for g1 in gametes1:
-            for g2 in gametes2:
-                # Сортировка для единообразия (A перед a)
-                genotype = ''.join(sorted(g1 + g2))
-                offspring.append(genotype)
-        
-        # Подсчет результатов
-        result = {}
-        for genotype in offspring:
-            result[genotype] = result.get(genotype, 0) + 1
-        
-        total = len(offspring)
-        ratios = {k: f"{v}/{total}" for k, v in result.items()}
-        
-        return {
-            'gametes_parent1': gametes1,
-            'gametes_parent2': gametes2,
-            'offspring': offspring,
-            'ratios': ratios
-        }
-    
-    @staticmethod
-    def predict_phenotype(genotype, dominant_trait='A', recessive_trait='a'):
-        """Предсказание фенотипа по генотипу"""
-        if dominant_trait in genotype:
-            return "Доминантный признак"
-        else:
-            return "Рецессивный признак"
-
-# Пример использования
-print("=== Моногибридное скрещивание ===")
-cross_result = Genetics.monohybrid_cross('Aa', 'Aa')
-print(f"Гаметы родителя 1: {cross_result['gametes_parent1']}")
-print(f"Гаметы родителя 2: {cross_result['gametes_parent2']}")
-print(f"Потомство: {cross_result['offspring']}")
-print(f"Соотношения генотипов: {cross_result['ratios']}")
-
-# Фенотипическое расщепление
-offspring = cross_result['offspring']
-dominant_count = sum(1 for g in offspring if 'A' in g)
-recessive_count = sum(1 for g in offspring if g == 'aa')
-print(f"\nФенотипическое расщепление: {dominant_count}:{recessive_count} (3:1)")
-
-# Пример для разных родителей
-print("\n=== Скрещивание AA × aa ===")
-cross2 = Genetics.monohybrid_cross('AA', 'aa')
-print(f"Все потомки: {cross2['offspring']}")
-print(f"Фенотип всех потомков: {Genetics.predict_phenotype('Aa')}")</pre>
-                            </div>
-                        </div>
-                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Контент Истории -->
-        <div id="historyContent" class="main-content subject-history hidden">
-            <div class="subject-header">
-                <h1 class="subject-title">История</h1>
-                <p class="subject-subtitle">
-                    Наука, изучающая прошлое человечества во всей его конкретности и многообразии.
-                    Исследует факты, события, процессы и закономерности развития человеческого общества.
-                </p>
-            </div>
-
-            <div class="articles-container">
-                <h2 class="section-title">Древний мир - 47 статей</h2>
-                <div class="articles-grid">
-                    <div class="article-card" onclick="toggleArticle(this)">
-                        <h3 class="article-title"><i class="fas fa-monument"></i> Древний Египет</h3>
-                        <div class="article-content">
-                            <p><strong>Хронология:</strong> Около 3000 до н.э. - 30 до н.э.</p>
-                            
-                            <p><strong>Основные периоды:</strong></p>
-                            <ol>
-                                <li><strong>Раннее царство</strong> (3000-2778 до н.э.) - объединение Верхнего и Нижнего Египта</li>
-                                <li><strong>Древнее царство</strong> (2778-2263 до н.э.) - строительство пирамид</li>
-                                <li><strong>Среднее царство</strong> (2160-1785 до н.э.) - расцвет культуры</li>
-                                <li><strong>Новое царство</strong> (1580-1085 до н.э.) - имперский период</li>
-                                <li><strong>Поздний период</strong> (1085-332 до н.э.) - упадок и завоевания</li>
-                            </ol>
-                            
-                            <p><strong>Достижения:</strong></p>
                             <ul>
-                                <li><strong>Письменность:</strong> иероглифическое письмо (более 700 знаков)</li>
-                                <li><strong>Архитектура:</strong> пирамиды Гизы, храмы в Карнаке и Луксоре</li>
-                                <li><strong>Наука:</strong> календарь из 365 дней, математика, медицина</li>
-                                <li><strong>Искусство:</strong> реалистичная скульптура, фрески, ювелирное дело</li>
-                                <li><strong>Религия:</strong> политеизм с главными богами Ра, Осирисом, Исидой</li>
+                                <li>Метан: CH₄</li>
+                                <li>Этан: C₂H₆</li>
+                                <li>Пропан: C₃H₈</li>
+                                <li>Бутан: C₄H₁₀</li>
                             </ul>
                             
-                            <p><strong>Великие фараоны:</strong></p>
-                            <ul>
-                                <li><strong>Джосер</strong> - построил первую ступенчатую пирамиду</li>
-                                <li><strong>Хеопс (Хуфу)</strong> - построил Великую пирамиду в Гизе</li>
-                                <li><strong>Хатшепсут</strong> - женщина-фараон, успешные торговые экспедиции</li>
-                                <li><strong>Тутмос III</strong> - создал первую в истории мировую империю</li>
-                                <li><strong>Рамсес II</strong> - самый долгоправящий фараон (66 лет)</li>
-                                <li><strong>Тутанхамон</strong> - знаменит нетронутой гробницей</li>
-                            </ul>
-                        </div>
-                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Контент Географии -->
-        <div id="geographyContent" class="main-content subject-geography hidden">
-            <div class="subject-header">
-                <h1 class="subject-title">География</h1>
-                <p class="subject-subtitle">
-                    Комплекс наук, изучающих географическую оболочку Земли, природные и общественные территориальные системы.
-                    Включает физическую и экономическую географию.
-                </p>
-            </div>
-
-            <div class="articles-container">
-                <h2 class="section-title">Физическая география - 39 статей</h2>
-                <div class="articles-grid">
-                    <div class="article-card" onclick="toggleArticle(this)">
-                        <h3 class="article-title"><i class="fas fa-globe-americas"></i> Строение Земли</h3>
-                        <div class="article-content">
-                            <p><strong>Внутреннее строение Земли:</strong></p>
-                            <ol>
-                                <li><strong>Земная кора</strong> (5-70 км)
-                                    <ul>
-                                        <li>Континентальная кора: 35-70 км, гранитный состав</li>
-                                        <li>Океаническая кора: 5-10 км, базальтовый состав</li>
-                                    </ul>
-                                </li>
-                                <li><strong>Мантия</strong> (до 2900 км)
-                                    <ul>
-                                        <li>Верхняя мантия: до 670 км</li>
-                                        <li>Нижняя мантия: 670-2900 км</li>
-                                    </ul>
-                                </li>
-                                <li><strong>Ядро</strong> (2900-6371 км)
-                                    <ul>
-                                        <li>Внешнее ядро: жидкое, 2900-5100 км</li>
-                                        <li>Внутреннее ядро: твёрдое, 5100-6371 км</li>
-                                    </ul>
-                                </li>
-                            </ol>
+                            <p><strong>Алкены (олефины):</strong> ненасыщенные углеводороды с двойной связью CₙH₂ₙ</p>
                             
-                            <p><strong>Географические координаты:</strong></p>
                             <ul>
-                                <li><strong>Широта</strong> - угол между плоскостью экватора и нормалью к поверхности</li>
-                                <li><strong>Долгота</strong> - угол между плоскостью меридиана и плоскостью начального меридиана</li>
-                            </ul>
-                        </div>
-                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Контент Литературы -->
-        <div id="literatureContent" class="main-content subject-literature hidden">
-            <div class="subject-header">
-                <h1 class="subject-title">Литература</h1>
-                <p class="subject-subtitle">
-                    Вид искусства, использующий в качестве единственного материала слова и конструкции естественного языка.
-                    Изучает художественные произведения, их создание, функционирование и оценку.
-                </p>
-            </div>
-
-            <div class="articles-container">
-                <h2 class="section-title">Русская классика - 58 статей</h2>
-                <div class="articles-grid">
-                    <div class="article-card" onclick="toggleArticle(this)">
-                        <h3 class="article-title"><i class="fas fa-book-open"></i> А.С. Пушкин</h3>
-                        <div class="article-content">
-                            <p><strong>Годы жизни:</strong> 1799-1837</p>
-                            
-                            <p><strong>Основные произведения:</strong></p>
-                            <ul>
-                                <li><strong>«Евгений Онегин»</strong> (1823-1831) - роман в стихах, «энциклопедия русской жизни»</li>
-                                <li><strong>«Капитанская дочка»</strong> (1836) - исторический роман о пугачёвском восстании</li>
-                                <li><strong>«Медный всадник»</strong> (1833) - поэма о Петре I и «маленьком человеке»</li>
-                                <li><strong>«Борис Годунов»</strong> (1825) - историческая драма</li>
-                                <li><strong>«Повести Белкина»</strong> (1831) - цикл повестей</li>
-                            </ul>
-                            
-                            <p><strong>Поэзия:</strong></p>
-                            <ul>
-                                <li>«Я помню чудное мгновенье...» (1825)</li>
-                                <li>«Я вас любил...» (1829)</li>
-                                <li>«Осень» (1833)</li>
-                                <li>«Пророк» (1826)</li>
-                                <li>«Памятник» (1836)</li>
-                            </ul>
-                            
-                            <p><strong>Сказки:</strong></p>
-                            <ul>
-                                <li>«Сказка о царе Салтане» (1831)</li>
-                                <li>«Сказка о рыбаке и рыбке» (1833)</li>
-                                <li>«Сказка о мёртвой царевне и семи богатырях» (1833)</li>
+                                <li>Этилен: C₂H₄</li>
+                                <li>Пропилен: C₃H₆</li>
                             </ul>
                         </div>
                         <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
@@ -1548,7 +1720,7 @@ print(f"Фенотип всех потомков: {Genetics.predict_phenotype('A
         <!-- Футер -->
         <div class="footer">
             <p>© 2024 Образовательный портал. Все материалы для учебных целей.</p>
-            <p style="margin-top: 10px; font-size: 12px;">Математика: 115 статей | Физика: 80 статей | Химия: 41 статья | Биология: 36 статей | История: 47 статей | География: 39 статей | Литература: 58 статей</p>
+            <p style="margin-top: 10px; font-size: 12px;">Математика | Физика | Химия | Биология | История | География | Литература</p>
         </div>
     </div>
 
@@ -1562,7 +1734,13 @@ print(f"Фенотип всех потомков: {Genetics.predict_phenotype('A
             calcResult: '0',
             authorClicks: 0,
             lastClickTime: 0,
-            consoleActive: false
+            consoleActive: false,
+            game2048Active: false,
+            game2048: {
+                grid: Array(16).fill(0),
+                score: 0,
+                gameOver: false
+            }
         };
 
         // ==================== ИНИЦИАЛИЗАЦИЯ ====================
@@ -1577,10 +1755,21 @@ print(f"Фенотип всех потомков: {Genetics.predict_phenotype('A
             // Инициализация калькулятора
             updateCalcDisplay();
             
+            // Инициализация игры 2048
+            initGame2048();
+            
+            // Управление игрой 2048
+            document.addEventListener('keydown', (e) => {
+                if (state.game2048Active) {
+                    handleGameKeypress(e);
+                }
+            });
+            
             // Закрытие окон по клику вне
             document.addEventListener('click', (e) => {
                 const calculator = document.getElementById('calculator');
                 const console = document.getElementById('hackerConsole');
+                const game = document.getElementById('game2048');
                 const calcBtn = document.querySelector('.calc-toggle');
                 
                 if (state.calculatorVisible && !calculator.contains(e.target) && 
@@ -1591,6 +1780,10 @@ print(f"Фенотип всех потомков: {Genetics.predict_phenotype('A
                 if (state.consoleActive && !console.contains(e.target)) {
                     closeConsole();
                 }
+                
+                if (state.game2048Active && !game.contains(e.target)) {
+                    closeGame2048();
+                }
             });
             
             // Закрытие по Escape
@@ -1598,6 +1791,7 @@ print(f"Фенотип всех потомков: {Genetics.predict_phenotype('A
                 if (e.key === 'Escape') {
                     if (state.calculatorVisible) toggleCalculator();
                     if (state.consoleActive) closeConsole();
+                    if (state.game2048Active) closeGame2048();
                 }
                 
                 // Управление калькулятором
@@ -1608,6 +1802,9 @@ print(f"Фенотип всех потомков: {Genetics.predict_phenotype('A
             
             // Перетаскивание калькулятора
             makeDraggable(document.getElementById('calculator'), document.getElementById('calcHeader'));
+            
+            // Перетаскивание игры
+            makeDraggable(document.getElementById('game2048'), document.querySelector('.game-header'));
         });
 
         // ==================== КАЛЬКУЛЯТОР ====================
@@ -1617,7 +1814,7 @@ print(f"Фенотип всех потомков: {Genetics.predict_phenotype('A
             calc.classList.toggle('active');
             
             if (state.calculatorVisible) {
-                calc.style.left = 'calc(50% - 175px)';
+                calc.style.left = 'calc(50% - 200px)';
                 calc.style.top = '150px';
             }
         }
@@ -1640,8 +1837,12 @@ print(f"Фенотип всех потомков: {Genetics.predict_phenotype('A
 
         function calculateResult() {
             try {
-                let expression = state.calcExpression.replace(/×/g, '*');
-                const result = Function('"use strict"; return (' + expression + ')')();
+                let expression = state.calcExpression
+                    .replace(/×/g, '*')
+                    .replace(/π/g, 'Math.PI');
+                
+                // Безопасная оценка выражения
+                const result = new Function('return ' + expression)();
                 state.calcResult = parseFloat(result.toFixed(10)).toString();
             } catch (error) {
                 state.calcResult = 'Ошибка';
@@ -1666,12 +1867,192 @@ print(f"Фенотип всех потомков: {Genetics.predict_phenotype('A
             }
             if (e.key === '(') appendToCalc('(');
             if (e.key === ')') appendToCalc(')');
+            if (e.key === 'p' || e.key === 'P') appendToCalc('Math.PI');
             if (e.key === 'Enter' || e.key === '=') {
                 e.preventDefault();
                 calculateResult();
             }
             if (e.key === 'Backspace') deleteLast();
             if (e.key === 'Delete' || e.key === 'c' || e.key === 'C') clearCalculator();
+        }
+
+        // ==================== ИГРА 2048 ====================
+        function initGame2048() {
+            const grid = document.getElementById('gameGrid');
+            grid.innerHTML = '';
+            
+            for (let i = 0; i < 16; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'game-cell';
+                cell.id = `cell-${i}`;
+                grid.appendChild(cell);
+            }
+            
+            newGame2048();
+        }
+
+        function newGame2048() {
+            state.game2048.grid = Array(16).fill(0);
+            state.game2048.score = 0;
+            state.game2048.gameOver = false;
+            
+            // Добавляем два начальных тайла
+            addRandomTile();
+            addRandomTile();
+            
+            updateGame2048();
+        }
+
+        function addRandomTile() {
+            const emptyCells = state.game2048.grid
+                .map((value, index) => value === 0 ? index : -1)
+                .filter(index => index !== -1);
+            
+            if (emptyCells.length > 0) {
+                const randomIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+                state.game2048.grid[randomIndex] = Math.random() < 0.9 ? 2 : 4;
+            }
+        }
+
+        function updateGame2048() {
+            // Обновляем ячейки
+            state.game2048.grid.forEach((value, index) => {
+                const cell = document.getElementById(`cell-${index}`);
+                cell.textContent = value === 0 ? '' : value;
+                cell.className = 'game-cell';
+                if (value > 0) {
+                    cell.classList.add(`tile-${value}`);
+                }
+            });
+            
+            // Обновляем счет
+            document.getElementById('gameScore').textContent = state.game2048.score;
+        }
+
+        function move(direction) {
+            if (state.game2048.gameOver) return;
+            
+            let moved = false;
+            const oldGrid = [...state.game2048.grid];
+            
+            if (direction === 'left' || direction === 'right') {
+                for (let row = 0; row < 4; row++) {
+                    const rowCells = [];
+                    for (let col = 0; col < 4; col++) {
+                        rowCells.push(state.game2048.grid[row * 4 + col]);
+                    }
+                    
+                    const newRow = processRow(rowCells, direction === 'left');
+                    for (let col = 0; col < 4; col++) {
+                        state.game2048.grid[row * 4 + col] = newRow[col];
+                    }
+                }
+            } else if (direction === 'up' || direction === 'down') {
+                for (let col = 0; col < 4; col++) {
+                    const colCells = [];
+                    for (let row = 0; row < 4; row++) {
+                        colCells.push(state.game2048.grid[row * 4 + col]);
+                    }
+                    
+                    const newCol = processRow(colCells, direction === 'up');
+                    for (let row = 0; row < 4; row++) {
+                        state.game2048.grid[row * 4 + col] = newCol[row];
+                    }
+                }
+            }
+            
+            // Проверяем, было ли движение
+            for (let i = 0; i < 16; i++) {
+                if (oldGrid[i] !== state.game2048.grid[i]) {
+                    moved = true;
+                    break;
+                }
+            }
+            
+            if (moved) {
+                addRandomTile();
+                updateGame2048();
+                checkGameOver();
+            }
+        }
+
+        function processRow(cells, moveToStart) {
+            // Убираем нули
+            let nonZero = cells.filter(cell => cell !== 0);
+            
+            if (!moveToStart) {
+                nonZero.reverse();
+            }
+            
+            // Объединяем одинаковые
+            for (let i = 0; i < nonZero.length - 1; i++) {
+                if (nonZero[i] === nonZero[i + 1]) {
+                    nonZero[i] *= 2;
+                    state.game2048.score += nonZero[i];
+                    nonZero.splice(i + 1, 1);
+                }
+            }
+            
+            if (!moveToStart) {
+                nonZero.reverse();
+            }
+            
+            // Заполняем оставшиеся нулями
+            while (nonZero.length < 4) {
+                if (moveToStart) {
+                    nonZero.push(0);
+                } else {
+                    nonZero.unshift(0);
+                }
+            }
+            
+            return nonZero;
+        }
+
+        function checkGameOver() {
+            // Проверяем, есть ли пустые клетки
+            if (state.game2048.grid.some(cell => cell === 0)) {
+                return;
+            }
+            
+            // Проверяем возможные ходы
+            for (let i = 0; i < 16; i++) {
+                const row = Math.floor(i / 4);
+                const col = i % 4;
+                const value = state.game2048.grid[i];
+                
+                // Проверяем соседей
+                if (col < 3 && value === state.game2048.grid[i + 1]) return;
+                if (row < 3 && value === state.game2048.grid[i + 4]) return;
+            }
+            
+            state.game2048.gameOver = true;
+            setTimeout(() => {
+                alert(`Игра окончена! Ваш счет: ${state.game2048.score}`);
+            }, 100);
+        }
+
+        function handleGameKeypress(e) {
+            switch(e.key) {
+                case 'ArrowUp': e.preventDefault(); move('up'); break;
+                case 'ArrowDown': e.preventDefault(); move('down'); break;
+                case 'ArrowLeft': e.preventDefault(); move('left'); break;
+                case 'ArrowRight': e.preventDefault(); move('right'); break;
+                case 'w': case 'W': e.preventDefault(); move('up'); break;
+                case 's': case 'S': e.preventDefault(); move('down'); break;
+                case 'a': case 'A': e.preventDefault(); move('left'); break;
+                case 'd': case 'D': e.preventDefault(); move('right'); break;
+            }
+        }
+
+        function openGame2048() {
+            state.game2048Active = true;
+            document.getElementById('game2048').classList.add('active');
+        }
+
+        function closeGame2048() {
+            state.game2048Active = false;
+            document.getElementById('game2048').classList.remove('active');
         }
 
         // ==================== ПЕРЕТАСКИВАНИЕ ====================
@@ -1780,8 +2161,9 @@ print(f"Фенотип всех потомков: {Genetics.predict_phenotype('A
                 "▸ Спутниковая связь: ДОСТУП ОТКРЫТ",
                 "▸ Камеры наблюдения: 127 устройств онлайн",
                 "",
-                "[!] ВНИМАНИЕ: ОБНАРУЖЕНА АКТИВНОСТЬ АНТИВИРУСА",
-                "[?] АКТИВИРОВАТЬ СТЕЛС-РЕЖИМ? (Y/N)",
+                "[!] СЕКРЕТНАЯ КОМАНДА ДОСТУПНА: 'start 2048'",
+                "[!] ДРУГИЕ КОМАНДЫ: 'help', 'calc', 'exit'",
+                "[?] ВВЕДИТЕ КОМАНДУ:",
                 "> "
             ];
             
@@ -1834,47 +2216,63 @@ print(f"Фенотип всех потомков: {Genetics.predict_phenotype('A
             
             let responseLines = [];
             
-            if (command === 'y' || command === 'yes' || command === 'да') {
+            if (command === 'start 2048' || command === '2048' || command === 'game') {
                 responseLines = [
-                    "[*] Активация стелс-режима...",
-                    "[+] Шифрование трафика... УСПЕХ",
-                    "[+] Подмена IP-адреса... УСПЕХ",
-                    "[+] Очистка логов... УСПЕХ",
-                    "[+] Установка бэкдора... УСПЕХ",
-                    "",
-                    "╔══════════════════════════════════════════════════════════════╗",
-                    "║                 ВЗЛОМ УСПЕШНО ЗАВЕРШЕН!                     ║",
-                    "╚══════════════════════════════════════════════════════════════╝",
-                    "",
-                    "[*] Все системы под контролем",
+                    "[*] Запуск секретной игры 2048...",
+                    "[+] Инициализация игрового движка...",
+                    "[+] Загрузка ресурсов... УСПЕХ",
+                    "[*] Игра 2048 запущена!",
+                    "[*] Консоль закроется через 2 секунды..."
+                ];
+                
+                setTimeout(() => {
+                    closeConsole();
+                    openGame2048();
+                }, 2000);
+            } else if (command === 'calc' || command === 'calculator') {
+                responseLines = [
+                    "[*] Запуск калькулятора...",
+                    "[+] Калькулятор активирован",
+                    "[*] Консоль закроется через 2 секунды..."
+                ];
+                
+                setTimeout(() => {
+                    closeConsole();
+                    toggleCalculator();
+                }, 2000);
+            } else if (command === 'help') {
+                responseLines = [
+                    "[*] ДОСТУПНЫЕ КОМАНДЫ:",
+                    "  'start 2048' - запустить игру 2048",
+                    "  'calc' - открыть калькулятор",
+                    "  'help' - показать эту справку",
+                    "  'exit' - закрыть консоль",
                     "[*] Консоль закроется через 5 секунд..."
                 ];
                 
                 setTimeout(() => {
                     closeConsole();
                 }, 5000);
-            } else if (command === 'n' || command === 'no' || command === 'нет') {
+            } else if (command === 'exit' || command === 'close') {
                 responseLines = [
-                    "[!] Стелс-режим не активирован",
-                    "[!] Обнаружена активность системы безопасности",
-                    "[*] Автоматическое отключение...",
-                    "[+] Удаление следов... УСПЕХ",
+                    "[*] Завершение работы консоли...",
+                    "[+] Удаление логов... УСПЕХ",
+                    "[*] Консоль закрывается..."
+                ];
+                
+                setTimeout(() => {
+                    closeConsole();
+                }, 1000);
+            } else {
+                responseLines = [
+                    `[!] Неизвестная команда: ${command}`,
+                    "[!] Введите 'help' для списка команд",
                     "[*] Консоль закроется через 3 секунды..."
                 ];
                 
                 setTimeout(() => {
                     closeConsole();
                 }, 3000);
-            } else {
-                responseLines = [
-                    `[!] Неизвестная команда: ${command}`,
-                    "[!] Доступные команды: Y, N, YES, NO, ДА, НЕТ",
-                    "[*] Консоль закроется через 5 секунд..."
-                ];
-                
-                setTimeout(() => {
-                    closeConsole();
-                }, 5000);
             }
             
             // Показываем ответ
@@ -1896,6 +2294,28 @@ print(f"Фенотип всех потомков: {Genetics.predict_phenotype('A
             state.consoleActive = false;
             console.classList.remove('active');
             state.authorClicks = 0;
+        }
+
+        // ==================== YOUTUBE ПЛЕЕР ====================
+        function openYouTubeVideo(videoId, title) {
+            const placeholder = event.currentTarget;
+            const playerContainer = placeholder.parentElement;
+            
+            playerContainer.innerHTML = `
+                <div style="position: relative; padding-bottom: 56.25%; height: 0;">
+                    <iframe 
+                        src="https://www.youtube.com/embed/${videoId}" 
+                        title="${title}"
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; border-radius: ${getComputedStyle(document.documentElement).getPropertyValue('--radius')};"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <div style="padding: 15px; background: var(--bg-light); border-top: 1px solid var(--border);">
+                    <div style="font-weight: 600; margin-bottom: 5px;">${title}</div>
+                    <div style="font-size: 14px; color: var(--text-light);">Образовательный портал - учебное видео</div>
+                </div>
+            `;
         }
 
         // ==================== ОСНОВНЫЕ ФУНКЦИИ ====================
@@ -1973,6 +2393,10 @@ print(f"Фенотип всех потомков: {Genetics.predict_phenotype('A
         window.toggleTheme = toggleTheme;
         window.handleAuthorClick = handleAuthorClick;
         window.closeConsole = closeConsole;
+        window.openGame2048 = openGame2048;
+        window.closeGame2048 = closeGame2048;
+        window.newGame2048 = newGame2048;
+        window.openYouTubeVideo = openYouTubeVideo;
     </script>
 </body>
 </html>
