@@ -721,4 +721,1258 @@
         .formula {
             color: var(--math);
             font-weight: bold;
-   
+        }
+    </style>
+</head>
+<body>
+    <!-- Старый калькулятор -->
+    <div class="calculator-widget" id="calculator">
+        <div class="calc-header" id="calcHeader">
+            <div class="calc-title">
+                <i class="fas fa-calculator"></i>
+                <span>Калькулятор</span>
+            </div>
+            <div class="player-controls">
+                <button class="player-btn" onclick="toggleCalculator()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="calc-display">
+            <div class="calc-expression" id="calcExpression"></div>
+            <div class="calc-result" id="calcResult">0</div>
+        </div>
+        <div class="calc-buttons">
+            <button class="calc-btn clear" onclick="clearCalculator()">C</button>
+            <button class="calc-btn clear" onclick="deleteLast()">⌫</button>
+            <button class="calc-btn operator" onclick="appendToCalc('/')">/</button>
+            <button class="calc-btn operator" onclick="appendToCalc('*')">×</button>
+            
+            <button class="calc-btn" onclick="appendToCalc('7')">7</button>
+            <button class="calc-btn" onclick="appendToCalc('8')">8</button>
+            <button class="calc-btn" onclick="appendToCalc('9')">9</button>
+            <button class="calc-btn operator" onclick="appendToCalc('-')">-</button>
+            
+            <button class="calc-btn" onclick="appendToCalc('4')">4</button>
+            <button class="calc-btn" onclick="appendToCalc('5')">5</button>
+            <button class="calc-btn" onclick="appendToCalc('6')">6</button>
+            <button class="calc-btn operator" onclick="appendToCalc('+')">+</button>
+            
+            <button class="calc-btn" onclick="appendToCalc('1')">1</button>
+            <button class="calc-btn" onclick="appendToCalc('2')">2</button>
+            <button class="calc-btn" onclick="appendToCalc('3')">3</button>
+            <button class="calc-btn equals" onclick="calculateResult()">=</button>
+            
+            <button class="calc-btn" onclick="appendToCalc('0')">0</button>
+            <button class="calc-btn" onclick="appendToCalc('.')">.</button>
+            <button class="calc-btn" onclick="appendToCalc('(')">(</button>
+            <button class="calc-btn" onclick="appendToCalc(')')">)</button>
+        </div>
+    </div>
+
+    <!-- Хакерская консоль (пасхалка) -->
+    <div class="hacker-console" id="hackerConsole">
+        <div class="console-header">
+            <div class="console-title">
+                <i class="fas fa-terminal"></i>
+                <span>ROOT@ASD11F:~# HACK_SYSTEM</span>
+            </div>
+            <button class="player-btn" onclick="closeConsole()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="console-body" id="consoleOutput">
+            <!-- Контент добавляется динамически -->
+        </div>
+    </div>
+
+    <!-- Кнопки управления -->
+    <div class="floating-buttons">
+        <button class="floating-btn calc-toggle" onclick="toggleCalculator()" title="Калькулятор">
+            <i class="fas fa-calculator"></i>
+        </button>
+        <button class="floating-btn theme-toggle" onclick="toggleTheme()" title="Сменить тему">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <!-- Хедер -->
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Образовательный портал</span>
+            </div>
+            <div class="subject-nav">
+                <button class="subject-btn active" onclick="selectSubject('math')">
+                    <i class="fas fa-square-root-alt"></i> Математика
+                </button>
+                <button class="subject-btn" onclick="selectSubject('physics')">
+                    <i class="fas fa-atom"></i> Физика
+                </button>
+                <button class="subject-btn" onclick="selectSubject('chemistry')">
+                    <i class="fas fa-flask"></i> Химия
+                </button>
+                <button class="subject-btn" onclick="selectSubject('biology')">
+                    <i class="fas fa-dna"></i> Биология
+                </button>
+                <button class="subject-btn" onclick="selectSubject('history')">
+                    <i class="fas fa-landmark"></i> История
+                </button>
+                <button class="subject-btn" onclick="selectSubject('geography')">
+                    <i class="fas fa-globe-europe"></i> География
+                </button>
+                <button class="subject-btn" onclick="selectSubject('literature')">
+                    <i class="fas fa-book"></i> Литература
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основной контейнер -->
+    <div class="container">
+        <!-- Контент Математики -->
+        <div id="mathContent" class="main-content subject-math">
+            <div class="subject-header">
+                <h1 class="subject-title">Математика</h1>
+                <p class="subject-subtitle">
+                    Наука о количественных отношениях и пространственных формах действительного мира. 
+                    Включает алгебру, геометрию, математический анализ, теорию вероятностей и другие разделы.
+                </p>
+            </div>
+
+            <div class="articles-container">
+                <h2 class="section-title">Алгебра - 45 статей</h2>
+                <div class="articles-grid">
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-superscript"></i> Квадратные уравнения</h3>
+                        <div class="article-content">
+                            <p>Квадратное уравнение — алгебраическое уравнение второй степени общего вида:</p>
+                            
+                            <div class="formula-box">
+                                <span class="formula">ax² + bx + c = 0</span>, где a ≠ 0
+                            </div>
+                            
+                            <p><strong>Дискриминант:</strong> определяет количество и тип корней:</p>
+                            <div class="formula-box">
+                                <span class="formula">D = b² - 4ac</span>
+                            </div>
+                            
+                            <p><strong>Корни уравнения:</strong></p>
+                            <div class="formula-box">
+                                <span class="formula">x₁,₂ = (-b ± √D) / (2a)</span>
+                            </div>
+                            
+                            <p><strong>Свойства дискриминанта:</strong></p>
+                            <ul>
+                                <li>D > 0: два различных действительных корня</li>
+                                <li>D = 0: один корень (кратный)</li>
+                                <li>D < 0: два комплексно-сопряженных корня</li>
+                            </ul>
+                            
+                            <p><strong>Теорема Виета:</strong> связь между корнями и коэффициентами:</p>
+                            <div class="formula-box">
+                                <span class="formula">x₁ + x₂ = -b/a</span><br>
+                                <span class="formula">x₁ × x₂ = c/a</span>
+                            </div>
+                            
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <div class="code-lang">
+                                        <i class="fab fa-python"></i> Python
+                                    </div>
+                                    <button class="copy-btn" onclick="copyCode(this)">Копировать</button>
+                                </div>
+<pre>import math
+
+def solve_quadratic(a, b, c):
+    """Решает квадратное уравнение ax² + bx + c = 0"""
+    discriminant = b**2 - 4*a*c
+    
+    if discriminant > 0:
+        x1 = (-b + math.sqrt(discriminant)) / (2*a)
+        x2 = (-b - math.sqrt(discriminant)) / (2*a)
+        return f"Два корня: x₁ = {x1:.2f}, x₂ = {x2:.2f}"
+    elif discriminant == 0:
+        x = -b / (2*a)
+        return f"Один корень: x = {x:.2f}"
+    else:
+        real_part = -b / (2*a)
+        imaginary_part = math.sqrt(-discriminant) / (2*a)
+        return f"Комплексные корни: {real_part:.2f} ± {imaginary_part:.2f}i"
+
+# Пример использования
+print(solve_quadratic(1, -3, 2))  # x² - 3x + 2 = 0
+print(solve_quadratic(1, -4, 4))  # x² - 4x + 4 = 0
+print(solve_quadratic(1, 2, 5))   # x² + 2x + 5 = 0</pre>
+                            </div>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
+
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-chart-line"></i> Прогрессии</h3>
+                        <div class="article-content">
+                            <p><strong>Арифметическая прогрессия:</strong> последовательность чисел, в которой разность между последующим и предыдущим членами постоянна.</p>
+                            
+                            <div class="formula-box">
+                                <span class="formula">aₙ = a₁ + d(n-1)</span><br>
+                                где d — разность прогрессии
+                            </div>
+                            
+                            <p><strong>Сумма n членов арифметической прогрессии:</strong></p>
+                            <div class="formula-box">
+                                <span class="formula">Sₙ = n/2 × (a₁ + aₙ) = n/2 × [2a₁ + d(n-1)]</span>
+                            </div>
+                            
+                            <p><strong>Геометрическая прогрессия:</strong> последовательность чисел, в которой отношение последующего члена к предыдущему постоянно.</p>
+                            
+                            <div class="formula-box">
+                                <span class="formula">bₙ = b₁ × qⁿ⁻¹</span><br>
+                                где q — знаменатель прогрессии (q ≠ 0)
+                            </div>
+                            
+                            <p><strong>Сумма n членов геометрической прогрессии:</strong></p>
+                            <div class="formula-box">
+                                <span class="formula">Sₙ = b₁ × (qⁿ - 1)/(q - 1)</span> при q ≠ 1<br>
+                                <span class="formula">Sₙ = n × b₁</span> при q = 1
+                            </div>
+                            
+                            <p><strong>Сумма бесконечно убывающей геометрической прогрессии (|q| < 1):</strong></p>
+                            <div class="formula-box">
+                                <span class="formula">S = b₁ / (1 - q)</span>
+                            </div>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
+                </div>
+
+                <h2 class="section-title">Геометрия - 38 статей</h2>
+                <div class="articles-grid">
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-shapes"></i> Теорема Пифагора</h3>
+                        <div class="article-content">
+                            <p>Теорема Пифагора — фундаментальное утверждение евклидовой геометрии, устанавливающее соотношение между сторонами прямоугольного треугольника.</p>
+                            
+                            <div class="formula-box">
+                                <span class="formula">c² = a² + b²</span><br>
+                                где c — гипотенуза, a и b — катеты
+                            </div>
+                            
+                            <p><strong>Доказательства:</strong></p>
+                            <ol>
+                                <li><strong>Через площади квадратов:</strong> Самый известный метод, приписываемый Пифагору</li>
+                                <li><strong>Метод подобных треугольников:</strong> Использует свойства подобных фигур</li>
+                                <li><strong>Алгебраическое доказательство:</strong> Через алгебраические преобразования</li>
+                                <li><strong>Доказательство Евклида:</strong> Из "Начал" Евклида</li>
+                            </ol>
+                            
+                            <p><strong>Обратная теорема:</strong> Если квадрат одной стороны треугольника равен сумме квадратов двух других сторон, то треугольник прямоугольный.</p>
+                            
+                            <p><strong>Применение:</strong></p>
+                            <ul>
+                                <li>Вычисление расстояний в декартовой системе координат</li>
+                                <li>Определение длины диагонали прямоугольника</li>
+                                <li>Расчеты в строительстве и архитектуре</li>
+                                <li>Тригонометрия: основа для определения тригонометрических функций</li>
+                            </ul>
+                            
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <div class="code-lang">
+                                        <i class="fab fa-python"></i> Python
+                                    </div>
+                                    <button class="copy-btn" onclick="copyCode(this)">Копировать</button>
+                                </div>
+<pre>import math
+
+def pythagorean_theorem(a, b, find='c'):
+    """
+    Применяет теорему Пифагора
+    find: 'c' - найти гипотенузу, 'a' или 'b' - найти катет
+    """
+    if find == 'c':
+        # Находим гипотенузу
+        return math.sqrt(a**2 + b**2)
+    elif find == 'a':
+        # Находим катет a, зная гипотенузу b и катет c
+        return math.sqrt(b**2 - a**2)
+    elif find == 'b':
+        # Находим катет b, зная гипотенузу a и катет c
+        return math.sqrt(a**2 - b**2)
+    else:
+        return "Неверный параметр find"
+
+def distance_between_points(x1, y1, x2, y2):
+    """Расстояние между двумя точками на плоскости"""
+    return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+
+# Примеры использования
+print(f"Гипотенуза при катетах 3 и 4: {pythagorean_theorem(3, 4, 'c'):.2f}")
+print(f"Катет при гипотенузе 5 и катете 3: {pythagorean_theorem(3, 5, 'a'):.2f}")
+print(f"Расстояние между (0,0) и (3,4): {distance_between_points(0, 0, 3, 4):.2f}")
+
+# Проверка на прямоугольность треугольника
+def is_right_triangle(a, b, c):
+    """Проверяет, является ли треугольник прямоугольным"""
+    sides = sorted([a, b, c])
+    return math.isclose(sides[2]**2, sides[0]**2 + sides[1]**2)
+
+print(f"Треугольник со сторонами 3,4,5 прямоугольный: {is_right_triangle(3, 4, 5)}")
+print(f"Треугольник со сторонами 5,6,7 прямоугольный: {is_right_triangle(5, 6, 7)}")</pre>
+                            </div>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
+                </div>
+
+                <h2 class="section-title">Тригонометрия - 32 статьи</h2>
+                <div class="articles-grid">
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-sin"></i> Основные тригонометрические функции</h3>
+                        <div class="article-content">
+                            <p>Тригонометрия изучает соотношения между сторонами и углами треугольников.</p>
+                            
+                            <p><strong>Основные функции для прямоугольного треугольника:</strong></p>
+                            <div class="formula-box">
+                                <span class="formula">sin α = противолежащий катет / гипотенуза</span><br>
+                                <span class="formula">cos α = прилежащий катет / гипотенуза</span><br>
+                                <span class="formula">tan α = sin α / cos α = противолежащий / прилежащий</span><br>
+                                <span class="formula">cot α = cos α / sin α = прилежащий / противолежащий</span>
+                            </div>
+                            
+                            <p><strong>Основное тригонометрическое тождество:</strong></p>
+                            <div class="formula-box">
+                                <span class="formula">sin² α + cos² α = 1</span>
+                            </div>
+                            
+                            <p><strong>Формулы приведения:</strong></p>
+                            <div class="formula-box">
+                                <span class="formula">sin(90° - α) = cos α</span><br>
+                                <span class="formula">cos(90° - α) = sin α</span><br>
+                                <span class="formula">sin(180° - α) = sin α</span><br>
+                                <span class="formula">cos(180° - α) = -cos α</span>
+                            </div>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Контент Физики -->
+        <div id="physicsContent" class="main-content subject-physics hidden">
+            <div class="subject-header">
+                <h1 class="subject-title">Физика</h1>
+                <p class="subject-subtitle">
+                    Естественная наука о наиболее общих законах природы, о материи, её структуре, движении и правилах трансформации.
+                    Изучает механику, термодинамику, электромагнетизм, оптику, квантовую физику.
+                </p>
+            </div>
+
+            <div class="articles-container">
+                <h2 class="section-title">Механика - 52 статьи</h2>
+                <div class="articles-grid">
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-bolt"></i> Законы Ньютона</h3>
+                        <div class="article-content">
+                            <p><strong>Первый закон (закон инерции):</strong> Существуют такие системы отсчёта, называемые инерциальными, относительно которых тело сохраняет состояние покоя или равномерного прямолинейного движения, если на него не действуют другие тела или их действие скомпенсировано.</p>
+                            
+                            <div class="formula-box">
+                                <span class="formula">Если ΣF = 0, то a = 0</span>
+                            </div>
+                            
+                            <p><strong>Второй закон (основной закон динамики):</strong> Ускорение тела прямо пропорционально равнодействующей сил, приложенных к телу, и обратно пропорционально его массе.</p>
+                            
+                            <div class="formula-box">
+                                <span class="formula">F = m × a</span><br>
+                                где F — сила (Н), m — масса (кг), a — ускорение (м/с²)
+                            </div>
+                            
+                            <p><strong>Третий закон (закон действия и противодействия):</strong> Силы, с которыми тела действуют друг на друга, равны по модулю и противоположны по направлению.</p>
+                            
+                            <div class="formula-box">
+                                <span class="formula">F₁₂ = -F₂₁</span>
+                            </div>
+                            
+                            <p><strong>Сила тяжести:</strong></p>
+                            <div class="formula-box">
+                                <span class="formula">F = m × g</span><br>
+                                где g ≈ 9.81 м/с² — ускорение свободного падения
+                            </div>
+                            
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <div class="code-lang">
+                                        <i class="fab fa-python"></i> Python
+                                    </div>
+                                    <button class="copy-btn" onclick="copyCode(this)">Копировать</button>
+                                </div>
+<pre>import math
+
+class PhysicsCalculator:
+    G = 9.81  # ускорение свободного падения, м/с²
+    
+    @staticmethod
+    def newtons_second_law(mass, acceleration):
+        """Второй закон Ньютона: F = m * a"""
+        return mass * acceleration
+    
+    @staticmethod
+    def weight(mass):
+        """Сила тяжести: F = m * g"""
+        return mass * PhysicsCalculator.G
+    
+    @staticmethod
+    def free_fall_time(height):
+        """Время свободного падения с высоты h"""
+        return math.sqrt(2 * height / PhysicsCalculator.G)
+    
+    @staticmethod
+    def free_fall_velocity(time):
+        """Скорость после времени t свободного падения"""
+        return PhysicsCalculator.G * time
+
+# Примеры расчетов
+mass = 10  # кг
+acceleration = 2  # м/с²
+
+force = PhysicsCalculator.newtons_second_law(mass, acceleration)
+print(f"Сила при массе {mass} кг и ускорении {acceleration} м/с²: {force} Н")
+
+weight = PhysicsCalculator.weight(mass)
+print(f"Вес тела массой {mass} кг: {weight} Н")
+
+height = 100  # метров
+fall_time = PhysicsCalculator.free_fall_time(height)
+velocity = PhysicsCalculator.free_fall_velocity(fall_time)
+print(f"Время падения с {height} м: {fall_time:.2f} с")
+print(f"Скорость в момент удара: {velocity:.2f} м/с ({velocity * 3.6:.2f} км/ч)")</pre>
+                            </div>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
+                </div>
+
+                <h2 class="section-title">Термодинамика - 28 статей</h2>
+                <div class="articles-grid">
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-temperature-high"></i> Законы термодинамики</h3>
+                        <div class="article-content">
+                            <p><strong>Первый закон (закон сохранения энергии):</strong> Изменение внутренней энергии системы равно сумме количества теплоты, переданной системе, и работы, совершённой над системой.</p>
+                            
+                            <div class="formula-box">
+                                <span class="formula">ΔU = Q - A</span><br>
+                                где ΔU — изменение внутренней энергии,<br>
+                                Q — количество теплоты,<br>
+                                A — работа, совершённая системой
+                            </div>
+                            
+                            <p><strong>Второй закон:</strong> Невозможен процесс, единственным результатом которого является передача тепла от менее нагретого тела к более нагретому.</p>
+                            
+                            <p><strong>Третий закон (теорема Нернста):</strong> При приближении температуры к абсолютному нулю энтропия любой системы стремится к постоянному значению.</p>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Контент Химии -->
+        <div id="chemistryContent" class="main-content subject-chemistry hidden">
+            <div class="subject-header">
+                <h1 class="subject-title">Химия</h1>
+                <p class="subject-subtitle">
+                    Наука о веществах, их составе, строении, свойствах, превращениях и законах, которым эти превращения подчиняются.
+                    Изучает элементы, соединения, химические реакции и связи.
+                </p>
+            </div>
+
+            <div class="articles-container">
+                <h2 class="section-title">Периодическая таблица - 41 статья</h2>
+                <div class="articles-grid">
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-table"></i> Закон Менделеева</h3>
+                        <div class="article-content">
+                            <p>Периодический закон, открытый Д.И. Менделеевым в 1869 году:</p>
+                            
+                            <div class="highlight">
+                                <p><strong>Формулировка:</strong> Свойства химических элементов, а также формы и свойства их соединений находятся в периодической зависимости от зарядов их атомных ядер.</p>
+                            </div>
+                            
+                            <p><strong>Структура таблицы:</strong></p>
+                            <ul>
+                                <li><strong>Периоды</strong> — горизонтальные строки (7 периодов)</li>
+                                <li><strong>Группы</strong> — вертикальные столбцы (18 групп)</li>
+                                <li><strong>Блоки:</strong> s-, p-, d-, f-элементы</li>
+                            </ul>
+                            
+                            <p><strong>Основные характеристики элементов:</strong></p>
+                            <ol>
+                                <li>Атомный номер (Z) — число протонов в ядре</li>
+                                <li>Атомная масса — средняя масса атома с учетом изотопов</li>
+                                <li>Электронная конфигурация — распределение электронов по уровням</li>
+                                <li>Электроотрицательность — способность притягивать электроны</li>
+                                <li>Радиус атома</li>
+                            </ol>
+                            
+                            <p><strong>Классификация элементов:</strong></p>
+                            <ul>
+                                <li><strong>Металлы:</strong> Li, Na, K, Ca, Fe, Cu, Ag, Au и др.</li>
+                                <li><strong>Неметаллы:</strong> H, C, N, O, F, P, S, Cl</li>
+                                <li><strong>Благородные газы:</strong> He, Ne, Ar, Kr, Xe, Rn</li>
+                                <li><strong>Полупроводники:</strong> Si, Ge</li>
+                            </ul>
+                            
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <div class="code-lang">
+                                        <i class="fab fa-python"></i> Python
+                                    </div>
+                                    <button class="copy-btn" onclick="copyCode(this)">Копировать</button>
+                                </div>
+<pre>class PeriodicTable:
+    def __init__(self):
+        self.elements = {
+            'H': {'name': 'Водород', 'number': 1, 'mass': 1.008, 'type': 'Неметалл'},
+            'He': {'name': 'Гелий', 'number': 2, 'mass': 4.003, 'type': 'Благородный газ'},
+            'Li': {'name': 'Литий', 'number': 3, 'mass': 6.941, 'type': 'Металл'},
+            'C': {'name': 'Углерод', 'number': 6, 'mass': 12.011, 'type': 'Неметалл'},
+            'O': {'name': 'Кислород', 'number': 8, 'mass': 15.999, 'type': 'Неметалл'},
+            'Na': {'name': 'Натрий', 'number': 11, 'mass': 22.990, 'type': 'Металл'},
+            'Cl': {'name': 'Хлор', 'number': 17, 'mass': 35.453, 'type': 'Неметалл'},
+            'Fe': {'name': 'Железо', 'number': 26, 'mass': 55.845, 'type': 'Металл'},
+            'Cu': {'name': 'Медь', 'number': 29, 'mass': 63.546, 'type': 'Металл'},
+            'Ag': {'name': 'Серебро', 'number': 47, 'mass': 107.868, 'type': 'Металл'},
+            'Au': {'name': 'Золото', 'number': 79, 'mass': 196.967, 'type': 'Металл'}
+        }
+    
+    def get_element_info(self, symbol):
+        """Получить информацию об элементе по символу"""
+        element = self.elements.get(symbol.upper())
+        if element:
+            return f"{element['name']} ({symbol}):\n" \
+                   f"  Атомный номер: {element['number']}\n" \
+                   f"  Атомная масса: {element['mass']}\n" \
+                   f"  Тип: {element['type']}"
+        return "Элемент не найден"
+    
+    def calculate_molar_mass(self, formula):
+        """Рассчитать молярную массу соединения"""
+        # Простой расчет для некоторых формул
+        molar_masses = {
+            'H2O': 18.015,
+            'CO2': 44.009,
+            'NaCl': 58.443,
+            'CH4': 16.043,
+            'C6H12O6': 180.156
+        }
+        return molar_masses.get(formula, "Формула не найдена")
+
+# Использование
+pt = PeriodicTable()
+print(pt.get_element_info('H'))
+print(pt.get_element_info('Fe'))
+print(f"\nМолярная масса H2O: {pt.calculate_molar_mass('H2O')} г/моль")
+print(f"Молярная масса CO2: {pt.calculate_molar_mass('CO2')} г/моль")</pre>
+                            </div>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Контент Биологии -->
+        <div id="biologyContent" class="main-content subject-biology hidden">
+            <div class="subject-header">
+                <h1 class="subject-title">Биология</h1>
+                <p class="subject-subtitle">
+                    Наука о живых существах и их взаимодействии со средой обитания. Изучает происхождение, эволюцию,
+                    структуру, функционирование, рост, распределение и систематику живых организмов.
+                </p>
+            </div>
+
+            <div class="articles-container">
+                <h2 class="section-title">Генетика - 36 статей</h2>
+                <div class="articles-grid">
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-dna"></i> Законы Менделя</h3>
+                        <div class="article-content">
+                            <p>Основные законы наследственности, открытые Грегором Менделем в 1865 году.</p>
+                            
+                            <p><strong>Первый закон (закон единообразия гибридов первого поколения):</strong> При скрещивании двух гомозиготных организмов, отличающихся по одной паре альтернативных признаков, всё первое поколение гибридов окажется единообразным и будет нести признак одного из родителей.</p>
+                            
+                            <p><strong>Второй закон (закон расщепления):</strong> При скрещивании гибридов первого поколения между собой во втором поколении наблюдается расщепление в определённом числовом отношении: 3:1 по фенотипу, 1:2:1 по генотипу.</p>
+                            
+                            <p><strong>Третий закон (закон независимого наследования):</strong> При дигибридном скрещивании у гибридов каждая пара признаков наследуется независимо от других и даёт расщепление 3:1, образуя при этом 4 фенотипические группы в соотношении 9:3:3:1.</p>
+                            
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <div class="code-lang">
+                                        <i class="fab fa-python"></i> Python
+                                    </div>
+                                    <button class="copy-btn" onclick="copyCode(this)">Копировать</button>
+                                </div>
+<pre>import itertools
+
+class Genetics:
+    @staticmethod
+    def monohybrid_cross(parent1, parent2):
+        """
+        Моногибридное скрещивание
+        parent1, parent2: генотипы родителей (например, 'AA', 'Aa', 'aa')
+        """
+        # Генерация гамет
+        def get_gametes(genotype):
+            return list(set(genotype[i] for i in range(len(genotype))))
+        
+        gametes1 = get_gametes(parent1)
+        gametes2 = get_gametes(parent2)
+        
+        # Все возможные комбинации
+        offspring = []
+        for g1 in gametes1:
+            for g2 in gametes2:
+                # Сортировка для единообразия (A перед a)
+                genotype = ''.join(sorted(g1 + g2))
+                offspring.append(genotype)
+        
+        # Подсчет результатов
+        result = {}
+        for genotype in offspring:
+            result[genotype] = result.get(genotype, 0) + 1
+        
+        total = len(offspring)
+        ratios = {k: f"{v}/{total}" for k, v in result.items()}
+        
+        return {
+            'gametes_parent1': gametes1,
+            'gametes_parent2': gametes2,
+            'offspring': offspring,
+            'ratios': ratios
+        }
+    
+    @staticmethod
+    def predict_phenotype(genotype, dominant_trait='A', recessive_trait='a'):
+        """Предсказание фенотипа по генотипу"""
+        if dominant_trait in genotype:
+            return "Доминантный признак"
+        else:
+            return "Рецессивный признак"
+
+# Пример использования
+print("=== Моногибридное скрещивание ===")
+cross_result = Genetics.monohybrid_cross('Aa', 'Aa')
+print(f"Гаметы родителя 1: {cross_result['gametes_parent1']}")
+print(f"Гаметы родителя 2: {cross_result['gametes_parent2']}")
+print(f"Потомство: {cross_result['offspring']}")
+print(f"Соотношения генотипов: {cross_result['ratios']}")
+
+# Фенотипическое расщепление
+offspring = cross_result['offspring']
+dominant_count = sum(1 for g in offspring if 'A' in g)
+recessive_count = sum(1 for g in offspring if g == 'aa')
+print(f"\nФенотипическое расщепление: {dominant_count}:{recessive_count} (3:1)")
+
+# Пример для разных родителей
+print("\n=== Скрещивание AA × aa ===")
+cross2 = Genetics.monohybrid_cross('AA', 'aa')
+print(f"Все потомки: {cross2['offspring']}")
+print(f"Фенотип всех потомков: {Genetics.predict_phenotype('Aa')}")</pre>
+                            </div>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Контент Истории -->
+        <div id="historyContent" class="main-content subject-history hidden">
+            <div class="subject-header">
+                <h1 class="subject-title">История</h1>
+                <p class="subject-subtitle">
+                    Наука, изучающая прошлое человечества во всей его конкретности и многообразии.
+                    Исследует факты, события, процессы и закономерности развития человеческого общества.
+                </p>
+            </div>
+
+            <div class="articles-container">
+                <h2 class="section-title">Древний мир - 47 статей</h2>
+                <div class="articles-grid">
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-monument"></i> Древний Египет</h3>
+                        <div class="article-content">
+                            <p><strong>Хронология:</strong> Около 3000 до н.э. - 30 до н.э.</p>
+                            
+                            <p><strong>Основные периоды:</strong></p>
+                            <ol>
+                                <li><strong>Раннее царство</strong> (3000-2778 до н.э.) - объединение Верхнего и Нижнего Египта</li>
+                                <li><strong>Древнее царство</strong> (2778-2263 до н.э.) - строительство пирамид</li>
+                                <li><strong>Среднее царство</strong> (2160-1785 до н.э.) - расцвет культуры</li>
+                                <li><strong>Новое царство</strong> (1580-1085 до н.э.) - имперский период</li>
+                                <li><strong>Поздний период</strong> (1085-332 до н.э.) - упадок и завоевания</li>
+                            </ol>
+                            
+                            <p><strong>Достижения:</strong></p>
+                            <ul>
+                                <li><strong>Письменность:</strong> иероглифическое письмо (более 700 знаков)</li>
+                                <li><strong>Архитектура:</strong> пирамиды Гизы, храмы в Карнаке и Луксоре</li>
+                                <li><strong>Наука:</strong> календарь из 365 дней, математика, медицина</li>
+                                <li><strong>Искусство:</strong> реалистичная скульптура, фрески, ювелирное дело</li>
+                                <li><strong>Религия:</strong> политеизм с главными богами Ра, Осирисом, Исидой</li>
+                            </ul>
+                            
+                            <p><strong>Великие фараоны:</strong></p>
+                            <ul>
+                                <li><strong>Джосер</strong> - построил первую ступенчатую пирамиду</li>
+                                <li><strong>Хеопс (Хуфу)</strong> - построил Великую пирамиду в Гизе</li>
+                                <li><strong>Хатшепсут</strong> - женщина-фараон, успешные торговые экспедиции</li>
+                                <li><strong>Тутмос III</strong> - создал первую в истории мировую империю</li>
+                                <li><strong>Рамсес II</strong> - самый долгоправящий фараон (66 лет)</li>
+                                <li><strong>Тутанхамон</strong> - знаменит нетронутой гробницей</li>
+                            </ul>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Контент Географии -->
+        <div id="geographyContent" class="main-content subject-geography hidden">
+            <div class="subject-header">
+                <h1 class="subject-title">География</h1>
+                <p class="subject-subtitle">
+                    Комплекс наук, изучающих географическую оболочку Земли, природные и общественные территориальные системы.
+                    Включает физическую и экономическую географию.
+                </p>
+            </div>
+
+            <div class="articles-container">
+                <h2 class="section-title">Физическая география - 39 статей</h2>
+                <div class="articles-grid">
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-globe-americas"></i> Строение Земли</h3>
+                        <div class="article-content">
+                            <p><strong>Внутреннее строение Земли:</strong></p>
+                            <ol>
+                                <li><strong>Земная кора</strong> (5-70 км)
+                                    <ul>
+                                        <li>Континентальная кора: 35-70 км, гранитный состав</li>
+                                        <li>Океаническая кора: 5-10 км, базальтовый состав</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Мантия</strong> (до 2900 км)
+                                    <ul>
+                                        <li>Верхняя мантия: до 670 км</li>
+                                        <li>Нижняя мантия: 670-2900 км</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Ядро</strong> (2900-6371 км)
+                                    <ul>
+                                        <li>Внешнее ядро: жидкое, 2900-5100 км</li>
+                                        <li>Внутреннее ядро: твёрдое, 5100-6371 км</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                            
+                            <p><strong>Географические координаты:</strong></p>
+                            <ul>
+                                <li><strong>Широта</strong> - угол между плоскостью экватора и нормалью к поверхности</li>
+                                <li><strong>Долгота</strong> - угол между плоскостью меридиана и плоскостью начального меридиана</li>
+                            </ul>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Контент Литературы -->
+        <div id="literatureContent" class="main-content subject-literature hidden">
+            <div class="subject-header">
+                <h1 class="subject-title">Литература</h1>
+                <p class="subject-subtitle">
+                    Вид искусства, использующий в качестве единственного материала слова и конструкции естественного языка.
+                    Изучает художественные произведения, их создание, функционирование и оценку.
+                </p>
+            </div>
+
+            <div class="articles-container">
+                <h2 class="section-title">Русская классика - 58 статей</h2>
+                <div class="articles-grid">
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-book-open"></i> А.С. Пушкин</h3>
+                        <div class="article-content">
+                            <p><strong>Годы жизни:</strong> 1799-1837</p>
+                            
+                            <p><strong>Основные произведения:</strong></p>
+                            <ul>
+                                <li><strong>«Евгений Онегин»</strong> (1823-1831) - роман в стихах, «энциклопедия русской жизни»</li>
+                                <li><strong>«Капитанская дочка»</strong> (1836) - исторический роман о пугачёвском восстании</li>
+                                <li><strong>«Медный всадник»</strong> (1833) - поэма о Петре I и «маленьком человеке»</li>
+                                <li><strong>«Борис Годунов»</strong> (1825) - историческая драма</li>
+                                <li><strong>«Повести Белкина»</strong> (1831) - цикл повестей</li>
+                            </ul>
+                            
+                            <p><strong>Поэзия:</strong></p>
+                            <ul>
+                                <li>«Я помню чудное мгновенье...» (1825)</li>
+                                <li>«Я вас любил...» (1829)</li>
+                                <li>«Осень» (1833)</li>
+                                <li>«Пророк» (1826)</li>
+                                <li>«Памятник» (1836)</li>
+                            </ul>
+                            
+                            <p><strong>Сказки:</strong></p>
+                            <ul>
+                                <li>«Сказка о царе Салтане» (1831)</li>
+                                <li>«Сказка о рыбаке и рыбке» (1833)</li>
+                                <li>«Сказка о мёртвой царевне и семи богатырях» (1833)</li>
+                            </ul>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Автор -->
+        <div class="author-section">
+            <div class="author-name" id="authorName" onclick="handleAuthorClick(event)">Asd11f</div>
+            <p style="margin-top: 15px; font-size: 1.1rem;">Разработчик образовательного портала</p>
+        </div>
+
+        <!-- Футер -->
+        <div class="footer">
+            <p>© 2024 Образовательный портал. Все материалы для учебных целей.</p>
+            <p style="margin-top: 10px; font-size: 12px;">Математика: 115 статей | Физика: 80 статей | Химия: 41 статья | Биология: 36 статей | История: 47 статей | География: 39 статей | Литература: 58 статей</p>
+        </div>
+    </div>
+
+    <script>
+        // ==================== STATE ====================
+        const state = {
+            currentSubject: 'math',
+            calculatorVisible: false,
+            theme: localStorage.getItem('theme') || 'light',
+            calcExpression: '',
+            calcResult: '0',
+            authorClicks: 0,
+            lastClickTime: 0,
+            consoleActive: false
+        };
+
+        // ==================== ИНИЦИАЛИЗАЦИЯ ====================
+        document.addEventListener('DOMContentLoaded', () => {
+            // Тема
+            document.documentElement.setAttribute('data-theme', state.theme);
+            if (state.theme === 'dark') {
+                document.querySelector('.theme-toggle i').classList.remove('fa-moon');
+                document.querySelector('.theme-toggle i').classList.add('fa-sun');
+            }
+            
+            // Инициализация калькулятора
+            updateCalcDisplay();
+            
+            // Закрытие окон по клику вне
+            document.addEventListener('click', (e) => {
+                const calculator = document.getElementById('calculator');
+                const console = document.getElementById('hackerConsole');
+                const calcBtn = document.querySelector('.calc-toggle');
+                
+                if (state.calculatorVisible && !calculator.contains(e.target) && 
+                    !calcBtn.contains(e.target)) {
+                    toggleCalculator();
+                }
+                
+                if (state.consoleActive && !console.contains(e.target)) {
+                    closeConsole();
+                }
+            });
+            
+            // Закрытие по Escape
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    if (state.calculatorVisible) toggleCalculator();
+                    if (state.consoleActive) closeConsole();
+                }
+                
+                // Управление калькулятором
+                if (state.calculatorVisible) {
+                    handleCalcKeypress(e);
+                }
+            });
+            
+            // Перетаскивание калькулятора
+            makeDraggable(document.getElementById('calculator'), document.getElementById('calcHeader'));
+        });
+
+        // ==================== КАЛЬКУЛЯТОР ====================
+        function toggleCalculator() {
+            const calc = document.getElementById('calculator');
+            state.calculatorVisible = !state.calculatorVisible;
+            calc.classList.toggle('active');
+            
+            if (state.calculatorVisible) {
+                calc.style.left = 'calc(50% - 175px)';
+                calc.style.top = '150px';
+            }
+        }
+
+        function appendToCalc(value) {
+            state.calcExpression += value;
+            updateCalcDisplay();
+        }
+
+        function clearCalculator() {
+            state.calcExpression = '';
+            state.calcResult = '0';
+            updateCalcDisplay();
+        }
+
+        function deleteLast() {
+            state.calcExpression = state.calcExpression.slice(0, -1);
+            updateCalcDisplay();
+        }
+
+        function calculateResult() {
+            try {
+                let expression = state.calcExpression.replace(/×/g, '*');
+                const result = Function('"use strict"; return (' + expression + ')')();
+                state.calcResult = parseFloat(result.toFixed(10)).toString();
+            } catch (error) {
+                state.calcResult = 'Ошибка';
+            }
+            updateCalcDisplay();
+        }
+
+        function updateCalcDisplay() {
+            document.getElementById('calcExpression').textContent = state.calcExpression || '';
+            document.getElementById('calcResult').textContent = state.calcResult;
+        }
+
+        function handleCalcKeypress(e) {
+            if (e.key >= '0' && e.key <= '9') appendToCalc(e.key);
+            if (e.key === '.') appendToCalc('.');
+            if (e.key === '+') appendToCalc('+');
+            if (e.key === '-') appendToCalc('-');
+            if (e.key === '*') appendToCalc('×');
+            if (e.key === '/') {
+                e.preventDefault();
+                appendToCalc('/');
+            }
+            if (e.key === '(') appendToCalc('(');
+            if (e.key === ')') appendToCalc(')');
+            if (e.key === 'Enter' || e.key === '=') {
+                e.preventDefault();
+                calculateResult();
+            }
+            if (e.key === 'Backspace') deleteLast();
+            if (e.key === 'Delete' || e.key === 'c' || e.key === 'C') clearCalculator();
+        }
+
+        // ==================== ПЕРЕТАСКИВАНИЕ ====================
+        function makeDraggable(element, header) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            
+            header.onmousedown = dragMouseDown;
+            
+            function dragMouseDown(e) {
+                e.preventDefault();
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                document.onmousemove = elementDrag;
+            }
+            
+            function elementDrag(e) {
+                e.preventDefault();
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                element.style.top = (element.offsetTop - pos2) + "px";
+                element.style.left = (element.offsetLeft - pos1) + "px";
+            }
+            
+            function closeDragElement() {
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+        }
+
+        // ==================== ПАСХАЛКА ====================
+        function handleAuthorClick(event) {
+            event.stopPropagation();
+            
+            const now = Date.now();
+            
+            // Сброс если прошло больше 5 секунд
+            if (now - state.lastClickTime > 5000) {
+                state.authorClicks = 0;
+            }
+            
+            state.authorClicks++;
+            state.lastClickTime = now;
+            
+            // Анимация при нажатии
+            const authorName = document.getElementById('authorName');
+            authorName.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                authorName.style.transform = 'scale(1)';
+            }, 100);
+            
+            console.log(`Кликов: ${state.authorClicks}/5`);
+            
+            // Если 5 кликов за 5 секунд
+            if (state.authorClicks >= 5) {
+                state.authorClicks = 0;
+                openHackerConsole();
+            }
+        }
+
+        function openHackerConsole() {
+            const console = document.getElementById('hackerConsole');
+            const output = document.getElementById('consoleOutput');
+            
+            state.consoleActive = true;
+            console.classList.add('active');
+            
+            // Генерация хакерского текста
+            generateHackerText(output);
+        }
+
+        function generateHackerText(container) {
+            const lines = [
+                "╔══════════════════════════════════════════════════════════════╗",
+                "║                    СИСТЕМА ВЗЛОМА ASD11F                     ║",
+                "╚══════════════════════════════════════════════════════════════╝",
+                "",
+                "[*] Инициализация взломного протокола...",
+                "[+] Подключение к главному серверу... УСПЕХ",
+                "[*] Обход брандмауэра... УСПЕХ",
+                "[+] Поиск уязвимостей...",
+                "[!] Найдено 12 критических уязвимостей",
+                "[*] Эксплуатация уязвимости CVE-2024-ASD11F...",
+                "[+] Получен доступ уровня ROOT",
+                "",
+                "════════════════════ СИСТЕМНАЯ ИНФОРМАЦИЯ ═════════════════════",
+                "CPU: Intel Core i9-14900K @ 6.0GHz",
+                "RAM: 128GB DDR5 @ 7200MHz",
+                "GPU: NVIDIA RTX 4090 24GB",
+                "STORAGE: 4TB NVMe SSD",
+                "NETWORK: 10 Gbps Fiber",
+                "OS: Kali Linux 2024.1",
+                "",
+                "══════════════════════ АКТИВНЫЕ ПРОЦЕССЫ ══════════════════════",
+                "[1] SSH Tunnel - Порт 22",
+                "[2] VPN Connection - Шифрование AES-256",
+                "[3] Port Scanner - Анализ 65535 портов",
+                "[4] Keylogger - Активен",
+                "[5] RAT Server - Прослушивание порта 4444",
+                "",
+                "═════════════════════ ДОСТУП К СИСТЕМАМ ═══════════════════════",
+                "▸ Банковская система: ДОСТУП ОТКРЫТ",
+                "▸ Правительственный сервер: ДОСТУП ОТКРЫТ",
+                "▸ Спутниковая связь: ДОСТУП ОТКРЫТ",
+                "▸ Камеры наблюдения: 127 устройств онлайн",
+                "",
+                "[!] ВНИМАНИЕ: ОБНАРУЖЕНА АКТИВНОСТЬ АНТИВИРУСА",
+                "[?] АКТИВИРОВАТЬ СТЕЛС-РЕЖИМ? (Y/N)",
+                "> "
+            ];
+            
+            container.innerHTML = '';
+            let delay = 0;
+            
+            lines.forEach((line) => {
+                setTimeout(() => {
+                    const lineEl = document.createElement('div');
+                    lineEl.className = 'console-line';
+                    lineEl.textContent = line;
+                    container.appendChild(lineEl);
+                    container.scrollTop = container.scrollHeight;
+                }, delay);
+                delay += 50;
+            });
+            
+            // Добавляем поле для ввода после показа всего текста
+            setTimeout(() => {
+                const inputContainer = document.createElement('div');
+                inputContainer.className = 'console-input';
+                inputContainer.innerHTML = `
+                    <span class="console-prompt">root@asd11f:~# </span>
+                    <input type="text" class="console-cmd" id="consoleInput" autocomplete="off" autofocus>
+                `;
+                container.appendChild(inputContainer);
+                
+                const input = document.getElementById('consoleInput');
+                input.focus();
+                
+                // Обработка ввода
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        const command = input.value.trim().toLowerCase();
+                        handleConsoleCommand(command, container, inputContainer);
+                    }
+                });
+            }, delay + 100);
+        }
+
+        function handleConsoleCommand(command, container, inputContainer) {
+            // Добавляем команду в историю
+            const cmdLine = document.createElement('div');
+            cmdLine.className = 'console-line';
+            cmdLine.textContent = `root@asd11f:~# ${command}`;
+            container.appendChild(cmdLine);
+            
+            // Удаляем поле ввода
+            inputContainer.remove();
+            
+            let responseLines = [];
+            
+            if (command === 'y' || command === 'yes' || command === 'да') {
+                responseLines = [
+                    "[*] Активация стелс-режима...",
+                    "[+] Шифрование трафика... УСПЕХ",
+                    "[+] Подмена IP-адреса... УСПЕХ",
+                    "[+] Очистка логов... УСПЕХ",
+                    "[+] Установка бэкдора... УСПЕХ",
+                    "",
+                    "╔══════════════════════════════════════════════════════════════╗",
+                    "║                 ВЗЛОМ УСПЕШНО ЗАВЕРШЕН!                     ║",
+                    "╚══════════════════════════════════════════════════════════════╝",
+                    "",
+                    "[*] Все системы под контролем",
+                    "[*] Консоль закроется через 5 секунд..."
+                ];
+                
+                setTimeout(() => {
+                    closeConsole();
+                }, 5000);
+            } else if (command === 'n' || command === 'no' || command === 'нет') {
+                responseLines = [
+                    "[!] Стелс-режим не активирован",
+                    "[!] Обнаружена активность системы безопасности",
+                    "[*] Автоматическое отключение...",
+                    "[+] Удаление следов... УСПЕХ",
+                    "[*] Консоль закроется через 3 секунды..."
+                ];
+                
+                setTimeout(() => {
+                    closeConsole();
+                }, 3000);
+            } else {
+                responseLines = [
+                    `[!] Неизвестная команда: ${command}`,
+                    "[!] Доступные команды: Y, N, YES, NO, ДА, НЕТ",
+                    "[*] Консоль закроется через 5 секунд..."
+                ];
+                
+                setTimeout(() => {
+                    closeConsole();
+                }, 5000);
+            }
+            
+            // Показываем ответ
+            let delay = 0;
+            responseLines.forEach((line) => {
+                setTimeout(() => {
+                    const lineEl = document.createElement('div');
+                    lineEl.className = 'console-line';
+                    lineEl.textContent = line;
+                    container.appendChild(lineEl);
+                    container.scrollTop = container.scrollHeight;
+                }, delay);
+                delay += 50;
+            });
+        }
+
+        function closeConsole() {
+            const console = document.getElementById('hackerConsole');
+            state.consoleActive = false;
+            console.classList.remove('active');
+            state.authorClicks = 0;
+        }
+
+        // ==================== ОСНОВНЫЕ ФУНКЦИИ ====================
+        function selectSubject(subject) {
+            // Обновляем кнопки
+            document.querySelectorAll('.subject-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Показываем/скрываем контент
+            document.querySelectorAll('.main-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.getElementById(subject + 'Content').classList.remove('hidden');
+            
+            state.currentSubject = subject;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleArticle(card) {
+            const content = card.querySelector('.article-content');
+            const readMore = card.querySelector('.read-more');
+            const icon = readMore.querySelector('i');
+            
+            content.classList.toggle('expanded');
+            
+            if (content.classList.contains('expanded')) {
+                readMore.innerHTML = 'Свернуть <i class="fas fa-chevron-up"></i>';
+            } else {
+                readMore.innerHTML = 'Показать подробнее <i class="fas fa-chevron-down"></i>';
+            }
+        }
+
+        function copyCode(button) {
+            const codeBlock = button.closest('.code-block').querySelector('pre');
+            const text = codeBlock.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = button.textContent;
+                button.textContent = 'Скопировано!';
+                button.style.background = '#10b981';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = '';
+                }, 2000);
+            });
+        }
+
+        function toggleTheme() {
+            state.theme = state.theme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', state.theme);
+            localStorage.setItem('theme', state.theme);
+            
+            const icon = document.querySelector('.theme-toggle i');
+            if (state.theme === 'dark') {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        }
+
+        // ==================== ЭКСПОРТ ФУНКЦИЙ ====================
+        window.selectSubject = selectSubject;
+        window.toggleArticle = toggleArticle;
+        window.copyCode = copyCode;
+        window.toggleCalculator = toggleCalculator;
+        window.appendToCalc = appendToCalc;
+        window.clearCalculator = clearCalculator;
+        window.deleteLast = deleteLast;
+        window.calculateResult = calculateResult;
+        window.toggleTheme = toggleTheme;
+        window.handleAuthorClick = handleAuthorClick;
+        window.closeConsole = closeConsole;
+    </script>
+</body>
+</html>
