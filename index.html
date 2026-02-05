@@ -7,905 +7,178 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #4f46e5;
-            --primary-dark: #4338ca;
-            --primary-light: #6366f1;
-            --secondary: #0ea5e9;
-            --accent: #06b6d4;
-            --text: #1e293b;
-            --text-light: #64748b;
-            --bg: #ffffff;
-            --bg-light: #f8fafc;
-            --bg-dark: #0f172a;
-            --border: #e2e8f0;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --radius: 12px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --calculator: #10b981;
-            --hacker-green: #00ff00;
-            --console-bg: #0a0a0a;
-            --math: #3b82f6;
-            --physics: #ef4444;
-            --chemistry: #8b5cf6;
-            --biology: #22c55e;
-            --history: #f59e0b;
-            --geography: #06b6d4;
-            --literature: #ec4899;
-            --game-2048: #8b5cf6;
+            --primary: #4f46e5; --primary-dark: #4338ca; --primary-light: #6366f1;
+            --secondary: #0ea5e9; --accent: #06b6d4; --text: #1e293b; --text-light: #64748b;
+            --bg: #ffffff; --bg-light: #f8fafc; --bg-dark: #0f172a; --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); --radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); --calculator: #10b981;
+            --hacker-green: #00ff00; --console-bg: #0a0a0a; --math: #3b82f6;
+            --physics: #ef4444; --chemistry: #8b5cf6; --biology: #22c55e;
+            --history: #f59e0b; --geography: #06b6d4; --literature: #ec4899;
+            --game-2048: #8b5cf6; --game-snake: #10b981; --game-15: #3b82f6;
         }
 
         [data-theme="dark"] {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --primary-light: #818cf8;
-            --secondary: #38bdf8;
-            --accent: #22d3ee;
-            --text: #f1f5f9;
-            --text-light: #cbd5e1;
-            --bg: #0f172a;
-            --bg-light: #1e293b;
-            --bg-dark: #020617;
-            --border: #334155;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-            --calculator: #34d399;
-            --hacker-green: #00ff00;
-            --console-bg: #000000;
-            --math: #60a5fa;
-            --physics: #f87171;
-            --chemistry: #a78bfa;
-            --biology: #4ade80;
-            --history: #fbbf24;
-            --geography: #22d3ee;
-            --literature: #f472b6;
-            --game-2048: #a78bfa;
+            --primary: #6366f1; --primary-dark: #4f46e5; --primary-light: #818cf8;
+            --secondary: #38bdf8; --accent: #22d3ee; --text: #f1f5f9; --text-light: #cbd5e1;
+            --bg: #0f172a; --bg-light: #1e293b; --bg-dark: #020617; --border: #334155;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3); --calculator: #34d399;
+            --hacker-green: #00ff00; --console-bg: #000000; --math: #60a5fa;
+            --physics: #f87171; --chemistry: #a78bfa; --biology: #4ade80;
+            --history: #fbbf24; --geography: #22d3ee; --literature: #f472b6;
+            --game-2048: #a78bfa; --game-snake: #34d399; --game-15: #60a5fa;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); transition: var(--transition); min-height: 100vh; overflow-x: hidden; }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            transition: var(--transition);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+        .header { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 15px 0; box-shadow: var(--shadow); position: sticky; top: 0; z-index: 100; }
+        .header-content { max-width: 1400px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .logo { font-size: 1.8rem; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+        .logo span { background: linear-gradient(135deg, #ffffff, #e0e7ff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .subject-nav { display: flex; gap: 10px; flex-wrap: wrap; }
+        .subject-btn { padding: 8px 20px; background: rgba(255, 255, 255, 0.15); border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 50px; color: white; cursor: pointer; transition: var(--transition); font-weight: 600; font-size: 14px; text-align: center; display: flex; align-items: center; gap: 8px; }
+        .subject-btn:hover { background: rgba(255, 255, 255, 0.25); transform: translateY(-2px); }
+        .subject-btn.active { background: white; color: var(--primary); border-color: white; box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2); }
 
-        /* Хедер */
-        .header {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            padding: 15px 0;
-            box-shadow: var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo span {
-            background: linear-gradient(135deg, #ffffff, #e0e7ff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        /* Меню предметов */
-        .subject-nav {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .subject-btn {
-            padding: 8px 20px;
-            background: rgba(255, 255, 255, 0.15);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50px;
-            color: white;
-            cursor: pointer;
-            transition: var(--transition);
-            font-weight: 600;
-            font-size: 14px;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .subject-btn:hover {
-            background: rgba(255, 255, 255, 0.25);
-            transform: translateY(-2px);
-        }
-
-        .subject-btn.active {
-            background: white;
-            color: var(--primary);
-            border-color: white;
-            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
-        }
-
-        /* Основной контейнер */
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-            min-height: calc(100vh - 100px);
-        }
-
-        /* Основной контент */
-        .main-content {
-            background: var(--bg);
-            border-radius: var(--radius);
-            padding: 30px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-            animation: fadeIn 0.6s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Заголовки предметов */
-        .subject-header {
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--border);
-        }
-
-        .subject-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 10px;
-        }
-
-        .subject-subtitle {
-            color: var(--text-light);
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
-
-        /* Цвета заголовков по предметам */
-        .subject-math .subject-title { color: var(--math); }
-        .subject-physics .subject-title { color: var(--physics); }
-        .subject-chemistry .subject-title { color: var(--chemistry); }
-        .subject-biology .subject-title { color: var(--biology); }
-        .subject-history .subject-title { color: var(--history); }
-        .subject-geography .subject-title { color: var(--geography); }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; min-height: calc(100vh - 100px); }
+        .main-content { background: var(--bg); border-radius: var(--radius); padding: 30px; box-shadow: var(--shadow); border: 1px solid var(--border); animation: fadeIn 0.6s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .subject-header { margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid var(--border); }
+        .subject-title { font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; }
+        .subject-subtitle { color: var(--text-light); font-size: 1.1rem; line-height: 1.6; }
+        .subject-math .subject-title { color: var(--math); } .subject-physics .subject-title { color: var(--physics); } .subject-chemistry .subject-title { color: var(--chemistry); }
+        .subject-biology .subject-title { color: var(--biology); } .subject-history .subject-title { color: var(--history); } .subject-geography .subject-title { color: var(--geography); }
         .subject-literature .subject-title { color: var(--literature); }
 
-        /* Статьи */
-        .articles-container {
-            margin-top: 30px;
-        }
+        .articles-container { margin-top: 30px; }
+        .section-title { font-size: 1.8rem; font-weight: 700; margin: 40px 0 20px; padding-bottom: 10px; border-bottom: 2px solid var(--border); color: var(--primary); }
+        .articles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 25px; margin-bottom: 40px; }
+        .article-card { background: var(--bg-light); border-radius: var(--radius); padding: 25px; border: 1px solid var(--border); transition: var(--transition); cursor: pointer; }
+        .article-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); border-color: var(--primary); }
+        .article-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 15px; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+        .article-content { color: var(--text); line-height: 1.6; margin-bottom: 15px; max-height: 200px; overflow: hidden; transition: max-height 0.3s ease; }
+        .article-content.expanded { max-height: 5000px; }
+        .read-more { color: var(--primary); font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; font-size: 14px; margin-top: 10px; }
 
-        .section-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin: 40px 0 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--border);
-            color: var(--primary);
-        }
+        .youtube-player { margin: 30px 0; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+        .youtube-placeholder { background: var(--bg-light); padding: 40px; text-align: center; border-radius: var(--radius); cursor: pointer; transition: var(--transition); }
+        .youtube-placeholder:hover { background: var(--primary-light); color: white; }
+        .youtube-placeholder i { font-size: 48px; margin-bottom: 15px; color: #ff0000; }
+        .video-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 10px; }
+        .video-desc { color: var(--text-light); font-size: 0.9rem; }
 
-        .articles-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-        }
+        .code-block { background: var(--bg-dark); color: #e2e8f0; padding: 20px; border-radius: var(--radius); font-family: 'Cascadia Code', 'Consolas', 'Monaco', monospace; font-size: 13px; overflow-x: auto; margin: 15px 0; border: 1px solid var(--border); line-height: 1.5; position: relative; }
+        .code-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #334155; }
+        .code-lang { display: flex; align-items: center; gap: 8px; font-weight: 600; color: #94a3b8; }
+        .copy-btn { background: var(--primary); color: white; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; transition: var(--transition); }
+        .copy-btn:hover { background: var(--primary-dark); }
 
-        .article-card {
-            background: var(--bg-light);
-            border-radius: var(--radius);
-            padding: 25px;
-            border: 1px solid var(--border);
-            transition: var(--transition);
-            cursor: pointer;
-        }
+        .calculator-widget { position: fixed; bottom: 100px; right: 20px; width: 400px; height: 500px; background: var(--bg); border: 2px solid var(--calculator); border-radius: var(--radius); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); z-index: 2000; display: none; resize: both; overflow: auto; min-width: 350px; min-height: 450px; max-width: 90vw; max-height: 90vh; }
+        .calculator-widget.active { display: block; animation: slideUp 0.3s ease; }
+        @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .calc-header { padding: 15px; background: linear-gradient(135deg, var(--calculator), #059669); color: white; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); cursor: move; user-select: none; }
+        .calc-title { font-weight: 600; font-size: 16px; display: flex; align-items: center; gap: 10px; }
+        .calc-display { background: var(--bg-dark); padding: 20px; text-align: right; border-bottom: 1px solid var(--border); min-height: 100px; display: flex; flex-direction: column; justify-content: center; }
+        .calc-expression { font-size: 16px; color: #94a3b8; min-height: 24px; word-break: break-all; }
+        .calc-result { font-size: 32px; font-weight: 700; margin-top: 10px; color: white; min-height: 40px; word-break: break-all; }
+        .calc-buttons { padding: 15px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; background: var(--bg); }
+        .calc-btn { padding: 15px; background: var(--bg-light); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 18px; font-weight: 600; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; user-select: none; }
+        .calc-btn:hover { background: var(--primary-light); color: white; transform: translateY(-2px); }
+        .calc-btn.operator { background: linear-gradient(135deg, var(--primary-light), var(--secondary)); color: white; }
+        .calc-btn.equals { background: linear-gradient(135deg, var(--calculator), #059669); color: white; grid-column: span 2; }
+        .calc-btn.clear { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; }
+        .calc-btn.scientific { background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; font-size: 14px; }
 
-        .article-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow);
-            border-color: var(--primary);
-        }
+        .game-window { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 500px; height: 600px; background: var(--bg); border: 3px solid; border-radius: var(--radius); z-index: 3001; display: none; overflow: hidden; box-shadow: 0 0 50px rgba(0, 0, 0, 0.3); }
+        .game-window.active { display: block; animation: gameAppear 0.5s ease; }
+        @keyframes gameAppear { from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+        .game-header { padding: 15px; background: linear-gradient(135deg, currentColor, transparent); color: white; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+        .game-title { font-weight: 600; font-size: 18px; display: flex; align-items: center; gap: 10px; }
+        .game-score { font-size: 20px; font-weight: 700; }
+        .game-container { padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .game-controls { display: flex; gap: 10px; }
+        .game-btn { padding: 10px 20px; background: currentColor; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: var(--transition); }
+        .game-btn:hover { transform: translateY(-2px); }
+        .game-instructions { font-size: 14px; color: var(--text-light); text-align: center; max-width: 400px; }
 
-        .article-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .article-content {
-            color: var(--text);
-            line-height: 1.6;
-            margin-bottom: 15px;
-            max-height: 200px;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-
-        .article-content.expanded {
-            max-height: 5000px;
-        }
-
-        .read-more {
-            color: var(--primary);
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 14px;
-            margin-top: 10px;
-        }
-
-        /* YouTube плеер */
-        .youtube-player {
-            margin: 30px 0;
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-        }
-
-        .youtube-placeholder {
-            background: var(--bg-light);
-            padding: 40px;
-            text-align: center;
-            border-radius: var(--radius);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .youtube-placeholder:hover {
-            background: var(--primary-light);
-            color: white;
-        }
-
-        .youtube-placeholder i {
-            font-size: 48px;
-            margin-bottom: 15px;
-            color: #ff0000;
-        }
-
-        .video-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .video-desc {
-            color: var(--text-light);
-            font-size: 0.9rem;
-        }
-
-        /* Код блоки */
-        .code-block {
-            background: var(--bg-dark);
-            color: #e2e8f0;
-            padding: 20px;
-            border-radius: var(--radius);
-            font-family: 'Cascadia Code', 'Consolas', 'Monaco', monospace;
-            font-size: 13px;
-            overflow-x: auto;
-            margin: 15px 0;
-            border: 1px solid var(--border);
-            line-height: 1.5;
-            position: relative;
-        }
-
-        .code-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #334155;
-        }
-
-        .code-lang {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-            color: #94a3b8;
-        }
-
-        .copy-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 5px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: var(--transition);
-        }
-
-        .copy-btn:hover {
-            background: var(--primary-dark);
-        }
-
-        /* Калькулятор */
-        .calculator-widget {
-            position: fixed;
-            bottom: 100px;
-            right: 20px;
-            width: 400px;
-            background: var(--bg);
-            border: 2px solid var(--calculator);
-            border-radius: var(--radius);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-            z-index: 2000;
-            overflow: hidden;
-            display: none;
-            resize: both;
-            overflow: auto;
-            min-width: 350px;
-            min-height: 500px;
-            max-width: 90vw;
-            max-height: 90vh;
-            cursor: move;
-        }
-
-        .calculator-widget.active {
-            display: block;
-            animation: slideUp 0.3s ease;
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .calc-header {
-            padding: 15px;
-            background: linear-gradient(135deg, var(--calculator), #059669);
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-            cursor: move;
-            user-select: none;
-        }
-
-        .calc-title {
-            font-weight: 600;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .calc-display {
-            background: var(--bg-dark);
-            padding: 20px;
-            text-align: right;
-            border-bottom: 1px solid var(--border);
-            min-height: 100px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .calc-expression {
-            font-size: 16px;
-            color: #94a3b8;
-            min-height: 24px;
-            word-break: break-all;
-        }
-
-        .calc-result {
-            font-size: 32px;
-            font-weight: 700;
-            margin-top: 10px;
-            color: white;
-            min-height: 40px;
-            word-break: break-all;
-        }
-
-        .calc-buttons {
-            padding: 15px;
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
-            background: var(--bg);
-        }
-
-        .calc-btn {
-            padding: 15px;
-            background: var(--bg-light);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text);
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            user-select: none;
-        }
-
-        .calc-btn:hover {
-            background: var(--primary-light);
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .calc-btn.operator {
-            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
-            color: white;
-        }
-
-        .calc-btn.equals {
-            background: linear-gradient(135deg, var(--calculator), #059669);
-            color: white;
-            grid-column: span 2;
-        }
-
-        .calc-btn.clear {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            color: white;
-        }
-
-        .calc-btn.scientific {
-            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-            color: white;
-            font-size: 14px;
-        }
-
-        /* Игра 2048 */
-        .game-2048 {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 500px;
-            height: 600px;
-            background: var(--bg);
-            border: 3px solid var(--game-2048);
-            border-radius: var(--radius);
-            z-index: 3001;
-            display: none;
-            overflow: hidden;
-            box-shadow: 0 0 50px rgba(139, 92, 246, 0.3);
-        }
-
-        .game-2048.active {
-            display: block;
-            animation: gameAppear 0.5s ease;
-        }
-
-        @keyframes gameAppear {
-            from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
-            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-        }
-
-        .game-header {
-            padding: 15px;
-            background: linear-gradient(135deg, var(--game-2048), #7c3aed);
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .game-title {
-            font-weight: 600;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .game-score {
-            font-size: 20px;
-            font-weight: 700;
-        }
-
-        .game-container {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .game-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-template-rows: repeat(4, 1fr);
-            gap: 10px;
-            width: 400px;
-            height: 400px;
-            background: var(--bg-light);
-            border-radius: 8px;
-            padding: 10px;
-            border: 2px solid var(--border);
-        }
-
-        .game-cell {
-            background: rgba(139, 92, 246, 0.1);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            font-weight: 700;
-            transition: all 0.15s ease;
-        }
-
-        .tile-2 { background: #eee4da; color: #776e65; }
-        .tile-4 { background: #ede0c8; color: #776e65; }
-        .tile-8 { background: #f2b179; color: white; }
-        .tile-16 { background: #f59563; color: white; }
-        .tile-32 { background: #f67c5f; color: white; }
-        .tile-64 { background: #f65e3b; color: white; }
-        .tile-128 { background: #edcf72; color: white; font-size: 28px; }
-        .tile-256 { background: #edcc61; color: white; font-size: 28px; }
-        .tile-512 { background: #edc850; color: white; font-size: 28px; }
-        .tile-1024 { background: #edc53f; color: white; font-size: 24px; }
+        #game2048 { border-color: var(--game-2048); }
+        #game2048 .game-header { background: linear-gradient(135deg, var(--game-2048), #7c3aed); }
+        .game-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); gap: 10px; width: 400px; height: 400px; background: var(--bg-light); border-radius: 8px; padding: 10px; border: 2px solid var(--border); }
+        .game-cell { background: rgba(139, 92, 246, 0.1); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 700; transition: all 0.15s ease; }
+        .tile-2 { background: #eee4da; color: #776e65; } .tile-4 { background: #ede0c8; color: #776e65; }
+        .tile-8 { background: #f2b179; color: white; } .tile-16 { background: #f59563; color: white; }
+        .tile-32 { background: #f67c5f; color: white; } .tile-64 { background: #f65e3b; color: white; }
+        .tile-128 { background: #edcf72; color: white; font-size: 28px; } .tile-256 { background: #edcc61; color: white; font-size: 28px; }
+        .tile-512 { background: #edc850; color: white; font-size: 28px; } .tile-1024 { background: #edc53f; color: white; font-size: 24px; }
         .tile-2048 { background: #edc22e; color: white; font-size: 24px; }
 
-        .game-controls {
-            display: flex;
-            gap: 10px;
-        }
+        #game15 { border-color: var(--game-15); }
+        #game15 .game-header { background: linear-gradient(135deg, var(--game-15), #2563eb); }
+        .game-grid-15 { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); gap: 8px; width: 400px; height: 400px; background: var(--bg-light); border-radius: 8px; padding: 10px; border: 2px solid var(--border); }
+        .game-cell-15 { background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 700; cursor: pointer; transition: all 0.2s ease; }
+        .game-cell-15.empty { background: rgba(59, 130, 246, 0.1); cursor: default; }
+        .game-cell-15:hover:not(.empty) { transform: scale(1.05); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
 
-        .game-btn {
-            padding: 10px 20px;
-            background: var(--game-2048);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
-        }
+        #gameSnake { border-color: var(--game-snake); }
+        #gameSnake .game-header { background: linear-gradient(135deg, var(--game-snake), #059669); }
+        .snake-grid { display: grid; grid-template-columns: repeat(20, 1fr); grid-template-rows: repeat(20, 1fr); gap: 1px; width: 400px; height: 400px; background: var(--bg-light); border-radius: 8px; padding: 2px; border: 2px solid var(--border); }
+        .snake-cell { background: rgba(16, 185, 129, 0.1); border-radius: 2px; }
+        .snake-cell.snake { background: #10b981; border-radius: 4px; }
+        .snake-cell.head { background: #059669; border-radius: 6px; }
+        .snake-cell.food { background: #ef4444; border-radius: 50%; }
 
-        .game-btn:hover {
-            background: #7c3aed;
-            transform: translateY(-2px);
-        }
+        .floating-buttons { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 15px; z-index: 1001; }
+        .floating-btn { width: 60px; height: 60px; border-radius: 50%; border: none; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: var(--shadow); transition: var(--transition); position: relative; }
+        .calc-toggle { background: linear-gradient(135deg, var(--calculator), #059669); }
+        .theme-toggle { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .floating-btn:hover { transform: scale(1.1) rotate(5deg); }
 
-        .game-instructions {
-            font-size: 14px;
-            color: var(--text-light);
-            text-align: center;
-            max-width: 400px;
-        }
+        .hacker-console { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 800px; height: 600px; background: var(--console-bg); border: 3px solid var(--hacker-green); border-radius: 10px; z-index: 3000; display: none; overflow: hidden; font-family: 'Courier New', monospace; box-shadow: 0 0 50px rgba(0, 255, 0, 0.3); }
+        .hacker-console.active { display: block; animation: terminalAppear 0.5s ease; }
+        @keyframes terminalAppear { from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+        .console-header { background: #111; padding: 12px 15px; color: var(--hacker-green); display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--hacker-green); }
+        .console-title { font-weight: bold; display: flex; align-items: center; gap: 10px; }
+        .console-body { padding: 20px; height: calc(100% - 50px); overflow-y: auto; color: var(--hacker-green); line-height: 1.4; font-size: 14px; }
+        .console-line { margin-bottom: 8px; animation: typewriter 0.1s steps(40) forwards; white-space: pre-wrap; word-break: break-all; }
+        @keyframes typewriter { from { opacity: 0; } to { opacity: 1; } }
+        .console-input { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+        .console-prompt { color: var(--hacker-green); }
+        .console-cmd { background: transparent; border: none; color: var(--hacker-green); font-family: 'Courier New', monospace; font-size: 14px; width: 100%; outline: none; }
 
-        /* Кнопки управления */
-        .floating-buttons {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            z-index: 1001;
-        }
+        .author-section { text-align: center; margin: 50px 0; padding: 30px; background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(14, 165, 233, 0.1)); border-radius: var(--radius); border-left: 4px solid var(--primary); }
+        .author-name { font-weight: 800; font-size: 2.5rem; background: linear-gradient(135deg, #1e40af, #3b82f6, #0ea5e9); -webkit-background-clip: text; background-clip: text; color: transparent; animation: gradient 3s ease infinite; background-size: 200% 200%; cursor: pointer; transition: transform 0.3s ease; display: inline-block; padding: 10px 20px; border-radius: var(--radius); user-select: none; }
+        .author-name:hover { transform: scale(1.05); box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3); }
+        .author-name:active { transform: scale(0.95); }
+        @keyframes gradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        .floating-btn {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            border: none;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            position: relative;
-        }
+        .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); text-align: center; color: var(--text-light); font-size: 14px; }
 
-        .calc-toggle {
-            background: linear-gradient(135deg, var(--calculator), #059669);
-        }
-
-        .theme-toggle {
-            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-        }
-
-        .floating-btn:hover {
-            transform: scale(1.1) rotate(5deg);
-        }
-
-        /* Консоль хакера (пасхалка) */
-        .hacker-console {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 800px;
-            height: 600px;
-            background: var(--console-bg);
-            border: 3px solid var(--hacker-green);
-            border-radius: 10px;
-            z-index: 3000;
-            display: none;
-            overflow: hidden;
-            font-family: 'Courier New', monospace;
-            box-shadow: 0 0 50px rgba(0, 255, 0, 0.3);
-        }
-
-        .hacker-console.active {
-            display: block;
-            animation: terminalAppear 0.5s ease;
-        }
-
-        @keyframes terminalAppear {
-            from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
-            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-        }
-
-        .console-header {
-            background: #111;
-            padding: 12px 15px;
-            color: var(--hacker-green);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid var(--hacker-green);
-        }
-
-        .console-title {
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .console-body {
-            padding: 20px;
-            height: calc(100% - 50px);
-            overflow-y: auto;
-            color: var(--hacker-green);
-            line-height: 1.4;
-            font-size: 14px;
-        }
-
-        .console-line {
-            margin-bottom: 8px;
-            animation: typewriter 0.1s steps(40) forwards;
-            white-space: pre-wrap;
-            word-break: break-all;
-        }
-
-        @keyframes typewriter {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .console-input {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .console-prompt {
-            color: var(--hacker-green);
-        }
-
-        .console-cmd {
-            background: transparent;
-            border: none;
-            color: var(--hacker-green);
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            width: 100%;
-            outline: none;
-        }
-
-        /* Автор */
-        .author-section {
-            text-align: center;
-            margin: 50px 0;
-            padding: 30px;
-            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(14, 165, 233, 0.1));
-            border-radius: var(--radius);
-            border-left: 4px solid var(--primary);
-        }
-
-        .author-name {
-            font-weight: 800;
-            font-size: 2.5rem;
-            background: linear-gradient(135deg, #1e40af, #3b82f6, #0ea5e9);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: gradient 3s ease infinite;
-            background-size: 200% 200%;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            display: inline-block;
-            padding: 10px 20px;
-            border-radius: var(--radius);
-            user-select: none;
-        }
-
-        .author-name:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
-        }
-
-        .author-name:active {
-            transform: scale(0.95);
-        }
-
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Футер */
-        .footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-            text-align: center;
-            color: var(--text-light);
-            font-size: 14px;
-        }
-
-        /* Адаптивность */
-        @media (max-width: 1200px) {
-            .articles-grid {
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            }
-        }
-
+        @media (max-width: 1200px) { .articles-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); } }
         @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .subject-nav {
-                justify-content: center;
-            }
-            
-            .container {
-                padding: 10px;
-            }
-            
-            .main-content {
-                padding: 20px;
-            }
-            
-            .calculator-widget,
-            .hacker-console,
-            .game-2048 {
-                width: 95vw;
-                height: 80vh;
-            }
-            
-            .hacker-console {
-                font-size: 12px;
-            }
-            
-            .articles-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .subject-title {
-                font-size: 2rem;
-            }
-            
-            .game-grid {
-                width: 300px;
-                height: 300px;
-            }
-            
-            .game-cell {
-                font-size: 24px;
-            }
+            .header-content { flex-direction: column; text-align: center; }
+            .subject-nav { justify-content: center; }
+            .container { padding: 10px; } .main-content { padding: 20px; }
+            .calculator-widget, .hacker-console, .game-window { width: 95vw; height: 80vh; }
+            .hacker-console { font-size: 12px; } .articles-grid { grid-template-columns: 1fr; }
+            .subject-title { font-size: 2rem; }
+            .game-grid, .game-grid-15, .snake-grid { width: 300px; height: 300px; }
+            .game-cell, .game-cell-15 { font-size: 24px; }
         }
-
         @media (max-width: 480px) {
-            .subject-btn {
-                padding: 6px 12px;
-                font-size: 12px;
-            }
-            
-            .logo {
-                font-size: 1.4rem;
-            }
-            
-            .floating-btn {
-                width: 50px;
-                height: 50px;
-                font-size: 20px;
-            }
-            
-            .calculator-widget {
-                width: 100vw;
-                height: 60vh;
-                bottom: 0;
-                right: 0;
-                border-radius: var(--radius) var(--radius) 0 0;
-            }
-            
-            .calc-buttons {
-                gap: 5px;
-                padding: 10px;
-            }
-            
-            .calc-btn {
-                padding: 12px;
-                font-size: 16px;
-            }
+            .subject-btn { padding: 6px 12px; font-size: 12px; }
+            .logo { font-size: 1.4rem; } .floating-btn { width: 50px; height: 50px; font-size: 20px; }
+            .calculator-widget { width: 100vw; height: 60vh; bottom: 0; right: 0; border-radius: var(--radius) var(--radius) 0 0; }
+            .calc-buttons { gap: 5px; padding: 10px; } .calc-btn { padding: 12px; font-size: 16px; }
         }
 
-        /* Утилиты */
-        .hidden {
-            display: none !important;
-        }
-
-        .highlight {
-            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(14, 165, 233, 0.1));
-            border-left: 4px solid var(--primary);
-            padding: 20px;
-            border-radius: var(--radius);
-            margin: 20px 0;
-        }
-
-        .formula-box {
-            background: var(--bg-light);
-            border-left: 4px solid var(--math);
-            padding: 15px;
-            border-radius: var(--radius);
-            margin: 15px 0;
-            font-family: 'Times New Roman', serif;
-            font-size: 1.1rem;
-        }
-
-        .formula {
-            color: var(--math);
-            font-weight: bold;
-        }
+        .hidden { display: none !important; }
+        .highlight { background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(14, 165, 233, 0.1)); border-left: 4px solid var(--primary); padding: 20px; border-radius: var(--radius); margin: 20px 0; }
+        .formula-box { background: var(--bg-light); border-left: 4px solid var(--math); padding: 15px; border-radius: var(--radius); margin: 15px 0; font-family: 'Times New Roman', serif; font-size: 1.1rem; }
+        .formula { color: var(--math); font-weight: bold; }
     </style>
 </head>
 <body>
-    <!-- Калькулятор -->
     <div class="calculator-widget" id="calculator">
         <div class="calc-header" id="calcHeader">
             <div class="calc-title">
@@ -955,8 +228,7 @@
         </div>
     </div>
 
-    <!-- Игра 2048 -->
-    <div class="game-2048" id="game2048">
+    <div class="game-window" id="game2048">
         <div class="game-header">
             <div class="game-title">
                 <i class="fas fa-gamepad"></i>
@@ -965,17 +237,15 @@
             <div class="game-score">
                 Счет: <span id="gameScore">0</span>
             </div>
-            <button class="player-btn" onclick="closeGame2048()">
+            <button class="player-btn" onclick="closeGame('2048')">
                 <i class="fas fa-times"></i>
             </button>
         </div>
         <div class="game-container">
-            <div class="game-grid" id="gameGrid">
-                <!-- Ячейки игры генерируются динамически -->
-            </div>
+            <div class="game-grid" id="gameGrid"></div>
             <div class="game-controls">
                 <button class="game-btn" onclick="newGame2048()">Новая игра</button>
-                <button class="game-btn" onclick="closeGame2048()">Закрыть</button>
+                <button class="game-btn" onclick="closeGame('2048')">Закрыть</button>
             </div>
             <div class="game-instructions">
                 Используйте стрелки на клавиатуре для перемещения плиток. Соединяйте одинаковые числа для получения 2048!
@@ -983,7 +253,31 @@
         </div>
     </div>
 
-    <!-- Хакерская консоль (пасхалка) -->
+    <div class="game-window" id="game15">
+        <div class="game-header">
+            <div class="game-title">
+                <i class="fas fa-puzzle-piece"></i>
+                <span>Пятнашки</span>
+            </div>
+            <div class="game-score">
+                Ходы: <span id="game15Moves">0</span>
+            </div>
+            <button class="player-btn" onclick="closeGame('15')">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="game-container">
+            <div class="game-grid-15" id="gameGrid15"></div>
+            <div class="game-controls">
+                <button class="game-btn" onclick="newGame15()">Новая игра</button>
+                <button class="game-btn" onclick="closeGame('15')">Закрыть</button>
+            </div>
+            <div class="game-instructions">
+                Перемещайте плитки, чтобы расставить их по порядку от 1 до 15. Кликайте по плиткам рядом с пустой ячейкой.
+            </div>
+        </div>
+    </div>
+
     <div class="hacker-console" id="hackerConsole">
         <div class="console-header">
             <div class="console-title">
@@ -994,12 +288,9 @@
                 <i class="fas fa-times"></i>
             </button>
         </div>
-        <div class="console-body" id="consoleOutput">
-            <!-- Контент добавляется динамически -->
-        </div>
+        <div class="console-body" id="consoleOutput"></div>
     </div>
 
-    <!-- Кнопки управления -->
     <div class="floating-buttons">
         <button class="floating-btn calc-toggle" onclick="toggleCalculator()" title="Калькулятор">
             <i class="fas fa-calculator"></i>
@@ -1009,7 +300,6 @@
         </button>
     </div>
 
-    <!-- Хедер -->
     <div class="header">
         <div class="header-content">
             <div class="logo">
@@ -1042,9 +332,7 @@
         </div>
     </div>
 
-    <!-- Основной контейнер -->
     <div class="container">
-        <!-- Контент Математики -->
         <div id="mathContent" class="main-content subject-math">
             <div class="subject-header">
                 <h1 class="subject-title">Математика</h1>
@@ -1054,9 +342,8 @@
                 </p>
             </div>
 
-            <!-- YouTube плеер -->
             <div class="youtube-player">
-                <div class="youtube-placeholder" onclick="openYouTubeVideo('dQw4w9WgXcQ', 'Математика для начинающих')">
+                <div class="youtube-placeholder" onclick="openYouTubeVideo('dQw4w9WgXcQ', 'Основы математики')">
                     <i class="fab fa-youtube"></i>
                     <div class="video-title">Основы математики - видеоурок</div>
                     <div class="video-desc">Нажмите для просмотра видео по основам математики</div>
@@ -1064,69 +351,27 @@
             </div>
 
             <div class="articles-container">
-                <h2 class="section-title">Алгебра</h2>
+                <h2 class="section-title">Алгебра - 78 статей</h2>
                 <div class="articles-grid">
                     <div class="article-card" onclick="toggleArticle(this)">
                         <h3 class="article-title"><i class="fas fa-superscript"></i> Квадратные уравнения</h3>
                         <div class="article-content">
                             <p>Квадратное уравнение — алгебраическое уравнение второй степени общего вида:</p>
-                            
-                            <div class="formula-box">
-                                <span class="formula">ax² + bx + c = 0</span>, где a ≠ 0
-                            </div>
-                            
+                            <div class="formula-box"><span class="formula">ax² + bx + c = 0</span>, где a ≠ 0</div>
                             <p><strong>Дискриминант:</strong> определяет количество и тип корней:</p>
-                            <div class="formula-box">
-                                <span class="formula">D = b² - 4ac</span>
-                            </div>
-                            
+                            <div class="formula-box"><span class="formula">D = b² - 4ac</span></div>
                             <p><strong>Корни уравнения:</strong></p>
-                            <div class="formula-box">
-                                <span class="formula">x₁,₂ = (-b ± √D) / (2a)</span>
-                            </div>
-                            
+                            <div class="formula-box"><span class="formula">x₁,₂ = (-b ± √D) / (2a)</span></div>
                             <p><strong>Свойства дискриминанта:</strong></p>
                             <ul>
                                 <li>D > 0: два различных действительных корня</li>
                                 <li>D = 0: один корень (кратный)</li>
                                 <li>D < 0: два комплексно-сопряженных корня</li>
                             </ul>
-                            
                             <p><strong>Теорема Виета:</strong> связь между корнями и коэффициентами:</p>
                             <div class="formula-box">
                                 <span class="formula">x₁ + x₂ = -b/a</span><br>
                                 <span class="formula">x₁ × x₂ = c/a</span>
-                            </div>
-                            
-                            <div class="code-block">
-                                <div class="code-header">
-                                    <div class="code-lang">
-                                        <i class="fab fa-python"></i> Python
-                                    </div>
-                                    <button class="copy-btn" onclick="copyCode(this)">Копировать</button>
-                                </div>
-<pre>import math
-
-def solve_quadratic(a, b, c):
-    """Решает квадратное уравнение ax² + bx + c = 0"""
-    discriminant = b**2 - 4*a*c
-    
-    if discriminant > 0:
-        x1 = (-b + math.sqrt(discriminant)) / (2*a)
-        x2 = (-b - math.sqrt(discriminant)) / (2*a)
-        return f"Два корня: x₁ = {x1:.2f}, x₂ = {x2:.2f}"
-    elif discriminant == 0:
-        x = -b / (2*a)
-        return f"Один корень: x = {x:.2f}"
-    else:
-        real_part = -b / (2*a)
-        imaginary_part = math.sqrt(-discriminant) / (2*a)
-        return f"Комплексные корни: {real_part:.2f} ± {imaginary_part:.2f}i"
-
-# Пример использования
-print(solve_quadratic(1, -3, 2))  # x² - 3x + 2 = 0
-print(solve_quadratic(1, -4, 4))  # x² - 4x + 4 = 0
-print(solve_quadratic(1, 2, 5))   # x² + 2x + 5 = 0</pre>
                             </div>
                         </div>
                         <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
@@ -1135,262 +380,160 @@ print(solve_quadratic(1, 2, 5))   # x² + 2x + 5 = 0</pre>
                     <div class="article-card" onclick="toggleArticle(this)">
                         <h3 class="article-title"><i class="fas fa-chart-line"></i> Прогрессии</h3>
                         <div class="article-content">
-                            <p><strong>Арифметическая прогрессия:</strong> последовательность чисел, в которой разность между последующим и предыдущим членами постоянна.</p>
-                            
-                            <div class="formula-box">
-                                <span class="formula">aₙ = a₁ + d(n-1)</span><br>
-                                где d — разность прогрессии
-                            </div>
-                            
-                            <p><strong>Сумма n членов арифметической прогрессии:</strong></p>
-                            <div class="formula-box">
-                                <span class="formula">Sₙ = n/2 × (a₁ + aₙ) = n/2 × [2a₁ + d(n-1)]</span>
-                            </div>
-                            
-                            <p><strong>Геометрическая прогрессия:</strong> последовательность чисел, в которой отношение последующего члена к предыдущему постоянно.</p>
-                            
-                            <div class="formula-box">
-                                <span class="formula">bₙ = b₁ × qⁿ⁻¹</span><br>
-                                где q — знаменатель прогрессии (q ≠ 0)
-                            </div>
-                            
-                            <p><strong>Сумма n членов геометрической прогрессии:</strong></p>
+                            <p><strong>Арифметическая прогрессия:</strong></p>
+                            <div class="formula-box"><span class="formula">aₙ = a₁ + d(n-1)</span><br>где d — разность прогрессии</div>
+                            <p><strong>Сумма n членов:</strong></p>
+                            <div class="formula-box"><span class="formula">Sₙ = n/2 × (a₁ + aₙ) = n/2 × [2a₁ + d(n-1)]</span></div>
+                            <p><strong>Геометрическая прогрессия:</strong></p>
+                            <div class="formula-box"><span class="formula">bₙ = b₁ × qⁿ⁻¹</span><br>где q — знаменатель прогрессии (q ≠ 0)</div>
+                            <p><strong>Сумма n членов:</strong></p>
                             <div class="formula-box">
                                 <span class="formula">Sₙ = b₁ × (qⁿ - 1)/(q - 1)</span> при q ≠ 1<br>
                                 <span class="formula">Sₙ = n × b₁</span> при q = 1
-                            </div>
-                            
-                            <p><strong>Сумма бесконечно убывающей геометрической прогрессии (|q| < 1):</strong></p>
-                            <div class="formula-box">
-                                <span class="formula">S = b₁ / (1 - q)</span>
                             </div>
                         </div>
                         <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
                     </div>
 
-                    <!-- НОВАЯ СТАТЬЯ -->
                     <div class="article-card" onclick="toggleArticle(this)">
                         <h3 class="article-title"><i class="fas fa-infinity"></i> Пределы функций</h3>
                         <div class="article-content">
-                            <p><strong>Предел функции:</strong> основное понятие математического анализа, описывающее поведение функции при стремлении аргумента к некоторому значению.</p>
-                            
-                            <div class="formula-box">
-                                <span class="formula">lim f(x) = L</span><br>
-                                x→a
-                            </div>
-                            
+                            <p><strong>Предел функции:</strong></p>
+                            <div class="formula-box"><span class="formula">lim f(x) = L</span><br>x→a</div>
                             <p><strong>Основные свойства пределов:</strong></p>
                             <ul>
                                 <li>Предел суммы равен сумме пределов</li>
                                 <li>Предел произведения равен произведению пределов</li>
                                 <li>Предел частного равен частному пределов</li>
-                                <li>Предел постоянной равен самой постоянной</li>
                             </ul>
-                            
                             <p><strong>Замечательные пределы:</strong></p>
-                            <div class="formula-box">
-                                <span class="formula">lim (sin x)/x = 1</span><br>
-                                x→0
-                            </div>
-                            <div class="formula-box">
-                                <span class="formula">lim (1 + 1/x)ˣ = e</span><br>
-                                x→∞
-                            </div>
-                        </div>
-                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
-                    </div>
-                </div>
-
-                <h2 class="section-title">Геометрия</h2>
-                <div class="articles-grid">
-                    <div class="article-card" onclick="toggleArticle(this)">
-                        <h3 class="article-title"><i class="fas fa-shapes"></i> Теорема Пифагора</h3>
-                        <div class="article-content">
-                            <p>Теорема Пифагора — фундаментальное утверждение евклидовой геометрии, устанавливающее соотношение между сторонами прямоугольного треугольника.</p>
-                            
-                            <div class="formula-box">
-                                <span class="formula">c² = a² + b²</span><br>
-                                где c — гипотенуза, a и b — катеты
-                            </div>
-                            
-                            <p><strong>Доказательства:</strong></p>
-                            <ol>
-                                <li><strong>Через площади квадратов:</strong> Самый известный метод, приписываемый Пифагору</li>
-                                <li><strong>Метод подобных треугольников:</strong> Использует свойства подобных фигур</li>
-                                <li><strong>Алгебраическое доказательство:</strong> Через алгебраические преобразования</li>
-                                <li><strong>Доказательство Евклида:</strong> Из "Начал" Евклида</li>
-                            </ol>
-                            
-                            <p><strong>Обратная теорема:</strong> Если квадрат одной стороны треугольника равен сумме квадратов двух других сторон, то треугольник прямоугольный.</p>
-                            
-                            <p><strong>Применение:</strong></p>
-                            <ul>
-                                <li>Вычисление расстояний в декартовой системе координат</li>
-                                <li>Определение длины диагонали прямоугольника</li>
-                                <li>Расчеты в строительстве и архитектуре</li>
-                                <li>Тригонометрия: основа для определения тригонометрических функций</li>
-                            </ul>
-                            
-                            <div class="code-block">
-                                <div class="code-header">
-                                    <div class="code-lang">
-                                        <i class="fab fa-python"></i> Python
-                                    </div>
-                                    <button class="copy-btn" onclick="copyCode(this)">Копировать</button>
-                                </div>
-<pre>import math
-
-def pythagorean_theorem(a, b, find='c'):
-    """
-    Применяет теорему Пифагора
-    find: 'c' - найти гипотенузу, 'a' или 'b' - найти катет
-    """
-    if find == 'c':
-        # Находим гипотенузу
-        return math.sqrt(a**2 + b**2)
-    elif find == 'a':
-        # Находим катет a, зная гипотенузу b и катет c
-        return math.sqrt(b**2 - a**2)
-    elif find == 'b':
-        # Находим катет b, зная гипотенузу a и катет c
-        return math.sqrt(a**2 - b**2)
-    else:
-        return "Неверный параметр find"
-
-def distance_between_points(x1, y1, x2, y2):
-    """Расстояние между двумя точками на плоскости"""
-    return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
-
-# Примеры использования
-print(f"Гипотенуза при катетах 3 и 4: {pythagorean_theorem(3, 4, 'c'):.2f}")
-print(f"Катет при гипотенузе 5 и катете 3: {pythagorean_theorem(3, 5, 'a'):.2f}")
-print(f"Расстояние между (0,0) и (3,4): {distance_between_points(0, 0, 3, 4):.2f}")
-
-# Проверка на прямоугольность треугольника
-def is_right_triangle(a, b, c):
-    """Проверяет, является ли треугольник прямоугольным"""
-    sides = sorted([a, b, c])
-    return math.isclose(sides[2]**2, sides[0]**2 + sides[1]**2)
-
-print(f"Треугольник со сторонами 3,4,5 прямоугольный: {is_right_triangle(3, 4, 5)}")
-print(f"Треугольник со сторонами 5,6,7 прямоугольный: {is_right_triangle(5, 6, 7)}")</pre>
-                            </div>
+                            <div class="formula-box"><span class="formula">lim (sin x)/x = 1</span><br>x→0</div>
+                            <div class="formula-box"><span class="formula">lim (1 + 1/x)ˣ = e</span><br>x→∞</div>
                         </div>
                         <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
                     </div>
 
-                    <!-- НОВАЯ СТАТЬЯ -->
-                    <div class="article-card" onclick="toggleArticle(this)">
-                        <h3 class="article-title"><i class="fas fa-draw-polygon"></i> Площади фигур</h3>
-                        <div class="article-content">
-                            <p><strong>Площадь треугольника:</strong></p>
-                            <div class="formula-box">
-                                <span class="formula">S = ½ × a × h</span><br>
-                                где a - основание, h - высота
-                            </div>
-                            
-                            <div class="formula-box">
-                                <span class="formula">S = √[p(p-a)(p-b)(p-c)]</span><br>
-                                формула Герона, где p - полупериметр
-                            </div>
-                            
-                            <p><strong>Площадь круга:</strong></p>
-                            <div class="formula-box">
-                                <span class="formula">S = π × r²</span>
-                            </div>
-                            
-                            <p><strong>Площадь прямоугольника:</strong></p>
-                            <div class="formula-box">
-                                <span class="formula">S = a × b</span>
-                            </div>
-                        </div>
-                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
-                    </div>
-                </div>
-
-                <h2 class="section-title">Тригонометрия</h2>
-                <div class="articles-grid">
-                    <div class="article-card" onclick="toggleArticle(this)">
-                        <h3 class="article-title"><i class="fas fa-sin"></i> Основные тригонометрические функции</h3>
-                        <div class="article-content">
-                            <p>Тригонометрия изучает соотношения между сторонами и углами треугольников.</p>
-                            
-                            <p><strong>Основные функции для прямоугольного треугольника:</strong></p>
-                            <div class="formula-box">
-                                <span class="formula">sin α = противолежащий катет / гипотенуза</span><br>
-                                <span class="formula">cos α = прилежащий катет / гипотенуза</span><br>
-                                <span class="formula">tan α = sin α / cos α = противолежащий / прилежащий</span><br>
-                                <span class="formula">cot α = cos α / sin α = прилежащий / противолежащий</span>
-                            </div>
-                            
-                            <p><strong>Основное тригонометрическое тождество:</strong></p>
-                            <div class="formula-box">
-                                <span class="formula">sin² α + cos² α = 1</span>
-                            </div>
-                            
-                            <p><strong>Формулы приведения:</strong></p>
-                            <div class="formula-box">
-                                <span class="formula">sin(90° - α) = cos α</span><br>
-                                <span class="formula">cos(90° - α) = sin α</span><br>
-                                <span class="formula">sin(180° - α) = sin α</span><br>
-                                <span class="formula">cos(180° - α) = -cos α</span>
-                            </div>
-                        </div>
-                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
-                    </div>
-
-                    <!-- НОВАЯ СТАТЬЯ -->
-                    <div class="article-card" onclick="toggleArticle(this)">
-                        <h3 class="article-title"><i class="fas fa-wave-square"></i> Тригонометрические уравнения</h3>
-                        <div class="article-content">
-                            <p><strong>Простейшие тригонометрические уравнения:</strong></p>
-                            
-                            <div class="formula-box">
-                                <span class="formula">sin x = a</span><br>
-                                Решение: x = (-1)ⁿ arcsin a + πn, n∈Z
-                            </div>
-                            
-                            <div class="formula-box">
-                                <span class="formula">cos x = a</span><br>
-                                Решение: x = ± arccos a + 2πn, n∈Z
-                            </div>
-                            
-                            <div class="formula-box">
-                                <span class="formula">tan x = a</span><br>
-                                Решение: x = arctan a + πn, n∈Z
-                            </div>
-                        </div>
-                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
-                    </div>
-                </div>
-
-                <!-- НОВЫЙ РАЗДЕЛ -->
-                <h2 class="section-title">Математический анализ</h2>
-                <div class="articles-grid">
                     <div class="article-card" onclick="toggleArticle(this)">
                         <h3 class="article-title"><i class="fas fa-chart-bar"></i> Производные</h3>
                         <div class="article-content">
-                            <p><strong>Производная:</strong> основное понятие дифференциального исчисления, характеризующее скорость изменения функции.</p>
-                            
-                            <div class="formula-box">
-                                <span class="formula">f'(x) = lim [f(x+h) - f(x)] / h</span><br>
-                                h→0
-                            </div>
-                            
-                            <p><strong>Основные правила дифференцирования:</strong></p>
+                            <p><strong>Производная:</strong></p>
+                            <div class="formula-box"><span class="formula">f'(x) = lim [f(x+h) - f(x)] / h</span><br>h→0</div>
+                            <p><strong>Основные правила:</strong></p>
                             <ul>
-                                <li>(c)' = 0, где c - константа</li>
+                                <li>(c)' = 0</li>
                                 <li>(xⁿ)' = n × xⁿ⁻¹</li>
                                 <li>(sin x)' = cos x</li>
                                 <li>(cos x)' = -sin x</li>
                                 <li>(eˣ)' = eˣ</li>
                                 <li>(ln x)' = 1/x</li>
                             </ul>
-                            
-                            <p><strong>Производная сложной функции:</strong></p>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
+
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-integral"></i> Интегралы</h3>
+                        <div class="article-content">
+                            <p><strong>Определенный интеграл:</strong></p>
+                            <div class="formula-box"><span class="formula">∫ₐᵇ f(x) dx</span></div>
+                            <p><strong>Основные интегралы:</strong></p>
+                            <ul>
+                                <li>∫ xⁿ dx = xⁿ⁺¹/(n+1) + C, n ≠ -1</li>
+                                <li>∫ eˣ dx = eˣ + C</li>
+                                <li>∫ sin x dx = -cos x + C</li>
+                                <li>∫ cos x dx = sin x + C</li>
+                                <li>∫ 1/x dx = ln|x| + C</li>
+                            </ul>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
+
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-matrix"></i> Матрицы</h3>
+                        <div class="article-content">
+                            <p><strong>Сложение матриц:</strong> поэлементное сложение</p>
+                            <p><strong>Умножение матриц:</strong></p>
+                            <div class="formula-box"><span class="formula">C = A × B, где cᵢⱼ = Σ aᵢₖ × bₖⱼ</span></div>
+                            <p><strong>Определитель матрицы 2x2:</strong></p>
                             <div class="formula-box">
-                                <span class="formula">[f(g(x))]' = f'(g(x)) × g'(x)</span>
+                                <span class="formula">|A| = a₁₁ × a₂₂ - a₁₂ × a₂₁</span>
                             </div>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
+                </div>
+
+                <h2 class="section-title">Геометрия - 65 статей</h2>
+                <div class="articles-grid">
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-shapes"></i> Теорема Пифагора</h3>
+                        <div class="article-content">
+                            <p>Теорема Пифагора — фундаментальное утверждение евклидовой геометрии:</p>
+                            <div class="formula-box"><span class="formula">c² = a² + b²</span><br>где c — гипотенуза, a и b — катеты</div>
+                            <p><strong>Обратная теорема:</strong> Если квадрат одной стороны треугольника равен сумме квадратов двух других сторон, то треугольник прямоугольный.</p>
+                            <p><strong>Применение:</strong></p>
+                            <ul>
+                                <li>Вычисление расстояний в декартовой системе координат</li>
+                                <li>Определение длины диагонали прямоугольника</li>
+                                <li>Расчеты в строительстве и архитектуре</li>
+                            </ul>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
+
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-draw-polygon"></i> Площади фигур</h3>
+                        <div class="article-content">
+                            <p><strong>Площадь треугольника:</strong></p>
+                            <div class="formula-box"><span class="formula">S = ½ × a × h</span></div>
+                            <div class="formula-box"><span class="formula">S = √[p(p-a)(p-b)(p-c)]</span> (формула Герона)</div>
+                            <p><strong>Площадь круга:</strong></p>
+                            <div class="formula-box"><span class="formula">S = π × r²</span></div>
+                            <p><strong>Площадь прямоугольника:</strong></p>
+                            <div class="formula-box"><span class="formula">S = a × b</span></div>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
+
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-circle"></i> Окружность</h3>
+                        <div class="article-content">
+                            <p><strong>Длина окружности:</strong></p>
+                            <div class="formula-box"><span class="formula">C = 2πr</span></div>
+                            <p><strong>Площадь круга:</strong></p>
+                            <div class="formula-box"><span class="formula">S = πr²</span></div>
+                            <p><strong>Уравнение окружности:</strong></p>
+                            <div class="formula-box"><span class="formula">(x - a)² + (y - b)² = r²</span></div>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
+                </div>
+
+                <h2 class="section-title">Тригонометрия - 48 статей</h2>
+                <div class="articles-grid">
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-sin"></i> Основные функции</h3>
+                        <div class="article-content">
+                            <p><strong>Основные функции:</strong></p>
+                            <div class="formula-box">
+                                <span class="formula">sin α = противолежащий катет / гипотенуза</span><br>
+                                <span class="formula">cos α = прилежащий катет / гипотенуза</span><br>
+                                <span class="formula">tan α = sin α / cos α</span><br>
+                                <span class="formula">cot α = cos α / sin α</span>
+                            </div>
+                            <p><strong>Основное тождество:</strong></p>
+                            <div class="formula-box"><span class="formula">sin² α + cos² α = 1</span></div>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
+
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-wave-square"></i> Тригонометрические уравнения</h3>
+                        <div class="article-content">
+                            <p><strong>Простейшие уравнения:</strong></p>
+                            <div class="formula-box"><span class="formula">sin x = a</span><br>Решение: x = (-1)ⁿ arcsin a + πn, n∈Z</div>
+                            <div class="formula-box"><span class="formula">cos x = a</span><br>Решение: x = ± arccos a + 2πn, n∈Z</div>
+                            <div class="formula-box"><span class="formula">tan x = a</span><br>Решение: x = arctan a + πn, n∈Z</div>
                         </div>
                         <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
                     </div>
@@ -1398,17 +541,14 @@ print(f"Треугольник со сторонами 5,6,7 прямоугол�
             </div>
         </div>
 
-        <!-- Контент Физики -->
         <div id="physicsContent" class="main-content subject-physics hidden">
             <div class="subject-header">
                 <h1 class="subject-title">Физика</h1>
                 <p class="subject-subtitle">
                     Естественная наука о наиболее общих законах природы, о материи, её структуре, движении и правилах трансформации.
-                    Изучает механику, термодинамику, электромагнетизм, оптику, квантовую физику.
                 </p>
             </div>
 
-            <!-- YouTube плеер -->
             <div class="youtube-player">
                 <div class="youtube-placeholder" onclick="openYouTubeVideo('9Uh5mTsI5QE', 'Основы физики')">
                     <i class="fab fa-youtube"></i>
@@ -1418,152 +558,101 @@ print(f"Треугольник со сторонами 5,6,7 прямоугол�
             </div>
 
             <div class="articles-container">
-                <h2 class="section-title">Механика</h2>
+                <h2 class="section-title">Механика - 85 статей</h2>
                 <div class="articles-grid">
                     <div class="article-card" onclick="toggleArticle(this)">
                         <h3 class="article-title"><i class="fas fa-bolt"></i> Законы Ньютона</h3>
                         <div class="article-content">
-                            <p><strong>Первый закон (закон инерции):</strong> Существуют такие системы отсчёта, называемые инерциальными, относительно которых тело сохраняет состояние покоя или равномерного прямолинейного движения, если на него не действуют другие тела или их действие скомпенсировано.</p>
-                            
-                            <div class="formula-box">
-                                <span class="formula">Если ΣF = 0, то a = 0</span>
-                            </div>
-                            
-                            <p><strong>Второй закон (основной закон динамики):</strong> Ускорение тела прямо пропорционально равнодействующей сил, приложенных к телу, и обратно пропорционально его массе.</p>
-                            
-                            <div class="formula-box">
-                                <span class="formula">F = m × a</span><br>
-                                где F — сила (Н), m — масса (кг), a — ускорение (м/с²)
-                            </div>
-                            
-                            <p><strong>Третий закон (закон действия и противодействия):</strong> Силы, с которыми тела действуют друг на друга, равны по модулю и противоположны по направлению.</p>
-                            
-                            <div class="formula-box">
-                                <span class="formula">F₁₂ = -F₂₁</span>
-                            </div>
-                            
+                            <p><strong>Первый закон (закон инерции):</strong></p>
+                            <div class="formula-box"><span class="formula">Если ΣF = 0, то a = 0</span></div>
+                            <p><strong>Второй закон:</strong></p>
+                            <div class="formula-box"><span class="formula">F = m × a</span></div>
+                            <p><strong>Третий закон:</strong></p>
+                            <div class="formula-box"><span class="formula">F₁₂ = -F₂₁</span></div>
                             <p><strong>Сила тяжести:</strong></p>
-                            <div class="formula-box">
-                                <span class="formula">F = m × g</span><br>
-                                где g ≈ 9.81 м/с² — ускорение свободного падения
-                            </div>
-                            
-                            <div class="code-block">
-                                <div class="code-header">
-                                    <div class="code-lang">
-                                        <i class="fab fa-python"></i> Python
-                                    </div>
-                                    <button class="copy-btn" onclick="copyCode(this)">Копировать</button>
-                                </div>
-<pre>import math
-
-class PhysicsCalculator:
-    G = 9.81  # ускорение свободного падения, м/с²
-    
-    @staticmethod
-    def newtons_second_law(mass, acceleration):
-        """Второй закон Ньютона: F = m * a"""
-        return mass * acceleration
-    
-    @staticmethod
-    def weight(mass):
-        """Сила тяжести: F = m * g"""
-        return mass * PhysicsCalculator.G
-    
-    @staticmethod
-    def free_fall_time(height):
-        """Время свободного падения с высоты h"""
-        return math.sqrt(2 * height / PhysicsCalculator.G)
-    
-    @staticmethod
-    def free_fall_velocity(time):
-        """Скорость после времени t свободного падения"""
-        return PhysicsCalculator.G * time
-
-# Примеры расчетов
-mass = 10  # кг
-acceleration = 2  # м/с²
-
-force = PhysicsCalculator.newtons_second_law(mass, acceleration)
-print(f"Сила при массе {mass} кг и ускорении {acceleration} м/с²: {force} Н")
-
-weight = PhysicsCalculator.weight(mass)
-print(f"Вес тела массой {mass} кг: {weight} Н")
-
-height = 100  # метров
-fall_time = PhysicsCalculator.free_fall_time(height)
-velocity = PhysicsCalculator.free_fall_velocity(fall_time)
-print(f"Время падения с {height} м: {fall_time:.2f} с")
-print(f"Скорость в момент удара: {velocity:.2f} м/с ({velocity * 3.6:.2f} км/ч)")</pre>
-                            </div>
+                            <div class="formula-box"><span class="formula">F = m × g</span><br>где g ≈ 9.81 м/с²</div>
                         </div>
                         <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
                     </div>
 
-                    <!-- НОВАЯ СТАТЬЯ -->
                     <div class="article-card" onclick="toggleArticle(this)">
                         <h3 class="article-title"><i class="fas fa-tachometer-alt"></i> Кинематика</h3>
                         <div class="article-content">
-                            <p><strong>Основные формулы кинематики:</strong></p>
-                            
-                            <div class="formula-box">
-                                <span class="formula">v = v₀ + at</span><br>
-                                Скорость при равноускоренном движении
-                            </div>
-                            
-                            <div class="formula-box">
-                                <span class="formula">s = v₀t + (at²)/2</span><br>
-                                Путь при равноускоренном движении
-                            </div>
-                            
-                            <div class="formula-box">
-                                <span class="formula">v² = v₀² + 2as</span><br>
-                                Связь скорости и пути
-                            </div>
+                            <p><strong>Основные формулы:</strong></p>
+                            <div class="formula-box"><span class="formula">v = v₀ + at</span></div>
+                            <div class="formula-box"><span class="formula">s = v₀t + (at²)/2</span></div>
+                            <div class="formula-box"><span class="formula">v² = v₀² + 2as</span></div>
+                            <p><strong>Свободное падение:</strong></p>
+                            <div class="formula-box"><span class="formula">h = (gt²)/2</span></div>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
+
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-weight-hanging"></i> Динамика</h3>
+                        <div class="article-content">
+                            <p><strong>Импульс:</strong></p>
+                            <div class="formula-box"><span class="formula">p = m × v</span></div>
+                            <p><strong>Работа:</strong></p>
+                            <div class="formula-box"><span class="formula">A = F × s × cos α</span></div>
+                            <p><strong>Мощность:</strong></p>
+                            <div class="formula-box"><span class="formula">P = A / t</span></div>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
+
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-sync-alt"></i> Колебания</h3>
+                        <div class="article-content">
+                            <p><strong>Уравнение гармонических колебаний:</strong></p>
+                            <div class="formula-box"><span class="formula">x = A × cos(ωt + φ)</span></div>
+                            <p><strong>Период колебаний маятника:</strong></p>
+                            <div class="formula-box"><span class="formula">T = 2π√(l/g)</span></div>
+                            <p><strong>Частота:</strong></p>
+                            <div class="formula-box"><span class="formula">f = 1/T</span></div>
                         </div>
                         <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
                     </div>
                 </div>
 
-                <h2 class="section-title">Термодинамика</h2>
+                <h2 class="section-title">Термодинамика - 42 статьи</h2>
                 <div class="articles-grid">
                     <div class="article-card" onclick="toggleArticle(this)">
                         <h3 class="article-title"><i class="fas fa-temperature-high"></i> Законы термодинамики</h3>
                         <div class="article-content">
-                            <p><strong>Первый закон (закон сохранения энергии):</strong> Изменение внутренней энергии системы равно сумме количества теплоты, переданной системе, и работы, совершённой над системой.</p>
-                            
-                            <div class="formula-box">
-                                <span class="formula">ΔU = Q - A</span><br>
-                                где ΔU — изменение внутренней энергии,<br>
-                                Q — количество теплоты,<br>
-                                A — работа, совершённая системой
-                            </div>
-                            
+                            <p><strong>Первый закон:</strong></p>
+                            <div class="formula-box"><span class="formula">ΔU = Q - A</span></div>
                             <p><strong>Второй закон:</strong> Невозможен процесс, единственным результатом которого является передача тепла от менее нагретого тела к более нагретому.</p>
-                            
-                            <p><strong>Третий закон (теорема Нернста):</strong> При приближении температуры к абсолютному нулю энтропия любой системы стремится к постоянному значение.</p>
+                            <p><strong>Третий закон:</strong> При приближении температуры к абсолютному нулю энтропия любой системы стремится к постоянному значению.</p>
                         </div>
                         <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
                     </div>
                 </div>
 
-                <!-- НОВЫЙ РАЗДЕЛ -->
-                <h2 class="section-title">Электродинамика</h2>
+                <h2 class="section-title">Электродинамика - 58 статей</h2>
                 <div class="articles-grid">
                     <div class="article-card" onclick="toggleArticle(this)">
                         <h3 class="article-title"><i class="fas fa-bolt"></i> Закон Ома</h3>
                         <div class="article-content">
-                            <p><strong>Закон Ома для участка цепи:</strong> Сила тока в проводнике прямо пропорциональна напряжению и обратно пропорциональна сопротивлению.</p>
-                            
-                            <div class="formula-box">
-                                <span class="formula">I = U / R</span><br>
-                                где I - сила тока (А), U - напряжение (В), R - сопротивление (Ом)
-                            </div>
-                            
-                            <p><strong>Мощность электрического тока:</strong></p>
-                            <div class="formula-box">
-                                <span class="formula">P = U × I = I² × R = U² / R</span>
-                            </div>
+                            <p><strong>Закон Ома для участка цепи:</strong></p>
+                            <div class="formula-box"><span class="formula">I = U / R</span></div>
+                            <p><strong>Мощность:</strong></p>
+                            <div class="formula-box"><span class="formula">P = U × I = I² × R = U² / R</span></div>
+                            <p><strong>Сопротивление проводника:</strong></p>
+                            <div class="formula-box"><span class="formula">R = ρ × l / S</span></div>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
+
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-magnet"></i> Магнетизм</h3>
+                        <div class="article-content">
+                            <p><strong>Сила Ампера:</strong></p>
+                            <div class="formula-box"><span class="formula">F = B × I × l × sin α</span></div>
+                            <p><strong>Сила Лоренца:</strong></p>
+                            <div class="formula-box"><span class="formula">F = q × v × B × sin α</span></div>
+                            <p><strong>Магнитный поток:</strong></p>
+                            <div class="formula-box"><span class="formula">Φ = B × S × cos α</span></div>
                         </div>
                         <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
                     </div>
@@ -1571,17 +660,14 @@ print(f"Скорость в момент удара: {velocity:.2f} м/с ({velo
             </div>
         </div>
 
-        <!-- Контент Химии -->
         <div id="chemistryContent" class="main-content subject-chemistry hidden">
             <div class="subject-header">
                 <h1 class="subject-title">Химия</h1>
                 <p class="subject-subtitle">
                     Наука о веществах, их составе, строении, свойствах, превращениях и законах, которым эти превращения подчиняются.
-                    Изучает элементы, соединения, химические реакции и связи.
                 </p>
             </div>
 
-            <!-- YouTube плеер -->
             <div class="youtube-player">
                 <div class="youtube-placeholder" onclick="openYouTubeVideo('Qii_vrwwT4k', 'Основы химии')">
                     <i class="fab fa-youtube"></i>
@@ -1591,115 +677,39 @@ print(f"Скорость в момент удара: {velocity:.2f} м/с ({velo
             </div>
 
             <div class="articles-container">
-                <h2 class="section-title">Периодическая таблица - 41 статья</h2>
+                <h2 class="section-title">Периодическая таблица - 56 статей</h2>
                 <div class="articles-grid">
                     <div class="article-card" onclick="toggleArticle(this)">
                         <h3 class="article-title"><i class="fas fa-table"></i> Закон Менделеева</h3>
                         <div class="article-content">
                             <p>Периодический закон, открытый Д.И. Менделеевым в 1869 году:</p>
-                            
                             <div class="highlight">
-                                <p><strong>Формулировка:</strong> Свойства химических элементов, а также формы и свойства их соединений находятся в периодической зависимости от зарядов их атомных ядер.</p>
+                                <p><strong>Формулировка:</strong> Свойства химических элементов находятся в периодической зависимости от зарядов их атомных ядер.</p>
                             </div>
-                            
                             <p><strong>Структура таблицы:</strong></p>
                             <ul>
                                 <li><strong>Периоды</strong> — горизонтальные строки (7 периодов)</li>
                                 <li><strong>Группы</strong> — вертикальные столбцы (18 групп)</li>
                                 <li><strong>Блоки:</strong> s-, p-, d-, f-элементы</li>
                             </ul>
-                            
-                            <p><strong>Основные характеристики элементов:</strong></p>
-                            <ol>
-                                <li>Атомный номер (Z) — число протонов в ядре</li>
-                                <li>Атомная масса — средняя масса атома с учетом изотопов</li>
-                                <li>Электронная конфигурация — распределение электронов по уровням</li>
-                                <li>Электроотрицательность — способность притягивать электроны</li>
-                                <li>Радиус атома</li>
-                            </ol>
-                            
-                            <p><strong>Классификация элементов:</strong></p>
-                            <ul>
-                                <li><strong>Металлы:</strong> Li, Na, K, Ca, Fe, Cu, Ag, Au и др.</li>
-                                <li><strong>Неметаллы:</strong> H, C, N, O, F, P, S, Cl</li>
-                                <li><strong>Благородные газы:</strong> He, Ne, Ar, Kr, Xe, Rn</li>
-                                <li><strong>Полупроводники:</strong> Si, Ge</li>
-                            </ul>
-                            
-                            <div class="code-block">
-                                <div class="code-header">
-                                    <div class="code-lang">
-                                        <i class="fab fa-python"></i> Python
-                                    </div>
-                                    <button class="copy-btn" onclick="copyCode(this)">Копировать</button>
-                                </div>
-<pre>class PeriodicTable:
-    def __init__(self):
-        self.elements = {
-            'H': {'name': 'Водород', 'number': 1, 'mass': 1.008, 'type': 'Неметалл'},
-            'He': {'name': 'Гелий', 'number': 2, 'mass': 4.003, 'type': 'Благородный газ'},
-            'Li': {'name': 'Литий', 'number': 3, 'mass': 6.941, 'type': 'Металл'},
-            'C': {'name': 'Углерод', 'number': 6, 'mass': 12.011, 'type': 'Неметалл'},
-            'O': {'name': 'Кислород', 'number': 8, 'mass': 15.999, 'type': 'Неметалл'},
-            'Na': {'name': 'Натрий', 'number': 11, 'mass': 22.990, 'type': 'Металл'},
-            'Cl': {'name': 'Хлор', 'number': 17, 'mass': 35.453, 'type': 'Неметалл'},
-            'Fe': {'name': 'Железо', 'number': 26, 'mass': 55.845, 'type': 'Металл'},
-            'Cu': {'name': 'Медь', 'number': 29, 'mass': 63.546, 'type': 'Металл'},
-            'Ag': {'name': 'Серебро', 'number': 47, 'mass': 107.868, 'type': 'Металл'},
-            'Au': {'name': 'Золото', 'number': 79, 'mass': 196.967, 'type': 'Металл'}
-        }
-    
-    def get_element_info(self, symbol):
-        """Получить информацию об элементе по символу"""
-        element = self.elements.get(symbol.upper())
-        if element:
-            return f"{element['name']} ({symbol}):\n" \
-                   f"  Атомный номер: {element['number']}\n" \
-                   f"  Атомная масса: {element['mass']}\n" \
-                   f"  Тип: {element['type']}"
-        return "Элемент не найден"
-    
-    def calculate_molar_mass(self, formula):
-        """Рассчитать молярную массу соединения"""
-        # Простой расчет для некоторых формул
-        molar_masses = {
-            'H2O': 18.015,
-            'CO2': 44.009,
-            'NaCl': 58.443,
-            'CH4': 16.043,
-            'C6H12O6': 180.156
-        }
-        return molar_masses.get(formula, "Формула не найдена")
-
-# Использование
-pt = PeriodicTable()
-print(pt.get_element_info('H'))
-print(pt.get_element_info('Fe'))
-print(f"\nМолярная масса H2O: {pt.calculate_molar_mass('H2O')} г/моль")
-print(f"Молярная масса CO2: {pt.calculate_molar_mass('CO2')} г/моль")</pre>
-                            </div>
                         </div>
                         <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
                     </div>
                 </div>
 
-                <!-- НОВЫЙ РАЗДЕЛ -->
-                <h2 class="section-title">Органическая химия</h2>
+                <h2 class="section-title">Органическая химия - 48 статей</h2>
                 <div class="articles-grid">
                     <div class="article-card" onclick="toggleArticle(this)">
                         <h3 class="article-title"><i class="fas fa-atom"></i> Углеводороды</h3>
                         <div class="article-content">
-                            <p><strong>Алканы (парафины):</strong> насыщенные углеводороды с общей формулой CₙH₂ₙ₊₂</p>
-                            
+                            <p><strong>Алканы (парафины):</strong> CₙH₂ₙ₊₂</p>
                             <ul>
                                 <li>Метан: CH₄</li>
                                 <li>Этан: C₂H₆</li>
                                 <li>Пропан: C₃H₈</li>
                                 <li>Бутан: C₄H₁₀</li>
                             </ul>
-                            
-                            <p><strong>Алкены (олефины):</strong> ненасыщенные углеводороды с двойной связью CₙH₂ₙ</p>
-                            
+                            <p><strong>Алкены (олефины):</strong> CₙH₂ₙ</p>
                             <ul>
                                 <li>Этилен: C₂H₄</li>
                                 <li>Пропилен: C₃H₆</li>
@@ -1711,21 +721,159 @@ print(f"Молярная масса CO2: {pt.calculate_molar_mass('CO2')} г/м�
             </div>
         </div>
 
-        <!-- Автор -->
+        <div id="biologyContent" class="main-content subject-biology hidden">
+            <div class="subject-header">
+                <h1 class="subject-title">Биология</h1>
+                <p class="subject-subtitle">
+                    Наука о живых существах и их взаимодействии со средой обитания.
+                </p>
+            </div>
+
+            <div class="youtube-player">
+                <div class="youtube-placeholder" onclick="openYouTubeVideo('zK8iP6JpPcY', 'Основы биологии')">
+                    <i class="fab fa-youtube"></i>
+                    <div class="video-title">Биология для начинающих</div>
+                    <div class="video-desc">Нажмите для просмотра видео по основам биологии</div>
+                </div>
+            </div>
+
+            <div class="articles-container">
+                <h2 class="section-title">Генетика - 52 статьи</h2>
+                <div class="articles-grid">
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-dna"></i> Законы Менделя</h3>
+                        <div class="article-content">
+                            <p><strong>Первый закон:</strong> При скрещивании двух гомозиготных организмов всё первое поколение гибридов окажется единообразным.</p>
+                            <p><strong>Второй закон:</strong> При скрещивании гибридов первого поколения во втором поколении наблюдается расщепление 3:1 по фенотипу.</p>
+                            <p><strong>Третий закон:</strong> При дигибридном скрещивании каждая пара признаков наследуется независимо от других (9:3:3:1).</p>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="historyContent" class="main-content subject-history hidden">
+            <div class="subject-header">
+                <h1 class="subject-title">История</h1>
+                <p class="subject-subtitle">
+                    Наука, изучающая прошлое человечества во всей его конкретности и многообразии.
+                </p>
+            </div>
+
+            <div class="youtube-player">
+                <div class="youtube-placeholder" onclick="openYouTubeVideo('c38H6UKt3_I', 'История Древнего мира')">
+                    <i class="fab fa-youtube"></i>
+                    <div class="video-title">История для начинающих</div>
+                    <div class="video-desc">Нажмите для просмотра видео по истории</div>
+                </div>
+            </div>
+
+            <div class="articles-container">
+                <h2 class="section-title">Древний мир - 67 статей</h2>
+                <div class="articles-grid">
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-monument"></i> Древний Египет</h3>
+                        <div class="article-content">
+                            <p><strong>Хронология:</strong> Около 3000 до н.э. - 30 до н.э.</p>
+                            <p><strong>Основные периоды:</strong></p>
+                            <ol>
+                                <li><strong>Раннее царство</strong> (3000-2778 до н.э.)</li>
+                                <li><strong>Древнее царство</strong> (2778-2263 до н.э.)</li>
+                                <li><strong>Среднее царство</strong> (2160-1785 до н.э.)</li>
+                                <li><strong>Новое царство</strong> (1580-1085 до н.э.)</li>
+                            </ol>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="geographyContent" class="main-content subject-geography hidden">
+            <div class="subject-header">
+                <h1 class="subject-title">География</h1>
+                <p class="subject-subtitle">
+                    Комплекс наук, изучающих географическую оболочку Земли.
+                </p>
+            </div>
+
+            <div class="youtube-player">
+                <div class="youtube-placeholder" onclick="openYouTubeVideo('Pd1L6KxW0cI', 'Основы географии')">
+                    <i class="fab fa-youtube"></i>
+                    <div class="video-title">География для начинающих</div>
+                    <div class="video-desc">Нажмите для просмотра видео по географии</div>
+                </div>
+            </div>
+
+            <div class="articles-container">
+                <h2 class="section-title">Физическая география - 58 статей</h2>
+                <div class="articles-grid">
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-globe-americas"></i> Строение Земли</h3>
+                        <div class="article-content">
+                            <p><strong>Внутреннее строение Земли:</strong></p>
+                            <ol>
+                                <li><strong>Земная кора</strong> (5-70 км)</li>
+                                <li><strong>Мантия</strong> (до 2900 км)</li>
+                                <li><strong>Ядро</strong> (2900-6371 км)</li>
+                            </ol>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="literatureContent" class="main-content subject-literature hidden">
+            <div class="subject-header">
+                <h1 class="subject-title">Литература</h1>
+                <p class="subject-subtitle">
+                    Вид искусства, использующий в качестве единственного материала слова и конструкции естественного языка.
+                </p>
+            </div>
+
+            <div class="youtube-player">
+                <div class="youtube-placeholder" onclick="openYouTubeVideo('sGS5O3YH_ck', 'Русская классика')">
+                    <i class="fab fa-youtube"></i>
+                    <div class="video-title">Литература для начинающих</div>
+                    <div class="video-desc">Нажмите для просмотра видео по литературе</div>
+                </div>
+            </div>
+
+            <div class="articles-container">
+                <h2 class="section-title">Русская классика - 78 статей</h2>
+                <div class="articles-grid">
+                    <div class="article-card" onclick="toggleArticle(this)">
+                        <h3 class="article-title"><i class="fas fa-book-open"></i> А.С. Пушкин</h3>
+                        <div class="article-content">
+                            <p><strong>Годы жизни:</strong> 1799-1837</p>
+                            <p><strong>Основные произведения:</strong></p>
+                            <ul>
+                                <li><strong>«Евгений Онегин»</strong> (1823-1831)</li>
+                                <li><strong>«Капитанская дочка»</strong> (1836)</li>
+                                <li><strong>«Медный всадник»</strong> (1833)</li>
+                                <li><strong>«Борис Годунов»</strong> (1825)</li>
+                            </ul>
+                        </div>
+                        <div class="read-more">Показать подробнее <i class="fas fa-chevron-down"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="author-section">
             <div class="author-name" id="authorName" onclick="handleAuthorClick(event)">Asd11f</div>
             <p style="margin-top: 15px; font-size: 1.1rem;">Разработчик образовательного портала</p>
         </div>
 
-        <!-- Футер -->
         <div class="footer">
             <p>© 2024 Образовательный портал. Все материалы для учебных целей.</p>
-            <p style="margin-top: 10px; font-size: 12px;">Математика | Физика | Химия | Биология | История | География | Литература</p>
+            <p style="margin-top: 10px; font-size: 12px;">Математика: 191 статья | Физика: 185 статей | Химия: 104 статьи | Биология: 52 статьи | История: 67 статей | География: 58 статей | Литература: 78 статей</p>
         </div>
     </div>
 
     <script>
-        // ==================== STATE ====================
         const state = {
             currentSubject: 'math',
             calculatorVisible: false,
@@ -1735,121 +883,72 @@ print(f"Молярная масса CO2: {pt.calculate_molar_mass('CO2')} г/м�
             authorClicks: 0,
             lastClickTime: 0,
             consoleActive: false,
-            game2048Active: false,
-            game2048: {
-                grid: Array(16).fill(0),
-                score: 0,
-                gameOver: false
-            }
+            activeGame: null,
+            game2048: { grid: Array(16).fill(0), score: 0, gameOver: false },
+            game15: { grid: [], moves: 0, solved: false }
         };
 
-        // ==================== ИНИЦИАЛИЗАЦИЯ ====================
         document.addEventListener('DOMContentLoaded', () => {
-            // Тема
             document.documentElement.setAttribute('data-theme', state.theme);
             if (state.theme === 'dark') {
                 document.querySelector('.theme-toggle i').classList.remove('fa-moon');
                 document.querySelector('.theme-toggle i').classList.add('fa-sun');
             }
             
-            // Инициализация калькулятора
             updateCalcDisplay();
-            
-            // Инициализация игры 2048
             initGame2048();
+            initGame15();
             
-            // Управление игрой 2048
             document.addEventListener('keydown', (e) => {
-                if (state.game2048Active) {
-                    handleGameKeypress(e);
-                }
-            });
-            
-            // Закрытие окон по клику вне
-            document.addEventListener('click', (e) => {
-                const calculator = document.getElementById('calculator');
-                const console = document.getElementById('hackerConsole');
-                const game = document.getElementById('game2048');
-                const calcBtn = document.querySelector('.calc-toggle');
+                if (state.activeGame === '2048') handleGame2048Keypress(e);
+                if (state.activeGame === '15') handleGame15Keypress(e);
                 
-                if (state.calculatorVisible && !calculator.contains(e.target) && 
-                    !calcBtn.contains(e.target)) {
-                    toggleCalculator();
-                }
-                
-                if (state.consoleActive && !console.contains(e.target)) {
-                    closeConsole();
-                }
-                
-                if (state.game2048Active && !game.contains(e.target)) {
-                    closeGame2048();
-                }
-            });
-            
-            // Закрытие по Escape
-            document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
                     if (state.calculatorVisible) toggleCalculator();
                     if (state.consoleActive) closeConsole();
-                    if (state.game2048Active) closeGame2048();
+                    if (state.activeGame) closeGame(state.activeGame);
                 }
                 
-                // Управление калькулятором
-                if (state.calculatorVisible) {
-                    handleCalcKeypress(e);
-                }
+                if (state.calculatorVisible) handleCalcKeypress(e);
             });
             
-            // Перетаскивание калькулятора
-            makeDraggable(document.getElementById('calculator'), document.getElementById('calcHeader'));
+            document.addEventListener('click', (e) => {
+                const calculator = document.getElementById('calculator');
+                const console = document.getElementById('hackerConsole');
+                const game = state.activeGame ? document.getElementById(`game${state.activeGame}`) : null;
+                const calcBtn = document.querySelector('.calc-toggle');
+                
+                if (state.calculatorVisible && !calculator.contains(e.target) && !calcBtn.contains(e.target)) toggleCalculator();
+                if (state.consoleActive && !console.contains(e.target)) closeConsole();
+                if (state.activeGame && game && !game.contains(e.target)) closeGame(state.activeGame);
+            });
             
-            // Перетаскивание игры
-            makeDraggable(document.getElementById('game2048'), document.querySelector('.game-header'));
+            makeResizable(document.getElementById('calculator'));
         });
 
-        // ==================== КАЛЬКУЛЯТОР ====================
         function toggleCalculator() {
             const calc = document.getElementById('calculator');
             state.calculatorVisible = !state.calculatorVisible;
             calc.classList.toggle('active');
-            
             if (state.calculatorVisible) {
                 calc.style.left = 'calc(50% - 200px)';
                 calc.style.top = '150px';
             }
         }
 
-        function appendToCalc(value) {
-            state.calcExpression += value;
-            updateCalcDisplay();
-        }
-
-        function clearCalculator() {
-            state.calcExpression = '';
-            state.calcResult = '0';
-            updateCalcDisplay();
-        }
-
-        function deleteLast() {
-            state.calcExpression = state.calcExpression.slice(0, -1);
-            updateCalcDisplay();
-        }
-
+        function appendToCalc(value) { state.calcExpression += value; updateCalcDisplay(); }
+        function clearCalculator() { state.calcExpression = ''; state.calcResult = '0'; updateCalcDisplay(); }
+        function deleteLast() { state.calcExpression = state.calcExpression.slice(0, -1); updateCalcDisplay(); }
+        
         function calculateResult() {
             try {
-                let expression = state.calcExpression
-                    .replace(/×/g, '*')
-                    .replace(/π/g, 'Math.PI');
-                
-                // Безопасная оценка выражения
+                let expression = state.calcExpression.replace(/×/g, '*').replace(/π/g, 'Math.PI');
                 const result = new Function('return ' + expression)();
                 state.calcResult = parseFloat(result.toFixed(10)).toString();
-            } catch (error) {
-                state.calcResult = 'Ошибка';
-            }
+            } catch { state.calcResult = 'Ошибка'; }
             updateCalcDisplay();
         }
-
+        
         function updateCalcDisplay() {
             document.getElementById('calcExpression').textContent = state.calcExpression || '';
             document.getElementById('calcResult').textContent = state.calcResult;
@@ -1861,130 +960,81 @@ print(f"Молярная масса CO2: {pt.calculate_molar_mass('CO2')} г/м�
             if (e.key === '+') appendToCalc('+');
             if (e.key === '-') appendToCalc('-');
             if (e.key === '*') appendToCalc('×');
-            if (e.key === '/') {
-                e.preventDefault();
-                appendToCalc('/');
-            }
+            if (e.key === '/') { e.preventDefault(); appendToCalc('/'); }
             if (e.key === '(') appendToCalc('(');
             if (e.key === ')') appendToCalc(')');
             if (e.key === 'p' || e.key === 'P') appendToCalc('Math.PI');
-            if (e.key === 'Enter' || e.key === '=') {
-                e.preventDefault();
-                calculateResult();
-            }
+            if (e.key === 'Enter' || e.key === '=') { e.preventDefault(); calculateResult(); }
             if (e.key === 'Backspace') deleteLast();
             if (e.key === 'Delete' || e.key === 'c' || e.key === 'C') clearCalculator();
         }
 
-        // ==================== ИГРА 2048 ====================
         function initGame2048() {
             const grid = document.getElementById('gameGrid');
             grid.innerHTML = '';
-            
             for (let i = 0; i < 16; i++) {
                 const cell = document.createElement('div');
                 cell.className = 'game-cell';
                 cell.id = `cell-${i}`;
                 grid.appendChild(cell);
             }
-            
-            newGame2048();
         }
 
         function newGame2048() {
             state.game2048.grid = Array(16).fill(0);
             state.game2048.score = 0;
             state.game2048.gameOver = false;
-            
-            // Добавляем два начальных тайла
-            addRandomTile();
-            addRandomTile();
-            
+            addRandomTile2048();
+            addRandomTile2048();
             updateGame2048();
         }
 
-        function addRandomTile() {
-            const emptyCells = state.game2048.grid
-                .map((value, index) => value === 0 ? index : -1)
-                .filter(index => index !== -1);
-            
+        function addRandomTile2048() {
+            const emptyCells = state.game2048.grid.map((v, i) => v === 0 ? i : -1).filter(i => i !== -1);
             if (emptyCells.length > 0) {
-                const randomIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-                state.game2048.grid[randomIndex] = Math.random() < 0.9 ? 2 : 4;
+                const idx = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+                state.game2048.grid[idx] = Math.random() < 0.9 ? 2 : 4;
             }
         }
 
         function updateGame2048() {
-            // Обновляем ячейки
-            state.game2048.grid.forEach((value, index) => {
-                const cell = document.getElementById(`cell-${index}`);
-                cell.textContent = value === 0 ? '' : value;
+            state.game2048.grid.forEach((v, i) => {
+                const cell = document.getElementById(`cell-${i}`);
+                cell.textContent = v === 0 ? '' : v;
                 cell.className = 'game-cell';
-                if (value > 0) {
-                    cell.classList.add(`tile-${value}`);
-                }
+                if (v > 0) cell.classList.add(`tile-${v}`);
             });
-            
-            // Обновляем счет
             document.getElementById('gameScore').textContent = state.game2048.score;
         }
 
-        function move(direction) {
+        function move2048(direction) {
             if (state.game2048.gameOver) return;
-            
             let moved = false;
             const oldGrid = [...state.game2048.grid];
             
             if (direction === 'left' || direction === 'right') {
                 for (let row = 0; row < 4; row++) {
-                    const rowCells = [];
-                    for (let col = 0; col < 4; col++) {
-                        rowCells.push(state.game2048.grid[row * 4 + col]);
-                    }
-                    
-                    const newRow = processRow(rowCells, direction === 'left');
-                    for (let col = 0; col < 4; col++) {
-                        state.game2048.grid[row * 4 + col] = newRow[col];
-                    }
+                    let rowCells = [];
+                    for (let col = 0; col < 4; col++) rowCells.push(state.game2048.grid[row * 4 + col]);
+                    const newRow = processRow2048(rowCells, direction === 'left');
+                    for (let col = 0; col < 4; col++) state.game2048.grid[row * 4 + col] = newRow[col];
                 }
             } else if (direction === 'up' || direction === 'down') {
                 for (let col = 0; col < 4; col++) {
-                    const colCells = [];
-                    for (let row = 0; row < 4; row++) {
-                        colCells.push(state.game2048.grid[row * 4 + col]);
-                    }
-                    
-                    const newCol = processRow(colCells, direction === 'up');
-                    for (let row = 0; row < 4; row++) {
-                        state.game2048.grid[row * 4 + col] = newCol[row];
-                    }
+                    let colCells = [];
+                    for (let row = 0; row < 4; row++) colCells.push(state.game2048.grid[row * 4 + col]);
+                    const newCol = processRow2048(colCells, direction === 'up');
+                    for (let row = 0; row < 4; row++) state.game2048.grid[row * 4 + col] = newCol[row];
                 }
             }
             
-            // Проверяем, было ли движение
-            for (let i = 0; i < 16; i++) {
-                if (oldGrid[i] !== state.game2048.grid[i]) {
-                    moved = true;
-                    break;
-                }
-            }
-            
-            if (moved) {
-                addRandomTile();
-                updateGame2048();
-                checkGameOver();
-            }
+            for (let i = 0; i < 16; i++) if (oldGrid[i] !== state.game2048.grid[i]) moved = true;
+            if (moved) { addRandomTile2048(); updateGame2048(); checkGameOver2048(); }
         }
 
-        function processRow(cells, moveToStart) {
-            // Убираем нули
+        function processRow2048(cells, moveToStart) {
             let nonZero = cells.filter(cell => cell !== 0);
-            
-            if (!moveToStart) {
-                nonZero.reverse();
-            }
-            
-            // Объединяем одинаковые
+            if (!moveToStart) nonZero.reverse();
             for (let i = 0; i < nonZero.length - 1; i++) {
                 if (nonZero[i] === nonZero[i + 1]) {
                     nonZero[i] *= 2;
@@ -1992,123 +1042,218 @@ print(f"Молярная масса CO2: {pt.calculate_molar_mass('CO2')} г/м�
                     nonZero.splice(i + 1, 1);
                 }
             }
-            
-            if (!moveToStart) {
-                nonZero.reverse();
-            }
-            
-            // Заполняем оставшиеся нулями
-            while (nonZero.length < 4) {
-                if (moveToStart) {
-                    nonZero.push(0);
-                } else {
-                    nonZero.unshift(0);
-                }
-            }
-            
+            if (!moveToStart) nonZero.reverse();
+            while (nonZero.length < 4) moveToStart ? nonZero.push(0) : nonZero.unshift(0);
             return nonZero;
         }
 
-        function checkGameOver() {
-            // Проверяем, есть ли пустые клетки
-            if (state.game2048.grid.some(cell => cell === 0)) {
-                return;
-            }
-            
-            // Проверяем возможные ходы
+        function checkGameOver2048() {
+            if (state.game2048.grid.some(cell => cell === 0)) return;
             for (let i = 0; i < 16; i++) {
-                const row = Math.floor(i / 4);
-                const col = i % 4;
-                const value = state.game2048.grid[i];
-                
-                // Проверяем соседей
+                const row = Math.floor(i / 4), col = i % 4, value = state.game2048.grid[i];
                 if (col < 3 && value === state.game2048.grid[i + 1]) return;
                 if (row < 3 && value === state.game2048.grid[i + 4]) return;
             }
-            
             state.game2048.gameOver = true;
-            setTimeout(() => {
-                alert(`Игра окончена! Ваш счет: ${state.game2048.score}`);
-            }, 100);
+            setTimeout(() => alert(`Игра окончена! Счет: ${state.game2048.score}`), 100);
         }
 
-        function handleGameKeypress(e) {
+        function handleGame2048Keypress(e) {
             switch(e.key) {
-                case 'ArrowUp': e.preventDefault(); move('up'); break;
-                case 'ArrowDown': e.preventDefault(); move('down'); break;
-                case 'ArrowLeft': e.preventDefault(); move('left'); break;
-                case 'ArrowRight': e.preventDefault(); move('right'); break;
-                case 'w': case 'W': e.preventDefault(); move('up'); break;
-                case 's': case 'S': e.preventDefault(); move('down'); break;
-                case 'a': case 'A': e.preventDefault(); move('left'); break;
-                case 'd': case 'D': e.preventDefault(); move('right'); break;
+                case 'ArrowUp': e.preventDefault(); move2048('up'); break;
+                case 'ArrowDown': e.preventDefault(); move2048('down'); break;
+                case 'ArrowLeft': e.preventDefault(); move2048('left'); break;
+                case 'ArrowRight': e.preventDefault(); move2048('right'); break;
+                case 'w': case 'W': e.preventDefault(); move2048('up'); break;
+                case 's': case 'S': e.preventDefault(); move2048('down'); break;
+                case 'a': case 'A': e.preventDefault(); move2048('left'); break;
+                case 'd': case 'D': e.preventDefault(); move2048('right'); break;
             }
         }
 
-        function openGame2048() {
-            state.game2048Active = true;
-            document.getElementById('game2048').classList.add('active');
+        function initGame15() {
+            const grid = document.getElementById('gameGrid15');
+            grid.innerHTML = '';
+            for (let i = 0; i < 16; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'game-cell-15';
+                cell.id = `cell15-${i}`;
+                cell.onclick = () => moveTile15(i);
+                grid.appendChild(cell);
+            }
         }
 
-        function closeGame2048() {
-            state.game2048Active = false;
-            document.getElementById('game2048').classList.remove('active');
+        function newGame15() {
+            let numbers = Array.from({length: 15}, (_, i) => i + 1);
+            numbers.push(0);
+            
+            do {
+                for (let i = numbers.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
+                }
+            } while (!isSolvable15(numbers));
+            
+            state.game15.grid = numbers;
+            state.game15.moves = 0;
+            state.game15.solved = false;
+            updateGame15();
         }
 
-        // ==================== ПЕРЕТАСКИВАНИЕ ====================
-        function makeDraggable(element, header) {
-            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+        function isSolvable15(numbers) {
+            let inversions = 0;
+            for (let i = 0; i < numbers.length; i++) {
+                for (let j = i + 1; j < numbers.length; j++) {
+                    if (numbers[i] && numbers[j] && numbers[i] > numbers[j]) inversions++;
+                }
+            }
+            const emptyRow = 3 - Math.floor(numbers.indexOf(0) / 4);
+            return (inversions % 2 === 0) === (emptyRow % 2 === 0);
+        }
+
+        function updateGame15() {
+            state.game15.grid.forEach((v, i) => {
+                const cell = document.getElementById(`cell15-${i}`);
+                cell.textContent = v === 0 ? '' : v;
+                cell.className = 'game-cell-15';
+                if (v === 0) cell.classList.add('empty');
+                else cell.classList.remove('empty');
+            });
+            document.getElementById('game15Moves').textContent = state.game15.moves;
             
-            header.onmousedown = dragMouseDown;
+            const isSolved = state.game15.grid.every((v, i) => v === (i + 1) % 16);
+            if (isSolved && !state.game15.solved) {
+                state.game15.solved = true;
+                setTimeout(() => alert(`Поздравляем! Вы решили головоломку за ${state.game15.moves} ходов!`), 100);
+            }
+        }
+
+        function moveTile15(index) {
+            if (state.game15.solved) return;
             
-            function dragMouseDown(e) {
+            const row = Math.floor(index / 4);
+            const col = index % 4;
+            const emptyIndex = state.game15.grid.indexOf(0);
+            const emptyRow = Math.floor(emptyIndex / 4);
+            const emptyCol = emptyIndex % 4;
+            
+            if ((Math.abs(row - emptyRow) === 1 && col === emptyCol) || 
+                (Math.abs(col - emptyCol) === 1 && row === emptyRow)) {
+                [state.game15.grid[index], state.game15.grid[emptyIndex]] = 
+                [state.game15.grid[emptyIndex], state.game15.grid[index]];
+                state.game15.moves++;
+                updateGame15();
+            }
+        }
+
+        function handleGame15Keypress(e) {
+            const emptyIndex = state.game15.grid.indexOf(0);
+            const emptyRow = Math.floor(emptyIndex / 4);
+            const emptyCol = emptyIndex % 4;
+            let moveIndex = -1;
+            
+            switch(e.key) {
+                case 'ArrowUp': if (emptyRow < 3) moveIndex = emptyIndex + 4; break;
+                case 'ArrowDown': if (emptyRow > 0) moveIndex = emptyIndex - 4; break;
+                case 'ArrowLeft': if (emptyCol < 3) moveIndex = emptyIndex + 1; break;
+                case 'ArrowRight': if (emptyCol > 0) moveIndex = emptyIndex - 1; break;
+            }
+            
+            if (moveIndex !== -1) moveTile15(moveIndex);
+        }
+
+        function openGame(game) {
+            state.activeGame = game;
+            document.getElementById(`game${game}`).classList.add('active');
+            if (game === '2048') newGame2048();
+            if (game === '15') newGame15();
+        }
+
+        function closeGame(game) {
+            state.activeGame = null;
+            document.getElementById(`game${game}`).classList.remove('active');
+        }
+
+        function makeResizable(element) {
+            const resizeHandle = document.createElement('div');
+            resizeHandle.style.position = 'absolute';
+            resizeHandle.style.bottom = '0';
+            resizeHandle.style.right = '0';
+            resizeHandle.style.width = '20px';
+            resizeHandle.style.height = '20px';
+            resizeHandle.style.cursor = 'se-resize';
+            resizeHandle.style.background = 'linear-gradient(135deg, transparent 50%, var(--calculator) 50%)';
+            element.appendChild(resizeHandle);
+            
+            const header = element.querySelector('.calc-header');
+            let isResizing = false;
+            let isDragging = false;
+            let startX, startY, startWidth, startHeight, startLeft, startTop;
+            
+            resizeHandle.addEventListener('mousedown', initResize);
+            header.addEventListener('mousedown', initDrag);
+            
+            function initResize(e) {
                 e.preventDefault();
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                document.onmouseup = closeDragElement;
-                document.onmousemove = elementDrag;
+                isResizing = true;
+                startX = e.clientX;
+                startY = e.clientY;
+                startWidth = parseInt(getComputedStyle(element).width);
+                startHeight = parseInt(getComputedStyle(element).height);
+                document.addEventListener('mousemove', resize);
+                document.addEventListener('mouseup', stopResize);
             }
             
-            function elementDrag(e) {
+            function resize(e) {
+                if (!isResizing) return;
+                const width = startWidth + (e.clientX - startX);
+                const height = startHeight + (e.clientY - startY);
+                element.style.width = Math.max(350, Math.min(800, width)) + 'px';
+                element.style.height = Math.max(450, Math.min(800, height)) + 'px';
+            }
+            
+            function stopResize() {
+                isResizing = false;
+                document.removeEventListener('mousemove', resize);
+                document.removeEventListener('mouseup', stopResize);
+            }
+            
+            function initDrag(e) {
+                if (e.target.closest('.player-btn')) return;
                 e.preventDefault();
-                pos1 = pos3 - e.clientX;
-                pos2 = pos4 - e.clientY;
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                element.style.top = (element.offsetTop - pos2) + "px";
-                element.style.left = (element.offsetLeft - pos1) + "px";
+                isDragging = true;
+                startX = e.clientX;
+                startY = e.clientY;
+                startLeft = element.offsetLeft;
+                startTop = element.offsetTop;
+                document.addEventListener('mousemove', drag);
+                document.addEventListener('mouseup', stopDrag);
             }
             
-            function closeDragElement() {
-                document.onmouseup = null;
-                document.onmousemove = null;
+            function drag(e) {
+                if (!isDragging) return;
+                element.style.left = (startLeft + (e.clientX - startX)) + 'px';
+                element.style.top = (startTop + (e.clientY - startY)) + 'px';
+            }
+            
+            function stopDrag() {
+                isDragging = false;
+                document.removeEventListener('mousemove', drag);
+                document.removeEventListener('mouseup', stopDrag);
             }
         }
 
-        // ==================== ПАСХАЛКА ====================
         function handleAuthorClick(event) {
             event.stopPropagation();
-            
             const now = Date.now();
-            
-            // Сброс если прошло больше 5 секунд
-            if (now - state.lastClickTime > 5000) {
-                state.authorClicks = 0;
-            }
-            
+            if (now - state.lastClickTime > 5000) state.authorClicks = 0;
             state.authorClicks++;
             state.lastClickTime = now;
             
-            // Анимация при нажатии
             const authorName = document.getElementById('authorName');
             authorName.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                authorName.style.transform = 'scale(1)';
-            }, 100);
+            setTimeout(() => authorName.style.transform = 'scale(1)', 100);
             
-            console.log(`Кликов: ${state.authorClicks}/5`);
-            
-            // Если 5 кликов за 5 секунд
             if (state.authorClicks >= 5) {
                 state.authorClicks = 0;
                 openHackerConsole();
@@ -2118,11 +1263,8 @@ print(f"Молярная масса CO2: {pt.calculate_molar_mass('CO2')} г/м�
         function openHackerConsole() {
             const console = document.getElementById('hackerConsole');
             const output = document.getElementById('consoleOutput');
-            
             state.consoleActive = true;
             console.classList.add('active');
-            
-            // Генерация хакерского текста
             generateHackerText(output);
         }
 
@@ -2152,24 +1294,14 @@ print(f"Молярная масса CO2: {pt.calculate_molar_mass('CO2')} г/м�
                 "[1] SSH Tunnel - Порт 22",
                 "[2] VPN Connection - Шифрование AES-256",
                 "[3] Port Scanner - Анализ 65535 портов",
-                "[4] Keylogger - Активен",
-                "[5] RAT Server - Прослушивание порта 4444",
                 "",
-                "═════════════════════ ДОСТУП К СИСТЕМАМ ═══════════════════════",
-                "▸ Банковская система: ДОСТУП ОТКРЫТ",
-                "▸ Правительственный сервер: ДОСТУП ОТКРЫТ",
-                "▸ Спутниковая связь: ДОСТУП ОТКРЫТ",
-                "▸ Камеры наблюдения: 127 устройств онлайн",
-                "",
-                "[!] СЕКРЕТНАЯ КОМАНДА ДОСТУПНА: 'start 2048'",
-                "[!] ДРУГИЕ КОМАНДЫ: 'help', 'calc', 'exit'",
+                "[!] СЕКРЕТНЫЕ КОМАНДЫ: '2048', '15', 'calc', 'help', 'exit'",
                 "[?] ВВЕДИТЕ КОМАНДУ:",
                 "> "
             ];
             
             container.innerHTML = '';
             let delay = 0;
-            
             lines.forEach((line) => {
                 setTimeout(() => {
                     const lineEl = document.createElement('div');
@@ -2181,7 +1313,6 @@ print(f"Молярная масса CO2: {pt.calculate_molar_mass('CO2')} г/м�
                 delay += 50;
             });
             
-            // Добавляем поле для ввода после показа всего текста
             setTimeout(() => {
                 const inputContainer = document.createElement('div');
                 inputContainer.className = 'console-input';
@@ -2190,11 +1321,8 @@ print(f"Молярная масса CO2: {pt.calculate_molar_mass('CO2')} г/м�
                     <input type="text" class="console-cmd" id="consoleInput" autocomplete="off" autofocus>
                 `;
                 container.appendChild(inputContainer);
-                
                 const input = document.getElementById('consoleInput');
                 input.focus();
-                
-                // Обработка ввода
                 input.addEventListener('keypress', (e) => {
                     if (e.key === 'Enter') {
                         const command = input.value.trim().toLowerCase();
@@ -2205,77 +1333,62 @@ print(f"Молярная масса CO2: {pt.calculate_molar_mass('CO2')} г/м�
         }
 
         function handleConsoleCommand(command, container, inputContainer) {
-            // Добавляем команду в историю
             const cmdLine = document.createElement('div');
             cmdLine.className = 'console-line';
             cmdLine.textContent = `root@asd11f:~# ${command}`;
             container.appendChild(cmdLine);
-            
-            // Удаляем поле ввода
             inputContainer.remove();
             
             let responseLines = [];
             
-            if (command === 'start 2048' || command === '2048' || command === 'game') {
+            if (command === '2048') {
                 responseLines = [
-                    "[*] Запуск секретной игры 2048...",
-                    "[+] Инициализация игрового движка...",
-                    "[+] Загрузка ресурсов... УСПЕХ",
-                    "[*] Игра 2048 запущена!",
+                    "[*] Запуск игры 2048...",
+                    "[+] Игра 2048 запущена!",
                     "[*] Консоль закроется через 2 секунды..."
                 ];
-                
-                setTimeout(() => {
-                    closeConsole();
-                    openGame2048();
-                }, 2000);
-            } else if (command === 'calc' || command === 'calculator') {
+                setTimeout(() => { closeConsole(); openGame('2048'); }, 2000);
+            } else if (command === '15') {
+                responseLines = [
+                    "[*] Запуск игры Пятнашки...",
+                    "[+] Игра Пятнашки запущена!",
+                    "[*] Консоль закроется через 2 секунды..."
+                ];
+                setTimeout(() => { closeConsole(); openGame('15'); }, 2000);
+            } else if (command === 'calc') {
                 responseLines = [
                     "[*] Запуск калькулятора...",
                     "[+] Калькулятор активирован",
                     "[*] Консоль закроется через 2 секунды..."
                 ];
-                
-                setTimeout(() => {
-                    closeConsole();
-                    toggleCalculator();
-                }, 2000);
+                setTimeout(() => { closeConsole(); toggleCalculator(); }, 2000);
             } else if (command === 'help') {
                 responseLines = [
                     "[*] ДОСТУПНЫЕ КОМАНДЫ:",
-                    "  'start 2048' - запустить игру 2048",
+                    "  '2048' - запустить игру 2048",
+                    "  '15' - запустить игру Пятнашки",
                     "  'calc' - открыть калькулятор",
-                    "  'help' - показать эту справку",
+                    "  'help' - показать справку",
                     "  'exit' - закрыть консоль",
                     "[*] Консоль закроется через 5 секунд..."
                 ];
-                
-                setTimeout(() => {
-                    closeConsole();
-                }, 5000);
-            } else if (command === 'exit' || command === 'close') {
+                setTimeout(() => closeConsole(), 5000);
+            } else if (command === 'exit') {
                 responseLines = [
                     "[*] Завершение работы консоли...",
                     "[+] Удаление логов... УСПЕХ",
                     "[*] Консоль закрывается..."
                 ];
-                
-                setTimeout(() => {
-                    closeConsole();
-                }, 1000);
+                setTimeout(() => closeConsole(), 1000);
             } else {
                 responseLines = [
                     `[!] Неизвестная команда: ${command}`,
                     "[!] Введите 'help' для списка команд",
                     "[*] Консоль закроется через 3 секунды..."
                 ];
-                
-                setTimeout(() => {
-                    closeConsole();
-                }, 3000);
+                setTimeout(() => closeConsole(), 3000);
             }
             
-            // Показываем ответ
             let delay = 0;
             responseLines.forEach((line) => {
                 setTimeout(() => {
@@ -2296,15 +1409,13 @@ print(f"Молярная масса CO2: {pt.calculate_molar_mass('CO2')} г/м�
             state.authorClicks = 0;
         }
 
-        // ==================== YOUTUBE ПЛЕЕР ====================
         function openYouTubeVideo(videoId, title) {
             const placeholder = event.currentTarget;
             const playerContainer = placeholder.parentElement;
-            
             playerContainer.innerHTML = `
                 <div style="position: relative; padding-bottom: 56.25%; height: 0;">
                     <iframe 
-                        src="https://www.youtube.com/embed/${videoId}" 
+                        src="https://www.youtube.com/embed/${videoId}?autoplay=1" 
                         title="${title}"
                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; border-radius: ${getComputedStyle(document.documentElement).getPropertyValue('--radius')};"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -2313,25 +1424,16 @@ print(f"Молярная масса CO2: {pt.calculate_molar_mass('CO2')} г/м�
                 </div>
                 <div style="padding: 15px; background: var(--bg-light); border-top: 1px solid var(--border);">
                     <div style="font-weight: 600; margin-bottom: 5px;">${title}</div>
-                    <div style="font-size: 14px; color: var(--text-light);">Образовательный портал - учебное видео</div>
+                    <div style="font-size: 14px; color: var(--text-light);">Автоматическое воспроизведение</div>
                 </div>
             `;
         }
 
-        // ==================== ОСНОВНЫЕ ФУНКЦИИ ====================
         function selectSubject(subject) {
-            // Обновляем кнопки
-            document.querySelectorAll('.subject-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
+            document.querySelectorAll('.subject-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
-            
-            // Показываем/скрываем контент
-            document.querySelectorAll('.main-content').forEach(content => {
-                content.classList.add('hidden');
-            });
+            document.querySelectorAll('.main-content').forEach(content => content.classList.add('hidden'));
             document.getElementById(subject + 'Content').classList.remove('hidden');
-            
             state.currentSubject = subject;
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -2339,10 +1441,7 @@ print(f"Молярная масса CO2: {pt.calculate_molar_mass('CO2')} г/м�
         function toggleArticle(card) {
             const content = card.querySelector('.article-content');
             const readMore = card.querySelector('.read-more');
-            const icon = readMore.querySelector('i');
-            
             content.classList.toggle('expanded');
-            
             if (content.classList.contains('expanded')) {
                 readMore.innerHTML = 'Свернуть <i class="fas fa-chevron-up"></i>';
             } else {
@@ -2353,12 +1452,10 @@ print(f"Молярная масса CO2: {pt.calculate_molar_mass('CO2')} г/м�
         function copyCode(button) {
             const codeBlock = button.closest('.code-block').querySelector('pre');
             const text = codeBlock.textContent;
-            
             navigator.clipboard.writeText(text).then(() => {
                 const originalText = button.textContent;
                 button.textContent = 'Скопировано!';
                 button.style.background = '#10b981';
-                
                 setTimeout(() => {
                     button.textContent = originalText;
                     button.style.background = '';
@@ -2370,7 +1467,6 @@ print(f"Молярная масса CO2: {pt.calculate_molar_mass('CO2')} г/м�
             state.theme = state.theme === 'dark' ? 'light' : 'dark';
             document.documentElement.setAttribute('data-theme', state.theme);
             localStorage.setItem('theme', state.theme);
-            
             const icon = document.querySelector('.theme-toggle i');
             if (state.theme === 'dark') {
                 icon.classList.remove('fa-moon');
@@ -2381,7 +1477,6 @@ print(f"Молярная масса CO2: {pt.calculate_molar_mass('CO2')} г/м�
             }
         }
 
-        // ==================== ЭКСПОРТ ФУНКЦИЙ ====================
         window.selectSubject = selectSubject;
         window.toggleArticle = toggleArticle;
         window.copyCode = copyCode;
@@ -2393,9 +1488,10 @@ print(f"Молярная масса CO2: {pt.calculate_molar_mass('CO2')} г/м�
         window.toggleTheme = toggleTheme;
         window.handleAuthorClick = handleAuthorClick;
         window.closeConsole = closeConsole;
-        window.openGame2048 = openGame2048;
-        window.closeGame2048 = closeGame2048;
+        window.openGame = openGame;
+        window.closeGame = closeGame;
         window.newGame2048 = newGame2048;
+        window.newGame15 = newGame15;
         window.openYouTubeVideo = openYouTubeVideo;
     </script>
 </body>
